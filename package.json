@@ -1,0 +1,41 @@
+{
+  "name": "signalscout",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.6.0",
+  "type": "module",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rimraf node_modules"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.22.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.19.15",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "dashboard": "^0.0.1",
+    "eslint": "^9.22.0",
+    "globals": "^16.0.0",
+    "rimraf": "^6.0.1",
+    "turbo": "^2.4.4",
+    "typescript": "5.8.2",
+    "typescript-eslint": "^8.26.1"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "cheerio": "^1.2.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "helmet": "^8.1.0",
+    "mongoose": "^9.3.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "vite": "^8.0.3"
+  }
+}

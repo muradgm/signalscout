@@ -1,0 +1,1 @@
+export const redact = <T>(value: T): T => value;
