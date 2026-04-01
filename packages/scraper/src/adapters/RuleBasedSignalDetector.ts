@@ -22,6 +22,20 @@ const countOccurrences = (text: string, patterns: RegExp[]): number => {
   }, 0);
 };
 
+const countDistinctMatches = (text: string, patterns: RegExp[]): number => {
+  const matches = new Set<string>();
+
+  for (const pattern of patterns) {
+    const patternMatches = text.match(pattern) ?? [];
+
+    for (const match of patternMatches) {
+      matches.add(match.trim().toLowerCase());
+    }
+  }
+
+  return matches.size;
+};
+
 const hasCompleteLeadContext = (lead: Lead): boolean => {
   return lead.completeness === 'complete';
 };
@@ -249,10 +263,48 @@ const detectBusinessScale = (
     /\b\d+\s+standorte\b/gi,
   ]);
 
-  if (numericLocationMentions >= 1 || multiLocationMentions >= 5) {
+  const networkMentions = countOccurrences(text, [
+    /\bpraxisnetz\b/gi,
+    /\bnetz\b/gi,
+    /\bnetwork\b/gi,
+    /\bmvz\b/gi,
+    /\bversorgungszentrum\b/gi,
+    /\bzahnzentrum\b/gi,
+    /\bmedical board\b/gi,
+    /\bgeschaftsleitung\b/gi,
+    /\bunternehmen\b/gi,
+    /\bstandortleitung\b/gi,
+  ]);
+
+  const cityFootprintMentions = countDistinctMatches(text, [
+    /\bberlin\b/gi,
+    /\bmunchen\b/gi,
+    /\baugsburg\b/gi,
+    /\bnurnberg\b/gi,
+    /\bstuttgart\b/gi,
+    /\bmannheim\b/gi,
+    /\bkarlsruhe\b/gi,
+    /\bhamburg\b/gi,
+    /\bfrankfurt\b/gi,
+    /\bwiesbaden\b/gi,
+    /\bmainz\b/gi,
+    /\bbremen\b/gi,
+    /\bessen\b/gi,
+    /\bbochum\b/gi,
+    /\bkoln\b/gi,
+    /\bdresden\b/gi,
+    /\bleipzig\b/gi,
+  ]);
+
+  if (
+    numericLocationMentions >= 1 ||
+    multiLocationMentions >= 5 ||
+    cityFootprintMentions >= 4 ||
+    (networkMentions >= 2 && cityFootprintMentions >= 2)
+  ) {
     evidence.push('site presents itself as a multi-location network at large scale');
     evidence.push(
-      `location-network evidence found (${multiLocationMentions} general mentions, ${numericLocationMentions} explicit count mentions)`,
+      `location-network evidence found (${multiLocationMentions} general mentions, ${numericLocationMentions} explicit count mentions, ${networkMentions} network mentions, ${cityFootprintMentions} distinct city mentions)`,
     );
 
     return { value: 'large_chain', evidence };
@@ -260,9 +312,10 @@ const detectBusinessScale = (
 
   if (
     multiLocationMentions >= 1 ||
+    networkMentions >= 1 ||
     snapshot.trustSignals.includes('mentions multiple locations')
   ) {
-    evidence.push('site shows evidence of operating across multiple locations');
+    evidence.push('site shows evidence of operating across multiple locations or a wider network');
 
     return { value: 'multi_location', evidence };
   }
@@ -346,11 +399,13 @@ const detectOutreachFit = (
   businessScale: BusinessScale,
   localRelevance: LocalRelevance,
 ): { value: OutreachFit; reason: string } => {
-  if (businessScale === 'large_chain' && localRelevance === 'low_match') {
+  if (businessScale === 'large_chain' || businessScale === 'multi_location') {
     return {
       value: 'poor',
       reason:
-        'The lead appears to be a large chain with weak geographic alignment to the intended local-market offer.',
+        localRelevance === 'high_match'
+          ? 'The lead appears to be a larger network brand, which falls outside the intended small-practice outreach wedge even when the local page is relevant.'
+          : 'The lead appears to be a larger network brand with weak geographic alignment to the intended local-market offer.',
     };
   }
 

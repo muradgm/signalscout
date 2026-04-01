@@ -1,4 +1,5 @@
 import type { ExtractedLeadSnapshotData } from '@signalscout/core';
+import { createContactEnrichment } from '../extract/contactEnrichment.js';
 import { detectPlaceholderContent } from '../detect/detectPlaceholderContent.js';
 import { extractBookingLinks } from '../extract/extractBookingLinks.js';
 import { extractContactInfo } from '../extract/extractContactInfo.js';
@@ -15,6 +16,12 @@ export const buildLeadSnapshot = (
   const isPlaceholderContent = detectPlaceholderContent(visibleText);
 
   const contactInfo = extractContactInfo(html);
+  const contactEnrichment = createContactEnrichment(
+    contactInfo,
+    'main_page',
+    finalUrl,
+    'high',
+  );
   const bookingLinks = isPlaceholderContent
     ? []
     : extractBookingLinks(html, finalUrl);
@@ -28,6 +35,7 @@ export const buildLeadSnapshot = (
     metaDescription,
     visibleText,
     contactInfo,
+    contactEnrichment,
     bookingLinks,
     trustSignals,
     isPlaceholderContent,

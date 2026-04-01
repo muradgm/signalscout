@@ -4,12 +4,19 @@ import type {
   OutreachGenerator,
 } from '@signalscout/core';
 
+const hasTrustSignal = (
+  input: GenerateOutreachInput,
+  signal: string,
+): boolean => input.snapshot.trustSignals.includes(signal);
+
 const mentionsLongTradition = (text: string): boolean => {
-  return /seit über 50 jahren|over 50 years|seit 50 jahren/i.test(text);
+  return /seit uber 50 jahren|over 50 years|seit 50 jahren/i.test(text);
 };
 
 const mentionsFamilyPositioning = (text: string): boolean => {
-  return /als vater und sohn|father and son|famil/i.test(text);
+  return /als vater und sohn|father and son|family[- ]led|family practice|familiengefuhrt|familiengefuhrte|familienzahnarzt/i.test(
+    text,
+  );
 };
 
 const mentionsComfortReassurance = (text: string): boolean => {
@@ -189,26 +196,50 @@ const buildGoodLeadBestAngle = (): string => {
 };
 
 const buildGoodLeadSubject = (input: GenerateOutreachInput): string => {
-  return `Quick observation on ${input.lead.companyName}`;
+  if (
+    hasTrustSignal(input, 'mentions long tradition') ||
+    hasTrustSignal(input, 'mentions family-led practice')
+  ) {
+    return `Quick thought on booking at ${input.lead.companyName}`;
+  }
+
+  return `Quick thought on ${input.lead.companyName}`;
 };
 
 const buildGoodLeadBody = (input: GenerateOutreachInput): string => {
   const { lead, snapshot } = input;
   const combinedText = `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`;
 
-  const hasTradition = mentionsLongTradition(combinedText);
-  const hasFamily = mentionsFamilyPositioning(combinedText);
+  const hasTradition =
+    hasTrustSignal(input, 'mentions long tradition') ||
+    mentionsLongTradition(combinedText);
+  const hasFamily =
+    hasTrustSignal(input, 'mentions family-led practice') ||
+    mentionsFamilyPositioning(combinedText);
+  const hasComfort =
+    hasTrustSignal(input, 'mentions patient comfort') ||
+    hasTrustSignal(input, 'mentions anxiety-patient reassurance') ||
+    mentionsComfortReassurance(combinedText);
 
-  if (hasTradition || hasFamily) {
+  if (hasTradition || hasFamily || hasComfort) {
+    const trustCue =
+      hasTradition && hasFamily
+        ? 'the long-standing local presence and family feel'
+        : hasTradition
+          ? 'the long-standing local presence'
+          : hasFamily
+            ? 'the family feel'
+            : 'the reassurance on the page';
+
     return `Hi,
 
-I had a look at ${lead.companyName}, and the trust you’ve built comes through clearly — especially the long-standing local presence and family-led feel.
+I took a quick look at ${lead.companyName}. The site already builds a lot of trust, especially around ${trustCue}.
 
-One thing that stood out though: a lot of that trust is explained well, but it feels less actively used to move visitors toward booking.
+My main thought is that the step from reassurance to booking still feels a little softer than it should.
 
-That kind of gap can quietly reduce conversion, even when the practice itself already feels credible.
+So someone who already feels good about the practice may still not get pushed quite enough to book.
 
-If helpful, I can share a short breakdown of where that happens and how I’d tighten it.
+If useful, I can send over 2 or 3 specific changes I'd test first.
 
 Best,
 [Your Name]`;
@@ -216,11 +247,11 @@ Best,
 
   return `Hi,
 
-I took a look at ${lead.companyName}, and one thing stood out: the site already feels credible, but the strongest trust signals are not turned into as decisive a booking case as they could be.
+I took a quick look at ${lead.companyName}. The site already feels credible, but the step from trust to booking could be more direct.
 
-That usually means some interested visitors hesitate longer than they should before taking the next step.
+That usually means some interested visitors are probably hesitating a bit longer than they should before taking the next step.
 
-If helpful, I can share a short perspective on where that gap may be showing up.
+If useful, I can send over 2 or 3 specific changes I'd test first.
 
 Best,
 [Your Name]`;
@@ -230,11 +261,16 @@ const buildGoodLeadReasoning = (input: GenerateOutreachInput): string => {
   const { snapshot } = input;
   const combinedText = `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`;
 
-  if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
+  if (
+    hasTrustSignal(input, 'mentions long tradition') ||
+    hasTrustSignal(input, 'mentions family-led practice') ||
+    mentionsLongTradition(combinedText) ||
+    mentionsFamilyPositioning(combinedText)
+  ) {
     return 'The draft uses a specific, credible angle: the practice has strong trust-building material, but that strength is described more than it is converted into booking momentum. That makes the message more specific and more commercially relevant than a generic booking-friction pitch.';
   }
 
-  return 'The draft is built around a real commercial angle: existing credibility appears stronger than the page’s push toward action. That makes the outreach feel more grounded than a generic performance or marketing message.';
+  return 'The draft is built around a real commercial angle: existing credibility appears stronger than the page push toward action. That makes the outreach feel more grounded than a generic performance or marketing message.';
 };
 
 const buildGoodLeadEvidence = (input: GenerateOutreachInput): string[] => {
@@ -246,15 +282,26 @@ const buildGoodLeadEvidence = (input: GenerateOutreachInput): string[] => {
     evidence.push(`A direct booking path is already present: ${snapshot.bookingLinks[0]}`);
   }
 
-  if (mentionsLongTradition(combinedText)) {
+  if (
+    hasTrustSignal(input, 'mentions long tradition') ||
+    hasTrustSignal(input, 'mentions local legacy') ||
+    mentionsLongTradition(combinedText)
+  ) {
     evidence.push('A 50+ year local tradition is explicitly mentioned on the site.');
   }
 
-  if (mentionsFamilyPositioning(combinedText)) {
+  if (
+    hasTrustSignal(input, 'mentions family-led practice') ||
+    mentionsFamilyPositioning(combinedText)
+  ) {
     evidence.push('The practice is presented in family-led terms, which is a meaningful trust asset.');
   }
 
-  if (mentionsComfortReassurance(combinedText)) {
+  if (
+    hasTrustSignal(input, 'mentions patient comfort') ||
+    hasTrustSignal(input, 'mentions anxiety-patient reassurance') ||
+    mentionsComfortReassurance(combinedText)
+  ) {
     evidence.push('The messaging strongly emphasizes reassurance, comfort, and patient-friendly care.');
   }
 
@@ -294,7 +341,7 @@ Best,
 };
 
 const buildGeneralSendReasoning = (): string => {
-  return 'The draft stays focused on one credible angle—booking-path clarity—rather than broad marketing language. That makes it more specific, more believable, and more likely to feel relevant to the recipient.';
+  return 'The draft stays focused on one credible angle - booking-path clarity - rather than broad marketing language. That makes it more specific, more believable, and more likely to feel relevant to the recipient.';
 };
 
 const buildGeneralSendEvidence = (input: GenerateOutreachInput): string[] => {

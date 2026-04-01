@@ -1,189 +1,618 @@
-# SignalScout Track List
+ Here is the full track list from **start to delivery**, structured as a real build roadmap rather than a loose task list.
+ please check against current project progress, updated tracker accordingly and update our internal roadmap 'track list' to reflect reality and the best next steps.
 
-## Assessment Summary
 
-SignalScout is no longer at idea stage. It has a meaningful backend vertical slice in place, but it is not yet an end-to-end usable product.
+# SignalScout — Full Track List
 
-Current reality from the repo:
+## Phase 0 — Foundation and Direction
 
-- `apps/api` is the strongest part of the system and already exposes health, leads, audits, and outreach routes.
-- Core domain packages exist and are wired through `@signalscout/core`, `@signalscout/db`, `@signalscout/scraper`, and `@signalscout/ai`.
-- Root `pnpm build` and `pnpm typecheck` pass.
-- The dashboard is mostly scaffolded. The main entry renders a placeholder, while pages, feature components, and router-related files are empty.
-- The worker app is still a placeholder.
-- The replies module is scaffolded but empty.
-- Tests exist as filenames only; the current suite is effectively not implemented.
-- Docs for roadmap and architecture are mostly empty, so the delivery plan has to be inferred from code.
+### 0.1 Product definition
 
-## Current Position
+Lock the core problem, target user, and initial wedge.
 
-Project stage: backend-first prototype with partial domain implementation.
+Deliverables:
 
-What is materially done:
+* problem statement
+* ideal customer profile
+* offer hypothesis
+* clear MVP boundary
+* success criteria for first usable version
 
-- Lead CRUD and lead lookup path exists.
-- Lead snapshot refresh flow exists.
-- Signal detection logic exists and contains real business rules.
-- Audit generation flow exists.
-- Outreach generation flow exists.
-- Mongo connection layer and repository structure exist.
-- Repo hygiene is in good shape and the project is on GitHub.
+### 0.2 Architecture definition
 
-What is not product-ready yet:
+Define the system shape before heavy implementation.
 
-- No real dashboard workflow for operators.
-- No real worker/queue execution path.
-- No replies handling.
-- No implemented test coverage.
-- No documented release or operational checklist.
+Deliverables:
 
-## Best Next Step
+* package structure
+* domain boundaries
+* core entities and ports
+* repository strategy
+* scraper boundary
+* AI boundary
+* API boundary
+* dashboard boundary
 
-The best next step is not adding more backend modules. The best next step is to complete one operator-facing end-to-end loop:
+### 0.3 Workspace and tooling setup
 
-1. List leads in the dashboard.
-2. Open a lead detail view.
-3. Trigger snapshot refresh.
-4. Trigger audit generation.
-5. Trigger outreach generation.
-6. Show the resulting data in the UI.
+Create the monorepo and development baseline.
 
-Reason:
+Deliverables:
 
-- The API slice already exists.
-- The dashboard is the biggest product gap.
-- This creates the first real proof that SignalScout works as a usable workflow instead of only as backend plumbing.
-- It will also expose what is actually missing in API contracts, loading states, errors, and data shapes.
+* pnpm workspace
+* turbo setup
+* TypeScript configs
+* package build/typecheck scripts
+* linting/formatting baseline
+* environment config strategy
 
-## Delivery Track
+---
 
-### Track 0: Stabilize The Current Slice
-Status: partially complete
+## Phase 1 — Core Domain and Data Model
 
-- Keep `build` and `typecheck` green.
-- Add a minimal architecture note describing the current runtime shape.
-- Add example request and response payloads for leads, snapshots, audits, and outreach.
-- Decide whether `master` remains the default branch or should move to `main`.
+### 1.1 Lead domain
 
-Exit condition:
+Build the lead entity and its persistence model.
 
-- A new contributor can understand how the current backend flow is supposed to work without reading the entire codebase.
+Deliverables:
 
-### Track 1: Ship The First Real Dashboard
-Status: not started
+* Lead entity
+* lead completeness concept
+* lead repository port
+* create/list/get lead use cases
+* Mongo lead repository
+* lead API endpoints
 
-- Implement routing in `apps/dashboard/src/app/router.tsx`.
-- Replace placeholder `main.tsx`/app shell flow with actual pages.
-- Build `LeadsPage` with lead listing.
-- Build `LeadDetailPage` with:
-  - lead summary
-  - snapshot section
-  - signals section
-  - audit section
-  - outreach section
-- Wire UI actions to the existing API:
-  - refresh snapshot
-  - generate audit
-  - generate outreach
-- Add loading, empty, and error states.
+### 1.2 Snapshot domain
 
-Exit condition:
+Build the concept of a lead snapshot as the extracted website state.
 
-- A user can operate the full lead -> snapshot -> audit -> outreach flow from the browser.
+Deliverables:
 
-### Track 2: Make The Flow Reliable
-Status: not started
+* LeadSnapshot entity
+* snapshot repository port
+* snapshot extractor port
+* refresh snapshot use case
+* Mongo snapshot repository
+* snapshot API endpoint
 
-- Implement the currently empty test files under `tests/unit/core` and `tests/integration/api`.
-- Add at least:
-  - unit tests for signal detection rules
-  - unit tests for audit and outreach generation contracts
-  - integration tests for lead, audit, and outreach routes
-- Add test fixtures with realistic lead and snapshot samples.
-- Make `pnpm test` meaningful instead of placeholder output.
+### 1.3 Data contracts and validation
 
-Exit condition:
+Protect the API boundary cleanly.
 
-- Core business logic and API flows are protected by real tests.
+Deliverables:
 
-### Track 3: Complete The Missing Backend Surface
-Status: not started
+* Zod request schemas
+* API input validation
+* response mapping
+* consistent error handling
 
-- Implement replies module or explicitly remove it from current scope.
-- Decide whether outreach replies are part of MVP or post-MVP.
-- Clean up any partially wired but unused modules.
-- Add clear API contracts for all active endpoints.
+---
 
-Exit condition:
+## Phase 2 — Scraping and Extraction Engine
 
-- No major module remains in a misleading half-scaffolded state.
+### 2.1 HTML retrieval
 
-### Track 4: Introduce Background Processing
-Status: not started
+Build stable website fetching.
 
-- Define which tasks must run asynchronously:
-  - snapshot refresh
-  - audit generation
-  - outreach generation
-- Implement worker runtime in `apps/worker`.
-- Connect queue package to actual job execution.
-- Add retry and failure reporting strategy.
+Deliverables:
 
-Exit condition:
+* HTML fetch utility
+* redirects handling
+* content-type validation
+* fallback behavior
+* fetch failure handling
 
-- Long-running operations can move off the request cycle without breaking operator workflow.
+### 2.2 Snapshot construction
 
-### Track 5: Operational Readiness
-Status: not started
+Turn raw HTML into usable extracted data.
 
-- Finalize environment variable documentation.
-- Add deployment notes for API, dashboard, MongoDB, and Redis.
-- Add seed/import workflows for demo data.
-- Add logging and error-reporting expectations.
-- Define a minimal release checklist.
+Deliverables:
 
-Exit condition:
+* page title extraction
+* meta description extraction
+* visible text extraction
+* booking link extraction
+* contact info extraction
+* placeholder content detection
 
-- The project can be started, demoed, and maintained without tribal knowledge.
+### 2.3 Contact extraction hardening
 
-## Recommended Order
+Improve commercial reliability of extracted contact data.
 
-1. Track 1: first real dashboard
-2. Track 2: reliability and tests
-3. Track 3: resolve missing backend surface
-4. Track 4: background processing
-5. Track 5: operational readiness
+Deliverables:
 
-## Immediate Next Sprint
+* email cleanup
+* phone plausibility filtering
+* address extraction
+* contact normalization
+* duplicate removal
+* false-positive reduction
 
-Scope the next sprint to one thin objective:
+### 2.4 Trust signal extraction
 
-`Operator can select a lead in the dashboard and run snapshot -> audit -> outreach from the UI.`
+Make website meaning more explicit before audits.
 
-Concrete next tasks:
+Deliverables:
 
-- Implement router and app shell in `apps/dashboard`.
-- Build `LeadsPage`.
-- Build `LeadDetailPage`.
-- Add typed API client calls for existing backend endpoints.
-- Render audit and outreach results.
-- Add basic integration coverage for the used API routes.
+* baseline trust signals
+* long tradition detection
+* local legacy detection
+* family-led detection
+* patient comfort detection
+* anxiety-patient reassurance detection
+* advanced technology detection
 
-## Stop Doing
+---
 
-- Do not add new domain areas until the dashboard can exercise the existing ones.
-- Do not add more empty scaffolds.
-- Do not treat placeholder test files as progress.
+## Phase 3 — Signal Intelligence Layer
 
-## Success Marker
+### 3.1 Signal model
 
-SignalScout reaches the next meaningful milestone when a user can:
+Define the structured decision layer.
 
-- create or view a lead
-- refresh its snapshot
-- inspect detected signals
-- generate an audit
-- generate outreach
-- do all of that from the dashboard with working feedback states
+Deliverables:
 
-At that point the project moves from "implemented backend pieces" to "usable internal MVP".
+* bookingPresence
+* contactClarity
+* trustSignalStrength
+* businessScale
+* localRelevance
+* outreachFit
+* confidence
+* issuesDetected
+* evidence
+
+### 3.2 Rule-based detector
+
+Build deterministic signal generation.
+
+Deliverables:
+
+* booking presence rules
+* business scale rules
+* local relevance rules
+* outreach fit rules
+* confidence rules
+* issue generation
+* evidence generation
+
+### 3.3 Local relevance refinement
+
+Make local matching commercially meaningful.
+
+Deliverables:
+
+* Berlin-aware district matching
+* high vs partial vs low relevance logic
+* location evidence quality improvement
+
+---
+
+## Phase 4 — Audit Intelligence Layer
+
+### 4.1 Audit domain
+
+Define the structured website assessment.
+
+Deliverables:
+
+* Audit entity
+* audit repository port
+* save/get-latest audit use cases
+* Mongo audit repository
+* audit API endpoints
+
+### 4.2 Audit generation
+
+Generate commercially useful diagnostic summaries.
+
+Deliverables:
+
+* placeholder-page audit path
+* bad-fit lead audit path
+* good-fit lead audit path
+* strengths
+* opportunities
+* opportunity details
+* risks
+* recommended angle
+* confidence note
+* evidence
+
+### 4.3 Audit quality refinement
+
+Move from generic to decision-useful.
+
+Deliverables:
+
+* remove invented problems
+* focus on real opportunities
+* turn strengths into leverage
+* improve explanation quality
+* align confidence with evidence
+
+---
+
+## Phase 5 — Outreach Intelligence Layer
+
+### 5.1 Outreach domain
+
+Define the outreach message lifecycle.
+
+Deliverables:
+
+* OutreachMessage entity
+* outreach repository port
+* save/get-latest outreach use cases
+* Mongo outreach repository
+* outreach API endpoints
+
+### 5.2 Outreach generation
+
+Build draft generation with decision logic.
+
+Deliverables:
+
+* do_not_send path
+* review path
+* send path
+* placeholder-specific withholding
+* subject generation
+* body generation
+* fitReason
+* bestAngle
+* reasoning
+* evidence
+
+### 5.3 Outreach quality refinement
+
+Move from safe drafts to usable drafts.
+
+Deliverables:
+
+* stronger send classification
+* better review logic
+* more natural tone
+* more specific hooks
+* stronger commercial angle
+* trust-to-action gap framing
+* less generic booking-friction language
+
+### 5.4 Audit/outreach consistency
+
+Keep records and reasoning aligned.
+
+Deliverables:
+
+* latest-audit retrieval by lead
+* latest-outreach retrieval by lead
+* deterministic record linkage
+* fresh audit → fresh outreach consistency
+
+---
+
+## Phase 6 — Operational Reliability Layer
+
+### 6.1 Database consistency
+
+Make sure the system behaves predictably in real use.
+
+Deliverables:
+
+* shared mongoose instance strategy
+* connection bootstrap reliability
+* health route truthfulness
+* startup order correctness
+
+### 6.2 Build and package reliability
+
+Make the monorepo stable to run and evolve.
+
+Deliverables:
+
+* build ordering
+* package dist generation
+* type portability fixes
+* workspace import correctness
+* deterministic wiring
+
+### 6.3 Output quality hardening
+
+Remove visible rough edges.
+
+Deliverables:
+
+* text normalization
+* encoding cleanup
+* punctuation cleanup
+* address formatting cleanup
+* evidence phrasing polish
+
+---
+
+## Phase 7 — Lead Review Workspace (Productization Begins)
+
+### 7.1 Dashboard architecture
+
+Turn the engine into a usable product surface.
+
+Deliverables:
+
+* dashboard app structure
+* routes
+* shared types
+* API client layer
+* UI state strategy
+
+### 7.2 Lead list screen
+
+Create the operator’s starting point.
+
+Deliverables:
+
+* lead list page
+* recommendation badges
+* confidence display
+* status display
+* quick scanning view
+* loading/empty/error states
+
+### 7.3 Lead detail screen
+
+Create the actual decision workspace.
+
+Deliverables:
+
+* lead summary panel
+* signals panel
+* audit panel
+* outreach panel
+* evidence display
+* recommendation display
+
+### 7.4 Outreach editor
+
+Make the output actionable, not just readable.
+
+Deliverables:
+
+* editable subject
+* editable body
+* draft review state
+* save/update behavior
+* skip/send workflow hooks
+
+### 7.5 Operator actions
+
+Support real workflow decisions.
+
+Deliverables:
+
+* mark as reviewed
+* mark as skipped
+* approve for send
+* send-ready state
+* state persistence
+
+---
+
+## Phase 8 — Execution Layer
+
+### 8.1 Email sending integration
+
+Move from recommendation to action.
+
+Deliverables:
+
+* sending provider selection
+* send endpoint
+* send logging
+* sent status update
+* failure handling
+
+### 8.2 Reply tracking
+
+Track whether outreach produces outcomes.
+
+Deliverables:
+
+* reply status model
+* replied/not replied states
+* retrieval mechanism
+* timeline visibility
+
+### 8.3 Follow-up support
+
+Support second-step outreach.
+
+Deliverables:
+
+* manual follow-up creation
+* follow-up draft path
+* follow-up status handling
+
+---
+
+## Phase 9 — Workflow Intelligence Refinement
+
+### 9.1 Internal feedback loop
+
+Learn from actual operator usage.
+
+Deliverables:
+
+* accepted vs edited outreach tracking
+* skipped lead patterns
+* review-heavy case patterns
+
+### 9.2 Outcome feedback loop
+
+Learn from business outcomes.
+
+Deliverables:
+
+* sent → replied tracking
+* lead quality comparison
+* opportunity angle performance insight
+
+### 9.3 Signal and copy refinement
+
+Improve the engine from evidence, not guesswork.
+
+Deliverables:
+
+* better fit thresholds
+* better confidence rules
+* outreach pattern refinement
+* stronger good-lead differentiation
+
+---
+
+## Phase 10 — Campaign and Scale Layer
+
+### 10.1 Batch processing
+
+Make the system useful beyond one lead at a time.
+
+Deliverables:
+
+* process multiple leads
+* batch snapshot generation
+* batch audit generation
+* batch outreach generation
+
+### 10.2 Campaign grouping
+
+Organize outreach work.
+
+Deliverables:
+
+* campaign model
+* lead grouping
+* campaign progress view
+* sent/replied summaries
+
+### 10.3 Multi-operator readiness
+
+Prepare for future team usage.
+
+Deliverables:
+
+* user ownership model
+* assignment model
+* audit/outreach history clarity
+
+---
+
+## Phase 11 — Product Surface and Positioning
+
+### 11.1 Landing page
+
+Explain the product clearly.
+
+Deliverables:
+
+* problem framing
+* how it works
+* examples
+* trust signals
+* demo-style walkthrough
+
+### 11.2 Demo flow
+
+Show value fast.
+
+Deliverables:
+
+* sample leads
+* example outputs
+* before/after lead review journey
+
+### 11.3 Pricing and packaging
+
+Turn the system into an offer.
+
+Deliverables:
+
+* pricing hypothesis
+* per-seat / per-lead / per-campaign thinking
+* trial/demo model
+* positioning language
+
+---
+
+## Phase 12 — Delivery Readiness
+
+### 12.1 Production hardening
+
+Make the system safe to expose externally.
+
+Deliverables:
+
+* error handling review
+* logging review
+* environment validation
+* operational health review
+* API stability review
+
+### 12.2 UX cleanup
+
+Polish what users actually touch.
+
+Deliverables:
+
+* wording consistency
+* state consistency
+* loading behavior
+* empty state quality
+* visual hierarchy cleanup
+
+### 12.3 Delivery checklist
+
+Prepare for first real rollout.
+
+Deliverables:
+
+* tested core lead flows
+* tested placeholder flow
+* tested bad-fit flow
+* tested good-fit flow
+* sending path tested
+* persisted state tested
+* dashboard workflow tested
+
+---
+
+# Condensed Delivery Path
+
+If you want the shortest practical path from where you are now to something deliverable, it is this:
+
+1. Intelligence engine
+2. Lead review workspace
+3. Outreach editing + sending
+4. Status persistence
+5. Real lead processing workflow
+6. Landing/demo/product surface
+7. Delivery
+
+---
+
+# Where you are right now
+
+You have effectively completed most of:
+
+* Phase 1
+* Phase 2
+* Phase 3
+* Phase 4
+* Phase 5
+* key parts of Phase 6
+
+And you are ready to start:
+
+# **Phase 7 — Lead Review Workspace**
+
+That is the correct next chapter.
+
+

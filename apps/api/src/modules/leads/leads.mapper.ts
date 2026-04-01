@@ -25,6 +25,7 @@ export const mapLeadSnapshotToResponse = (snapshot: LeadSnapshot) => {
     metaDescription: snapshot.metaDescription,
     visibleText: snapshot.visibleText,
     contactInfo: snapshot.contactInfo,
+    contactEnrichment: snapshot.contactEnrichment,
     bookingLinks: snapshot.bookingLinks,
     trustSignals: snapshot.trustSignals,
     isPlaceholderContent: snapshot.isPlaceholderContent,

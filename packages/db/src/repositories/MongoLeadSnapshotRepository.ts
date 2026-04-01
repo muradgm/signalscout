@@ -16,6 +16,7 @@ export class MongoLeadSnapshotRepository implements LeadSnapshotRepository {
       metaDescription: input.snapshot.metaDescription,
       visibleText: input.snapshot.visibleText,
       contactInfo: input.snapshot.contactInfo,
+      contactEnrichment: input.snapshot.contactEnrichment,
       bookingLinks: input.snapshot.bookingLinks,
       trustSignals: input.snapshot.trustSignals,
       isPlaceholderContent: input.snapshot.isPlaceholderContent,
@@ -29,7 +30,7 @@ export class MongoLeadSnapshotRepository implements LeadSnapshotRepository {
     const document = await LeadSnapshotModel.findOne({
       leadId: new Types.ObjectId(leadId),
     })
-      .sort({ extractedAt: -1 })
+      .sort({ extractedAt: -1, _id: -1 })
       .exec();
 
     if (!document) {

@@ -1,8 +1,8 @@
-import { MockOutreachGenerator } from '@signalscout/ai';
+import { createDefaultOutreachGenerator } from '@signalscout/ai';
 import {
   DetectSignals,
   GenerateOutreach,
-  GetAuditByLead,
+  GetAuditByLeadAndSnapshot,
   GetLeadById,
   GetLatestLeadSnapshot,
   GetOutreachByLead,
@@ -21,14 +21,15 @@ const auditRepository = new MongoAuditRepository();
 const outreachRepository = new MongoOutreachRepository();
 
 const signalDetector = new RuleBasedSignalDetector();
-const outreachGenerator = new MockOutreachGenerator();
+const outreachGenerator = createDefaultOutreachGenerator();
 
 export const getLeadByIdForOutreachUseCase = new GetLeadById(leadRepository);
 export const getLatestLeadSnapshotForOutreachUseCase = new GetLatestLeadSnapshot(
   leadSnapshotRepository,
 );
 export const detectSignalsForOutreachUseCase = new DetectSignals(signalDetector);
-export const getAuditByLeadForOutreachUseCase = new GetAuditByLead(auditRepository);
+export const getAuditByLeadAndSnapshotForOutreachUseCase =
+  new GetAuditByLeadAndSnapshot(auditRepository);
 export const generateOutreachUseCase = new GenerateOutreach(
   outreachGenerator,
   outreachRepository,

@@ -1,4 +1,6 @@
+import type { Lead } from '../entities/Lead.js';
 import type { ContactInfo } from '../entities/LeadSnapshot.js';
+import type { ContactEnrichment } from '../entities/LeadSnapshot.js';
 
 export interface ExtractedLeadSnapshotData {
   url: string;
@@ -6,6 +8,7 @@ export interface ExtractedLeadSnapshotData {
   metaDescription: string | null;
   visibleText: string;
   contactInfo: ContactInfo;
+  contactEnrichment: ContactEnrichment;
   bookingLinks: string[];
   trustSignals: string[];
   extractedAt: Date;
@@ -13,5 +16,5 @@ export interface ExtractedLeadSnapshotData {
 }
 
 export interface LeadSnapshotExtractor {
-  extract(url: string): Promise<ExtractedLeadSnapshotData>;
+  extract(lead: Lead): Promise<ExtractedLeadSnapshotData>;
 }

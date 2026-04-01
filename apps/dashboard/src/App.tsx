@@ -1,15 +1,7 @@
-import React from 'react';
-import './App.css';
+import { AppRouter } from './app/router';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>SignalScout Dashboard</h1>
-        <p>Welcome to your dashboard</p>
-      </header>
-    </div>
-  );
+  return <AppRouter />;
 }
 
 export default App;

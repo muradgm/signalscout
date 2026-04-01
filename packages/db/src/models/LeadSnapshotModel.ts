@@ -11,6 +11,29 @@ export interface LeadSnapshotDocument {
     phones: string[];
     addresses: string[];
   };
+  contactEnrichment: {
+    emails: {
+      type: string;
+      value: string;
+      sourceKind: string;
+      sourceUrl: string;
+      confidence: string;
+    }[];
+    phones: {
+      type: string;
+      value: string;
+      sourceKind: string;
+      sourceUrl: string;
+      confidence: string;
+    }[];
+    addresses: {
+      type: string;
+      value: string;
+      sourceKind: string;
+      sourceUrl: string;
+      confidence: string;
+    }[];
+  };
   bookingLinks: string[];
   trustSignals: string[];
   isPlaceholderContent: boolean;
@@ -57,6 +80,50 @@ const leadSnapshotSchema = new Schema<LeadSnapshotDocument>(
       },
       addresses: {
         type: [String],
+        required: true,
+        default: [],
+      },
+    },
+    contactEnrichment: {
+      emails: {
+        type: [
+          {
+            type: { type: String, required: true },
+            value: { type: String, required: true },
+            sourceKind: { type: String, required: true },
+            sourceUrl: { type: String, required: true },
+            confidence: { type: String, required: true },
+            _id: false,
+          },
+        ],
+        required: true,
+        default: [],
+      },
+      phones: {
+        type: [
+          {
+            type: { type: String, required: true },
+            value: { type: String, required: true },
+            sourceKind: { type: String, required: true },
+            sourceUrl: { type: String, required: true },
+            confidence: { type: String, required: true },
+            _id: false,
+          },
+        ],
+        required: true,
+        default: [],
+      },
+      addresses: {
+        type: [
+          {
+            type: { type: String, required: true },
+            value: { type: String, required: true },
+            sourceKind: { type: String, required: true },
+            sourceUrl: { type: String, required: true },
+            confidence: { type: String, required: true },
+            _id: false,
+          },
+        ],
         required: true,
         default: [],
       },

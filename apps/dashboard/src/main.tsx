@@ -1,8 +1,20 @@
-export default function App() {
-  return (
-    <main style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h1>SignalScout Dashboard</h1>
-      <p>Week 1 foundation is running.</p>
-    </main>
-  );
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './App';
+import { AppProviders } from './app/providers';
+import './styles/tokens.css';
+import './styles/index.css';
+
+const container = document.getElementById('root');
+
+if (!container) {
+  throw new Error('Root container not found');
 }
+
+createRoot(container).render(
+  <StrictMode>
+    <AppProviders>
+      <App />
+    </AppProviders>
+  </StrictMode>,
+);

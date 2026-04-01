@@ -16,7 +16,7 @@
     "build": "pnpm exec tsc -b tsconfig.json",
     "lint": "eslint .",
     "typecheck": "pnpm exec tsc -p tsconfig.json --noEmit",
-    "test": "echo \"No tests yet\"",
+    "test": "node --test ../../tests/mvp/usecases.test.mjs ../../tests/mvp/benchmark.test.mjs",
     "clean": "rimraf dist tsconfig.tsbuildinfo"
   },
   "dependencies": {

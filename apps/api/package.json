@@ -9,7 +9,7 @@
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "clean": "rimraf dist",
-    "test": "echo \"No tests yet\""
+    "test": "node --test ../../tests/mvp/api-health.test.mjs"
   },
   "dependencies": {
     "@signalscout/ai": "workspace:*",

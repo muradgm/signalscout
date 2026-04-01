@@ -25,7 +25,25 @@ export class MongoAuditRepository implements AuditRepository {
     const document = await AuditModel.findOne({
       leadId: new Types.ObjectId(leadId),
     })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
+      .exec();
+
+    if (!document) {
+      return null;
+    }
+
+    return mapAuditDocumentToEntity(document);
+  }
+
+  async findLatestByLeadIdAndSnapshotId(
+    leadId: string,
+    snapshotId: string,
+  ): Promise<Audit | null> {
+    const document = await AuditModel.findOne({
+      leadId: new Types.ObjectId(leadId),
+      snapshotId: new Types.ObjectId(snapshotId),
+    })
+      .sort({ createdAt: -1, _id: -1 })
       .exec();
 
     if (!document) {

@@ -1,100 +1,170 @@
+const normalizeText = (value: string): string =>
+  value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLowerCase();
+
 const TRUST_SIGNAL_RULES: Array<{ label: string; patterns: RegExp[] }> = [
   {
     label: 'mentions team',
     patterns: [
-      /\bteam\b/i,
-      /\bunser team\b/i,
-      /\bour team\b/i,
-      /\bärzte\b/i,
-      /\bdentists\b/i,
-      /\bspecialists\b/i,
+      /\bteam\b/,
+      /\bunser team\b/,
+      /\bour team\b/,
+      /\barzte\b/,
+      /\bdentists\b/,
+      /\bspecialists\b/,
+    ],
+  },
+  {
+    label: 'mentions long tradition',
+    patterns: [
+      /\bseit uber \d+\s+jahren\b/,
+      /\bseit \d+\s+jahren\b/,
+      /\bover \d+\s+years\b/,
+      /\bfor over \d+\s+years\b/,
+      /\bmehr als \d+\s+jahre\b/,
+      /\blong-standing\b/,
+    ],
+  },
+  {
+    label: 'mentions local legacy',
+    patterns: [
+      /\btradition\b/,
+      /\blocal tradition\b/,
+      /\bstandort hat tradition\b/,
+      /\bseit uber \d+\s+jahren existiert\b/,
+      /\beine der altesten ansassigen\b/,
+      /\bestablished locally\b/,
+    ],
+  },
+  {
+    label: 'mentions family-led practice',
+    patterns: [
+      /\bfamily[- ]led\b/,
+      /\bfamily practice\b/,
+      /\bals vater und sohn\b/,
+      /\bfather and son\b/,
+      /\bfamilienzahnarzt\b/,
+      /\bfamiliengefuhrt\b/,
+      /\bfamiliengefuhrte\b/,
     ],
   },
   {
     label: 'mentions reviews',
     patterns: [
-      /\breview\b/i,
-      /\breviews\b/i,
-      /\bbewertung\b/i,
-      /\bbewertungen\b/i,
-      /\bgoogle review\b/i,
-      /\bpatient review\b/i,
+      /\breview\b/,
+      /\breviews\b/,
+      /\bbewertung\b/,
+      /\bbewertungen\b/,
+      /\bgoogle review\b/,
+      /\bpatient review\b/,
     ],
   },
   {
     label: 'mentions testimonials',
     patterns: [
-      /\btestimonial\b/i,
-      /\btestimonials\b/i,
-      /\bpatientenstimmen\b/i,
-      /\bpatient stories\b/i,
+      /\btestimonial\b/,
+      /\btestimonials\b/,
+      /\bpatientenstimmen\b/,
+      /\bpatient stories\b/,
     ],
   },
   {
     label: 'mentions certifications',
     patterns: [
-      /\bcertified\b/i,
-      /\bcertification\b/i,
-      /\bzertifiziert\b/i,
-      /\bzertifizierung\b/i,
-      /\bquality standard\b/i,
+      /\bcertified\b/,
+      /\bcertification\b/,
+      /\bzertifiziert\b/,
+      /\bzertifizierung\b/,
+      /\bquality standard\b/,
     ],
   },
   {
     label: 'mentions experience',
     patterns: [
-      /\bsince\s+\d{4}\b/i,
-      /\bover\s+\d+\s+years\b/i,
-      /\bjahre erfahrung\b/i,
-      /\bseit\s+\d{4}\b/i,
-      /\bfounded in\b/i,
+      /\bsince\s+\d{4}\b/,
+      /\bover\s+\d+\s+years\b/,
+      /\bjahre erfahrung\b/,
+      /\bseit\s+\d{4}\b/,
+      /\bfounded in\b/,
     ],
   },
   {
     label: 'mentions emergency availability',
     patterns: [
-      /\bemergency\b/i,
-      /\bnotfall\b/i,
-      /\bsame-day appointment\b/i,
-      /\b365 days\b/i,
-      /\b365 tage\b/i,
+      /\bemergency\b/,
+      /\bnotfall\b/,
+      /\bsame-day appointment\b/,
+      /\b365 days\b/,
+      /\b365 tage\b/,
     ],
   },
   {
     label: 'mentions patient volume',
     patterns: [
-      /\bpatients\b/i,
-      /\bpatienten\b/i,
-      /\btreated over\b/i,
-      /\bmore than \d+[,.]?\d*\s+patients\b/i,
-      /\büber \d+[,.]?\d*\s+patienten\b/i,
+      /\bpatients\b/,
+      /\bpatienten\b/,
+      /\btreated over\b/,
+      /\bmore than \d+[,.]?\d*\s+patients\b/,
+      /\buber \d+[,.]?\d*\s+patienten\b/,
+      /\bgenerationsubergreifend\b/,
     ],
   },
   {
     label: 'mentions multiple locations',
     patterns: [
-      /\blocations\b/i,
-      /\bstandorte\b/i,
-      /\bover \d+\s+locations\b/i,
-      /\bmehr als \d+\s+standorte\b/i,
-      /\bnearby\b/i,
+      /\blocations\b/,
+      /\bstandorte\b/,
+      /\bover \d+\s+locations\b/,
+      /\bmehr als \d+\s+standorte\b/,
+      /\bnearby\b/,
     ],
   },
   {
     label: 'mentions advanced technology',
     patterns: [
-      /\b3d\b/i,
-      /\bdigital impression\b/i,
-      /\bstate-of-the-art\b/i,
-      /\bmodern technology\b/i,
-      /\bcutting-edge\b/i,
-      /\bmodernste technik\b/i,
+      /\b3d\b/,
+      /\bdigital impression\b/,
+      /\bstate-of-the-art\b/,
+      /\bmodern technology\b/,
+      /\bcutting-edge\b/,
+      /\bmodernste technik\b/,
+      /\bneuester stand der technik\b/,
+    ],
+  },
+  {
+    label: 'mentions patient comfort',
+    patterns: [
+      /\bwohlbefinden\b/,
+      /\bkomfort\b/,
+      /\bwartezimmer\b/,
+      /\bkinderecke\b/,
+      /\berfrischungsgetranke\b/,
+      /\baquarium\b/,
+      /\bfeel comfortable\b/,
+      /\bpatient comfort\b/,
+    ],
+  },
+  {
+    label: 'mentions anxiety-patient reassurance',
+    patterns: [
+      /\bangstpatienten\b/,
+      /\bangste\b/,
+      /\breassurance\b/,
+      /\breassuring\b/,
+      /\bschonende\b/,
+      /\bschmerzfreie\b/,
+      /\bgentle treatment\b/,
+      /\bpain-free\b/,
     ],
   },
 ];
 
 export const extractTrustSignals = (visibleText: string): string[] => {
-  const normalizedText = visibleText.replace(/\s+/g, ' ').trim();
+  const normalizedText = normalizeText(visibleText);
   const signals = new Set<string>();
 
   for (const rule of TRUST_SIGNAL_RULES) {

@@ -4,7 +4,7 @@ import { ok } from '../../common/responses/index.js';
 import {
   detectSignalsForOutreachUseCase,
   generateOutreachUseCase,
-  getAuditByLeadForOutreachUseCase,
+  getAuditByLeadAndSnapshotForOutreachUseCase,
   getLatestLeadSnapshotForOutreachUseCase,
   getLeadByIdForOutreachUseCase,
   getOutreachByLeadUseCase,
@@ -37,10 +37,13 @@ export const generateOutreach = async (
     throw new NotFoundError('Lead snapshot not found');
   }
 
-  const audit = await getAuditByLeadForOutreachUseCase.execute(leadId);
+  const audit = await getAuditByLeadAndSnapshotForOutreachUseCase.execute(
+    leadId,
+    snapshot.id,
+  );
 
   if (!audit) {
-    throw new NotFoundError('Audit not found');
+    throw new NotFoundError('Audit not found for latest lead snapshot');
   }
 
   const signals = await detectSignalsForOutreachUseCase.execute(lead, snapshot);

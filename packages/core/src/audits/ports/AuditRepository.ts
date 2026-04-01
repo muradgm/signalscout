@@ -20,4 +20,8 @@ export interface SaveAuditInput {
 export interface AuditRepository {
   save(input: SaveAuditInput): Promise<Audit>;
   findLatestByLeadId(leadId: string): Promise<Audit | null>;
+  findLatestByLeadIdAndSnapshotId(
+    leadId: string,
+    snapshotId: string,
+  ): Promise<Audit | null>;
 }

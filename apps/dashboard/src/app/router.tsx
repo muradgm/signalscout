@@ -1,0 +1,89 @@
+import { useEffect, useState } from 'react';
+import { DashboardLayout } from './layout/DashboardLayout';
+import { LeadDetailPage } from '../pages/LeadDetailPage';
+import { LeadsPage } from '../pages/LeadsPage';
+
+type Route =
+  | { kind: 'leads'; path: '/leads' }
+  | { kind: 'lead-detail'; path: string; leadId: string };
+
+const parseRoute = (pathname: string): Route => {
+  if (pathname === '/' || pathname === '') {
+    return { kind: 'leads', path: '/leads' };
+  }
+
+  const detailMatch = pathname.match(/^\/leads\/([^/]+)$/);
+
+  if (detailMatch) {
+    return {
+      kind: 'lead-detail',
+      path: pathname,
+      leadId: decodeURIComponent(detailMatch[1]),
+    };
+  }
+
+  return { kind: 'leads', path: '/leads' };
+};
+
+const ensureInitialPath = (): void => {
+  if (window.location.pathname === '/' || window.location.pathname === '') {
+    window.history.replaceState({}, '', '/leads');
+  }
+};
+
+export function AppRouter() {
+  const [route, setRoute] = useState<Route>(() => {
+    ensureInitialPath();
+    return parseRoute(window.location.pathname);
+  });
+
+  useEffect(() => {
+    ensureInitialPath();
+
+    const handlePopState = (): void => {
+      setRoute(parseRoute(window.location.pathname));
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const navigate = (path: string): void => {
+    const nextPath = path || '/leads';
+
+    if (nextPath === window.location.pathname) {
+      return;
+    }
+
+    window.history.pushState({}, '', nextPath);
+    setRoute(parseRoute(nextPath));
+  };
+
+  const layoutTitle =
+    route.kind === 'lead-detail' ? 'Lead review' : 'Lead queue';
+  const layoutDescription =
+    route.kind === 'lead-detail'
+      ? 'Confirm the recommendation, verify the evidence, and act without leaving the workflow.'
+      : 'Work through the queue, spot the strongest opportunities quickly, and open the next lead worth action.';
+  const layoutMeta =
+    route.kind === 'lead-detail' ? 'Decision in progress' : 'Operator workspace';
+
+  return (
+    <DashboardLayout
+      currentPath={route.path}
+      onNavigate={navigate}
+      title={layoutTitle}
+      description={layoutDescription}
+      meta={layoutMeta}
+    >
+      {route.kind === 'lead-detail' ? (
+        <LeadDetailPage leadId={route.leadId} onNavigate={navigate} />
+      ) : (
+        <LeadsPage onNavigate={navigate} />
+      )}
+    </DashboardLayout>
+  );
+}

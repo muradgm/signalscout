@@ -29,7 +29,7 @@ export class RefreshLeadSnapshot {
       throw new Error('Lead not found');
     }
 
-    const snapshot = await this.leadSnapshotExtractor.extract(lead.website);
+    const snapshot = await this.leadSnapshotExtractor.extract(lead);
 
     return this.leadSnapshotRepository.save({
       leadId: normalizedLeadId,

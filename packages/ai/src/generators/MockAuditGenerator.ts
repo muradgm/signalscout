@@ -46,11 +46,15 @@ const buildPlaceholderAudit = (
 };
 
 const mentionsLongTradition = (text: string): boolean => {
-  return /seit über 50 jahren|over 50 years|seit 50 jahren/i.test(text);
+  return /seit uber 50 jahren|uber 50 jahren|over 50 years|seit 50 jahren/i.test(
+    text,
+  );
 };
 
 const mentionsFamilyPositioning = (text: string): boolean => {
-  return /als vater und sohn|father and son|famil/i.test(text);
+  return /als vater und sohn|father and son|family[- ]led|family practice|familiengefuhrt|familiengefuhrte|familienzahnarzt/i.test(
+    text,
+  );
 };
 
 const mentionsComfortReassurance = (text: string): boolean => {
@@ -104,21 +108,17 @@ const buildGoodLeadStrengths = (input: GenerateAuditInput): string[] => {
 const buildGoodLeadOpportunities = (input: GenerateAuditInput): string[] => {
   const { snapshot } = input;
   const combinedText = `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`;
-  const opportunities: string[] = [];
+  const hasTrustPositioning =
+    mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText);
+  const hasComfortPositioning = mentionsComfortReassurance(combinedText);
 
-  if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
-    opportunities.push('Strong trust assets are present, but they are not turned into a decisive enough booking case.');
+  if (hasTrustPositioning || hasComfortPositioning) {
+    return [
+      'The site builds trust well, but it does not turn that trust into a decisive enough reason to book.',
+    ];
   }
 
-  if (mentionsComfortReassurance(combinedText)) {
-    opportunities.push('Patient reassurance is strong, but it is not carried forcefully enough into the decision to book.');
-  }
-
-  if (opportunities.length === 0) {
-    opportunities.push('The site could guide visitors from confidence to booking more decisively.');
-  }
-
-  return [...new Set(opportunities)].slice(0, 3);
+  return ['The site could guide visitors from confidence to booking more decisively.'];
 };
 
 const buildGoodLeadOpportunityDetails = (
@@ -175,7 +175,7 @@ const buildGoodLeadConfidenceNote = (input: GenerateAuditInput): string => {
   const { lead } = input;
 
   if (lead.completeness !== 'complete') {
-    return 'Confidence is medium: the website content is strong enough for a grounded read, though incomplete lead metadata still limits precision slightly.';
+    return 'Confidence is medium: the website content is strong enough for a grounded review, though incomplete lead metadata still limits precision slightly.';
   }
 
   return 'Confidence is medium to high: the website provides enough real content to support a grounded commercial assessment.';
