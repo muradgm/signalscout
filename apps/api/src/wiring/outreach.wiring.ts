@@ -28,13 +28,9 @@ export const getLatestLeadSnapshotForOutreachUseCase = new GetLatestLeadSnapshot
   leadSnapshotRepository,
 );
 export const detectSignalsForOutreachUseCase = new DetectSignals(signalDetector);
-export const getAuditByLeadForOutreachUseCase = new GetAuditByLead(
-  auditRepository,
-);
+export const getAuditByLeadForOutreachUseCase = new GetAuditByLead(auditRepository);
 export const generateOutreachUseCase = new GenerateOutreach(
   outreachGenerator,
   outreachRepository,
 );
-export const getOutreachByLeadUseCase = new GetOutreachByLead(
-  outreachRepository,
-);
+export const getOutreachByLeadUseCase = new GetOutreachByLead(outreachRepository);

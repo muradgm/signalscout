@@ -4,10 +4,24 @@ import type {
   OutreachGenerator,
 } from '@signalscout/core';
 
+const mentionsLongTradition = (text: string): boolean => {
+  return /seit über 50 jahren|over 50 years|seit 50 jahren/i.test(text);
+};
+
+const mentionsFamilyPositioning = (text: string): boolean => {
+  return /als vater und sohn|father and son|famil/i.test(text);
+};
+
+const mentionsComfortReassurance = (text: string): boolean => {
+  return /wohlbefinden|angstpatienten|schonende|schmerzfreie|kinderecke|aquarium/i.test(
+    text,
+  );
+};
+
 const buildPlaceholderOutreach = (
   input: GenerateOutreachInput,
 ): GeneratedOutreachDraft => {
-  const { snapshot, lead, audit } = input;
+  const { snapshot, audit } = input;
 
   return {
     recommendation: 'do_not_send',
@@ -166,20 +180,105 @@ const buildReviewEvidence = (input: GenerateOutreachInput): string[] => {
   return [...new Set(evidence)].slice(0, 5);
 };
 
-const buildSendFitReason = (): string => {
+const buildGoodLeadFitReason = (): string => {
+  return 'The lead is strongly aligned with the current local-practice outreach strategy and shows enough real commercial signal to justify a send-ready draft.';
+};
+
+const buildGoodLeadBestAngle = (): string => {
+  return 'Lead with the gap between strong trust-building and a more decisive booking case.';
+};
+
+const buildGoodLeadSubject = (input: GenerateOutreachInput): string => {
+  return `Quick observation on ${input.lead.companyName}`;
+};
+
+const buildGoodLeadBody = (input: GenerateOutreachInput): string => {
+  const { lead, snapshot } = input;
+  const combinedText = `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`;
+
+  const hasTradition = mentionsLongTradition(combinedText);
+  const hasFamily = mentionsFamilyPositioning(combinedText);
+
+  if (hasTradition || hasFamily) {
+    return `Hi,
+
+I had a look at ${lead.companyName}, and the trust you’ve built comes through clearly — especially the long-standing local presence and family-led feel.
+
+One thing that stood out though: a lot of that trust is explained well, but it feels less actively used to move visitors toward booking.
+
+That kind of gap can quietly reduce conversion, even when the practice itself already feels credible.
+
+If helpful, I can share a short breakdown of where that happens and how I’d tighten it.
+
+Best,
+[Your Name]`;
+  }
+
+  return `Hi,
+
+I took a look at ${lead.companyName}, and one thing stood out: the site already feels credible, but the strongest trust signals are not turned into as decisive a booking case as they could be.
+
+That usually means some interested visitors hesitate longer than they should before taking the next step.
+
+If helpful, I can share a short perspective on where that gap may be showing up.
+
+Best,
+[Your Name]`;
+};
+
+const buildGoodLeadReasoning = (input: GenerateOutreachInput): string => {
+  const { snapshot } = input;
+  const combinedText = `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`;
+
+  if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
+    return 'The draft uses a specific, credible angle: the practice has strong trust-building material, but that strength is described more than it is converted into booking momentum. That makes the message more specific and more commercially relevant than a generic booking-friction pitch.';
+  }
+
+  return 'The draft is built around a real commercial angle: existing credibility appears stronger than the page’s push toward action. That makes the outreach feel more grounded than a generic performance or marketing message.';
+};
+
+const buildGoodLeadEvidence = (input: GenerateOutreachInput): string[] => {
+  const { snapshot, audit } = input;
+  const combinedText = `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`;
+  const evidence: string[] = [];
+
+  if (snapshot.bookingLinks[0]) {
+    evidence.push(`A direct booking path is already present: ${snapshot.bookingLinks[0]}`);
+  }
+
+  if (mentionsLongTradition(combinedText)) {
+    evidence.push('A 50+ year local tradition is explicitly mentioned on the site.');
+  }
+
+  if (mentionsFamilyPositioning(combinedText)) {
+    evidence.push('The practice is presented in family-led terms, which is a meaningful trust asset.');
+  }
+
+  if (mentionsComfortReassurance(combinedText)) {
+    evidence.push('The messaging strongly emphasizes reassurance, comfort, and patient-friendly care.');
+  }
+
+  if (audit.opportunities.length > 0) {
+    evidence.push(`Audit opportunity identified: ${audit.opportunities[0]}`);
+  }
+
+  return [...new Set(evidence)].slice(0, 5);
+};
+
+const buildGeneralSendFitReason = (): string => {
   return 'The lead is aligned enough with the current outreach strategy to justify a send-ready draft built around one clear conversion angle.';
 };
 
-const buildSendBestAngle = (): string => {
+const buildGeneralSendBestAngle = (): string => {
   return 'Lead with booking-path clarity and reduced friction at the point where a visitor is ready to act.';
 };
 
-const buildSendSubject = (input: GenerateOutreachInput): string => {
+const buildGeneralSendSubject = (input: GenerateOutreachInput): string => {
   const { lead } = input;
   return `A quick thought on booking flow at ${lead.companyName}`;
 };
 
-const buildSendBody = (input: GenerateOutreachInput): string => {
+const buildGeneralSendBody = (input: GenerateOutreachInput): string => {
   const { lead } = input;
 
   return `Hi,
@@ -194,11 +293,11 @@ Best,
 [Your Name]`;
 };
 
-const buildSendReasoning = (): string => {
+const buildGeneralSendReasoning = (): string => {
   return 'The draft stays focused on one credible angle—booking-path clarity—rather than broad marketing language. That makes it more specific, more believable, and more likely to feel relevant to the recipient.';
 };
 
-const buildSendEvidence = (input: GenerateOutreachInput): string[] => {
+const buildGeneralSendEvidence = (input: GenerateOutreachInput): string[] => {
   const { signals, snapshot, audit } = input;
   const evidence: string[] = [];
 
@@ -239,7 +338,7 @@ export class MockOutreachGenerator implements OutreachGenerator {
   async generate(
     input: GenerateOutreachInput,
   ): Promise<GeneratedOutreachDraft> {
-    const { signals, lead, snapshot } = input;
+    const { signals, snapshot } = input;
 
     if (snapshot.isPlaceholderContent) {
       return buildPlaceholderOutreach(input);
@@ -266,10 +365,10 @@ export class MockOutreachGenerator implements OutreachGenerator {
         recommendation: 'review',
         fitReason: buildReviewFitReason(),
         bestAngle: buildReviewBestAngle(),
-        subject: `A quick thought on booking flow at ${lead.companyName}`,
+        subject: `A quick thought on booking flow at ${input.lead.companyName}`,
         body: `Hi,
 
-I came across ${lead.companyName}, and one thing stood out: the path from interest to booking may be less direct than it needs to be.
+I came across ${input.lead.companyName}, and one thing stood out: the path from interest to booking may be less direct than it needs to be.
 
 When that happens, even motivated visitors can hesitate simply because the next step is not obvious enough.
 
@@ -282,14 +381,26 @@ Best,
       };
     }
 
+    if (signals.outreachFit === 'good') {
+      return {
+        recommendation: 'send',
+        fitReason: buildGoodLeadFitReason(),
+        bestAngle: buildGoodLeadBestAngle(),
+        subject: buildGoodLeadSubject(input),
+        body: buildGoodLeadBody(input),
+        reasoning: buildGoodLeadReasoning(input),
+        evidence: buildGoodLeadEvidence(input),
+      };
+    }
+
     return {
       recommendation: 'send',
-      fitReason: buildSendFitReason(),
-      bestAngle: buildSendBestAngle(),
-      subject: buildSendSubject(input),
-      body: buildSendBody(input),
-      reasoning: buildSendReasoning(),
-      evidence: buildSendEvidence(input),
+      fitReason: buildGeneralSendFitReason(),
+      bestAngle: buildGeneralSendBestAngle(),
+      subject: buildGeneralSendSubject(input),
+      body: buildGeneralSendBody(input),
+      reasoning: buildGeneralSendReasoning(),
+      evidence: buildGeneralSendEvidence(input),
     };
   }
 }
