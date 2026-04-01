@@ -2,6 +2,7 @@ node_modules
 /package-lock.json
 /pnpm
 /npx
+/SWIMLY_MASTER_SPEC.md
 dist
 build
 coverage
