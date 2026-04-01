@@ -16,6 +16,9 @@ export interface GeneratedAuditDraft {
 
   recommendedAngle: string;
   confidenceNote: string;
+  quickWins: string[];
+  outreachHook: string;
+
 
   evidence: string[];
 }

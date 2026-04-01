@@ -1,10 +1,10 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { auditsRouter } from '../modules/audits/audits.routes.js';
+import { healthRouter } from '../modules/health/health.routes.js';
 import { leadsRouter } from '../modules/leads/leads.routes.js';
 import { outreachRouter } from '../modules/outreach/outreach.routes.js';
-import { healthRouter } from './health.routes.js';
 
-const router = Router();
+const router: ExpressRouter = Router();
 
 router.use(healthRouter);
 router.use(leadsRouter);

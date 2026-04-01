@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { validateRequest } from '../../common/middleware/index.js';
 import { asyncHandler } from '../../common/utils/index.js';
 import {
@@ -16,7 +16,7 @@ import {
   refreshLeadSnapshotRequestSchema,
 } from './leads.schema.js';
 
-const leadsRouter = Router();
+const leadsRouter: ExpressRouter = Router();
 
 leadsRouter.post(
   '/leads',

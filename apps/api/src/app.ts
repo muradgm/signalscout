@@ -1,12 +1,12 @@
-import cors from 'cors';
-import express from 'express';
+import express, { type Express } from 'express';
 import helmet from 'helmet';
+import cors from 'cors';
 import { env } from './bootstrap/env.js';
-import { errorHandler, notFoundHandler } from './common/middleware/index.js';
 import { router } from './routes/index.js';
+import { errorHandler } from './common/middleware/index.js';
 
-export const createApp = () => {
-  const app = express();
+export const createApp = (): Express => {
+  const app: Express = express();
 
   app.use(helmet());
   app.use(
@@ -19,7 +19,6 @@ export const createApp = () => {
 
   app.use(env.apiBasePath, router);
 
-  app.use(notFoundHandler);
   app.use(errorHandler);
 
   return app;

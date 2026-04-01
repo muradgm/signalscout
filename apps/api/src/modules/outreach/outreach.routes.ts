@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { validateRequest } from '../../common/middleware/index.js';
 import { asyncHandler } from '../../common/utils/index.js';
 import {
@@ -10,7 +10,7 @@ import {
   getOutreachByLeadRequestSchema,
 } from './outreach.schema.js';
 
-const outreachRouter = Router();
+const outreachRouter: ExpressRouter = Router();
 
 outreachRouter.post(
   '/leads/:id/outreach',

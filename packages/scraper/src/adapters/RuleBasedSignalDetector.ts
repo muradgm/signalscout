@@ -26,6 +26,61 @@ const hasCompleteLeadContext = (lead: Lead): boolean => {
   return lead.completeness === 'complete';
 };
 
+const BERLIN_DISTRICT_ALIASES: string[] = [
+  'prenzlauer berg',
+  'mitte',
+  'kreuzberg',
+  'friedrichshain',
+  'neukölln',
+  'charlottenburg',
+  'wilmersdorf',
+  'schöneberg',
+  'tempelhof',
+  'moabit',
+  'wedding',
+  'spandau',
+  'pankow',
+  'lichtenberg',
+  'marzahn',
+  'hellersdorf',
+  'reinickendorf',
+  'zehlendorf',
+  'steglitz',
+  'köpenick',
+  'treptow',
+];
+
+const buildLocationCandidates = (location: string): string[] => {
+  const normalizedLocation = normalize(location);
+
+  if (!normalizedLocation) {
+    return [];
+  }
+
+  const candidates = new Set<string>([normalizedLocation]);
+
+  if (normalizedLocation === 'berlin') {
+    for (const district of BERLIN_DISTRICT_ALIASES) {
+      candidates.add(district);
+    }
+  }
+
+  return [...candidates];
+};
+
+const findFirstMatchingLocationCandidate = (
+  text: string,
+  candidates: string[],
+): string | null => {
+  for (const candidate of candidates) {
+    if (candidate.length > 0 && text.includes(candidate)) {
+      return candidate;
+    }
+  }
+
+  return null;
+};
+
 const getBookingHintMatches = (snapshot: LeadSnapshot): string[] => {
   const combinedText = normalize(
     `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`,
@@ -151,8 +206,8 @@ const detectTrustSignalStrength = (
   snapshot: LeadSnapshot,
 ): { value: TrustSignalStrength; evidence: string[] } => {
   const evidence = snapshot.trustSignals.map(
-  (signal: string) => `trust indicator detected: ${signal}`,
-);
+    (signal: string) => `trust indicator detected: ${signal}`,
+  );
   const count = snapshot.trustSignals.length;
 
   if (count >= 4) {
@@ -231,17 +286,27 @@ const detectLocalRelevance = (
 
   const leadContextComplete = hasCompleteLeadContext(lead);
 
-  const locationMatch = location.length > 0 && text.includes(location);
+  const locationCandidates = buildLocationCandidates(location);
+  const matchedLocationCandidate = findFirstMatchingLocationCandidate(
+    text,
+    locationCandidates,
+  );
+
+  const locationMatch = matchedLocationCandidate !== null;
   const countryMatch = country.length > 0 && text.includes(country);
 
   if (!lead.location?.trim()) {
     evidence.push('lead location is missing');
+  } else if (locationMatch) {
+    if (matchedLocationCandidate === location) {
+      evidence.push(`lead location appears in site content: ${lead.location}`);
+    } else {
+      evidence.push(
+        `lead location is strongly supported by district-level site content: ${matchedLocationCandidate}`,
+      );
+    }
   } else {
-    evidence.push(
-      locationMatch
-        ? `lead location appears in site content: ${lead.location}`
-        : `lead location does not appear in site content: ${lead.location}`,
-    );
+    evidence.push(`lead location does not appear in site content: ${lead.location}`);
   }
 
   if (!lead.country?.trim()) {
@@ -254,7 +319,7 @@ const detectLocalRelevance = (
     );
   }
 
-  if (locationMatch && countryMatch) {
+  if (locationMatch && (countryMatch || !lead.country?.trim())) {
     return {
       value: 'high_match',
       evidence,
@@ -392,7 +457,7 @@ export class RuleBasedSignalDetector implements SignalDetector {
     if (snapshot.isPlaceholderContent) {
       return {
         bookingPresence: 'not_detected',
-        contactClarity: snapshot.contactInfo.emails.length > 0 ? 'medium' : 'low',
+        contactClarity: 'low',
         trustSignalStrength: 'low',
         businessScale: 'single_location',
         localRelevance: 'low_match',
@@ -408,9 +473,7 @@ export class RuleBasedSignalDetector implements SignalDetector {
         evidence: dedupeEvidence([
           'placeholder-style content was detected in the visible page text',
           ...(snapshot.pageTitle ? [`page title observed: ${snapshot.pageTitle}`] : []),
-          ...(snapshot.visibleText
-            ? [`visible text was extremely limited: ${snapshot.visibleText.slice(0, 120)}`]
-            : []),
+          'visible page content is too limited to support a meaningful evaluation',
         ]),
       };
     }

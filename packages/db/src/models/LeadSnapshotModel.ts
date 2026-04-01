@@ -1,4 +1,4 @@
-import { Schema, Types, model, models, type Model } from 'mongoose';
+import mongoose, { Schema, Types, model, type Model } from 'mongoose';
 
 export interface LeadSnapshotDocument {
   leadId: Types.ObjectId;
@@ -73,7 +73,6 @@ const leadSnapshotSchema = new Schema<LeadSnapshotDocument>(
     },
     isPlaceholderContent: {
       type: Boolean,
-      required: true,
       default: false,
     },
     extractedAt: {
@@ -89,5 +88,5 @@ const leadSnapshotSchema = new Schema<LeadSnapshotDocument>(
 leadSnapshotSchema.index({ leadId: 1, extractedAt: -1 });
 
 export const LeadSnapshotModel: Model<LeadSnapshotDocument> =
-  (models.LeadSnapshot as Model<LeadSnapshotDocument> | undefined) ||
+  (mongoose.models.LeadSnapshot as Model<LeadSnapshotDocument> | undefined) ||
   model<LeadSnapshotDocument>('LeadSnapshot', leadSnapshotSchema);

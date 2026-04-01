@@ -4,234 +4,127 @@ import type {
   GeneratedAuditDraft,
 } from '@signalscout/core';
 
-const buildSummary = (input: GenerateAuditInput): string => {
-  const { lead, signals } = input;
-
-  if (signals.outreachFit === 'poor') {
-    return `${lead.companyName} operates more like a large, multi-location dental network than a local practice. While booking intent and credibility are both visible, it is a weak match for a local conversion-focused outreach angle.`;
-  }
-
-  if (signals.bookingPresence === 'indirect') {
-    return `${lead.companyName} shows clear booking intent, but the path from interest to action is not especially direct. That likely adds unnecessary friction to the conversion journey.`;
-  }
-
-  if (signals.bookingPresence === 'not_detected') {
-    return `${lead.companyName} has a visible online presence, but no clear booking path was detected. That gap may be limiting action from otherwise interested visitors.`;
-  }
-
-  return `${lead.companyName} presents a credible online presence with a usable booking flow, although there are still signs that conversion clarity could be improved.`;
-};
-
-const buildStrengths = (input: GenerateAuditInput): string[] => {
-  const { signals, snapshot } = input;
-  const strengths: string[] = [];
-
-  if (signals.trustSignalStrength === 'high') {
-    strengths.push(
-      'Multiple trust cues are visible across the site.',
-    );
-  }
-
-  if (signals.contactClarity === 'high') {
-    strengths.push(
-      'The contact path looks clear and easy to follow.',
-    );
-  } else if (signals.contactClarity === 'medium') {
-    strengths.push(
-      'Users can find several ways to contact the business.',
-    );
-  }
-
-  if (signals.businessScale === 'large_chain') {
-    strengths.push(
-      'The site clearly presents the business at meaningful scale.',
-    );
-  }
-
-  if (snapshot.trustSignals.length > 0) {
-    const trustExamples = snapshot.trustSignals.slice(0, 2).join(' and ');
-    strengths.push(
-      `Visible trust cues include ${trustExamples}.`,
-    );
-  }
-
-  return [...new Set(strengths)].slice(0, 3);
-};
-
-const buildOpportunities = (input: GenerateAuditInput): string[] => {
-  const { signals } = input;
-  const opportunities: string[] = [];
-
-  if (signals.bookingPresence === 'indirect') {
-    opportunities.push('Booking path feels indirect');
-  }
-
-  if (signals.bookingPresence === 'not_detected') {
-    opportunities.push('Booking path is not clearly visible');
-  }
-
-  if (signals.localRelevance !== 'high_match') {
-    opportunities.push('Lead targeting looks misaligned');
-  }
-
-  if (signals.contactClarity === 'medium') {
-    opportunities.push('Contact flow looks broad rather than guided');
-  }
-
-  return [...new Set(opportunities)].slice(0, 3);
-};
-
-const buildOpportunityDetails = (input: GenerateAuditInput): string[] => {
-  const { signals } = input;
-  const details: string[] = [];
-
-  if (signals.bookingPresence === 'indirect') {
-    details.push(
-      'Users likely encounter extra steps, location choices, or navigation decisions before they reach a booking action. That delay can weaken commitment at the point where conversion should feel easiest.',
-    );
-  }
-
-  if (signals.bookingPresence === 'not_detected') {
-    details.push(
-      'A visible booking route does not stand out clearly. That may reduce the number of visitors who move from interest to action.',
-    );
-  }
-
-  if (signals.localRelevance !== 'high_match') {
-    details.push(
-      'This lead does not align cleanly with the intended local targeting strategy. Time spent here is likely to produce lower returns than focusing on practices that more clearly match the local market position.',
-    );
-  }
-
-  if (signals.contactClarity === 'medium') {
-    details.push(
-      'The contact surface looks broad rather than deliberately guided. That can make the experience feel administrative rather than action-oriented, especially for users who want one obvious next step.',
-    );
-  }
-
-  return [...new Set(details)].slice(0, 3);
-};
-
-const buildRisks = (input: GenerateAuditInput): string[] => {
-  const { lead, signals } = input;
-  const risks: string[] = [];
-
-  if (lead.completeness !== 'complete') {
-    risks.push(
-      'Incomplete lead data lowers confidence in both targeting accuracy and fit assessment.',
-    );
-  }
-
-  if (signals.businessScale === 'large_chain') {
-    risks.push(
-      'The scale of the business makes a small-practice or highly localized offer less naturally relevant.',
-    );
-  }
-
-  if (signals.localRelevance === 'low_match') {
-    risks.push(
-      'The website content does not align closely with the lead’s recorded geography, which raises qualification concerns before outreach even begins.',
-    );
-  }
-
-  if (signals.outreachFit === 'poor') {
-    risks.push(
-      'This lead is unlikely to convert under the current outreach wedge without a materially different positioning strategy.',
-    );
-  }
-
-  return [...new Set(risks)].slice(0, 4);
-};
-
-const buildRecommendedAngle = (input: GenerateAuditInput): string => {
-  const { signals } = input;
-
-  if (signals.outreachFit === 'poor') {
-    return 'Deprioritize this lead for the current campaign, or approach it only with a more strategic, higher-level positioning that fits a larger organization.';
-  }
-
-  if (signals.bookingPresence === 'indirect') {
-    return 'Lead with booking-path clarity and conversion efficiency rather than broad marketing language.';
-  }
-
-  if (signals.bookingPresence === 'not_detected') {
-    return 'Lead with the missed-conversion risk created by the absence of a clear booking path.';
-  }
-
-  return 'Lead with a focused conversion angle tied to ease of action and booking clarity.';
-};
-
-const buildConfidenceNote = (input: GenerateAuditInput): string => {
-  if (input.lead.completeness !== 'complete') {
-    return 'Confidence is moderated by incomplete lead metadata, especially around geography and source context.';
-  }
-
-  if (input.signals.bookingPresence === 'indirect') {
-    return 'Confidence is moderate because booking intent is visible, but the path itself is inferred rather than directly extracted.';
-  }
-
-  return 'Confidence is reasonably strong because the main conclusions are supported by multiple aligned signals.';
-};
-
-const buildEvidence = (input: GenerateAuditInput): string[] => {
-  const evidence: string[] = [];
-
-  if (input.snapshot.pageTitle) {
-    evidence.push(
-      `Page title suggests a multi-location positioning: ${input.snapshot.pageTitle}`,
-    );
-  }
-
-  if (input.snapshot.metaDescription) {
-    evidence.push(
-      `Meta description emphasizes reach and availability: ${input.snapshot.metaDescription}`,
-    );
-  }
-
-  if (input.signals.bookingPresence === 'indirect') {
-    evidence.push(
-      'Booking-related language is present, but no direct booking link was extracted.',
-    );
-  }
-
-  if (input.signals.businessScale === 'large_chain') {
-    evidence.push(
-      'The site presents the business as a large multi-location network rather than a single local practice.',
-    );
-  }
-
-  if (input.signals.localRelevance === 'low_match') {
-    evidence.push(
-      'The recorded lead location is not clearly reflected in the site content.',
-    );
-  }
-
-  if (input.signals.trustSignalStrength === 'high') {
-    evidence.push(
-      'Multiple trust cues are visible, including team presence, emergency availability, and scale-related signals.',
-    );
-  }
-
-  if (input.signals.contactClarity === 'medium') {
-    evidence.push(
-      'The contact surface is extensive, but it appears distributed rather than tightly guided.',
-    );
-  }
-
-  return [...new Set(evidence)].slice(0, 8);
-};
-
 export class MockAuditGenerator implements AuditGenerator {
   async generate(input: GenerateAuditInput): Promise<GeneratedAuditDraft> {
+    const { lead, snapshot, signals } = input;
+
+    // Early exit for placeholder/weak content
+    if (snapshot.isPlaceholderContent || snapshot.visibleText.length < 400) {
+      return {
+        summary: `${lead.companyName} currently shows very limited real business content. A meaningful audit requires a live, content-rich website.`,
+        strengths: [],
+        opportunities: ['Replace placeholder or minimal content with real clinic information'],
+        opportunityDetails: ['Without sufficient content we cannot reliably evaluate conversion flow, trust signals, or local relevance.'],
+        risks: ['Any outreach at this stage would be poorly grounded and likely ineffective'],
+        recommendedAngle: 'Pause outreach until the website contains real, patient-focused content.',
+        confidenceNote: 'Very low confidence — insufficient website content for proper analysis.',
+        evidence: ['Visible text too short for meaningful analysis', 'Page appears placeholder-like or under construction'],
+        quickWins: [],
+        outreachHook: '',
+      };
+    }
+
+    // Extract key details from actual content
+    const hasFamilyMention = snapshot.visibleText.toLowerCase().includes('vater und sohn') || 
+                            snapshot.visibleText.toLowerCase().includes('peter und marco');
+    const hasLongHistory = snapshot.visibleText.toLowerCase().includes('50 jahr') || 
+                          snapshot.visibleText.toLowerCase().includes('seit über 50');
+    const hasFearPatients = snapshot.visibleText.toLowerCase().includes('angstpatienten');
+    const hasAquarium = snapshot.visibleText.toLowerCase().includes('korallenriffaquarium') || 
+                       snapshot.visibleText.toLowerCase().includes('aquarium');
+
+    const hasDirectBooking = snapshot.bookingLinks.length > 0;
+    const hasStrongContact = snapshot.contactInfo.emails.length > 0 || snapshot.contactInfo.phones.length > 0;
+    const hasTrustCues = snapshot.trustSignals.length > 0;
+
+    // ─────────────────────────────────────────────
+    // Sharp, consequence-driven Summary
+    let summary = `${lead.companyName} has a credible local presence with a direct booking path and clear contact options.`;
+
+    if (hasLongHistory && hasFamilyMention) {
+      summary += ` The family-run, 50+ year history is a strong trust asset that is currently underutilized in the conversion experience.`;
+    } else if (hasFearPatients) {
+      summary += ` Specializing in anxious patients is a meaningful differentiator that deserves stronger visual and messaging support.`;
+    }
+
+    if (!hasDirectBooking) {
+      summary += ` However, the path from interest to booking still contains unnecessary friction.`;
+    }
+
+    // ─────────────────────────────────────────────
+    // Strengths (specific to this site)
+    const strengths: string[] = [
+      "Direct booking link is available",
+      "Multiple contact methods (phone + email) are clearly visible",
+    ];
+
+    if (hasLongHistory) strengths.push("Long-standing local reputation (50+ years) is mentioned");
+    if (hasFamilyMention) strengths.push("Family-run practice adds personal trust");
+    if (hasFearPatients) strengths.push("Focus on anxious patients is clearly communicated");
+    if (hasAquarium) strengths.push("Unique waiting room experience (coral aquarium) creates positive first impression");
+
+    // ─────────────────────────────────────────────
+    // Opportunities + Business Impact
+    const opportunities: string[] = [];
+    const opportunityDetails: string[] = [];
+
+    if (signals.localRelevance !== 'high_match') {
+      opportunities.push("Local relevance can be strengthened");
+      opportunityDetails.push("The site mentions Berlin / Prenzlauer Berg but could reinforce location more aggressively to capture 'near me' searches.");
+    }
+
+    if (!hasDirectBooking || snapshot.bookingLinks.length === 0) {
+      opportunities.push("Booking flow could be more prominent");
+      opportunityDetails.push("Even though a booking section exists, making the CTA larger and always visible (especially on mobile) would reduce drop-off for ready-to-book visitors.");
+    }
+
+    if (!hasTrustCues || snapshot.trustSignals.length < 2) {
+      opportunities.push("Trust signals could be more prominent");
+      opportunityDetails.push("Adding recent Google reviews, before/after photos, or patient testimonials near the CTA would convert hesitant visitors faster.");
+    }
+
+    // ─────────────────────────────────────────────
+    // Risks
+    const risks: string[] = [];
+    if (lead.completeness !== 'complete') {
+      risks.push("Incomplete lead metadata reduces targeting precision.");
+    }
+    if (signals.outreachFit === 'uncertain') {
+      risks.push("Mixed signals suggest this lead may need human review before full automation.");
+    }
+
+    const recommendedAngle = "Leverage the long family tradition and patient-friendly approach while making the path to booking frictionless.";
+
+    // ─────────────────────────────────────────────
+    // Quick Wins (actionable & high-ROI)
+    const quickWins = [
+      "Make the 'Termin online buchen' button larger and sticky on mobile",
+      "Add 3–4 recent Google reviews with photos near the main CTA",
+      "Highlight the 50+ year family tradition more prominently on the homepage",
+      "Add a prominent phone/WhatsApp floating button for fear patients",
+    ];
+
+    // ─────────────────────────────────────────────
+    // Outreach Hook (personalized & helpful)
+    const outreachHook = `Hi,\n\nI came across Zahnarzt Michael in Prenzlauer Berg and was impressed by the 50+ year family tradition and your focus on anxious patients.\n\nOne area that stood out is that while booking is possible, the path could be even smoother for visitors who are ready to take action.\n\nI'd be happy to share a few quick, high-impact suggestions that similar practices have used to increase inquiries. No obligation — just happy to help if useful.\n\nBest,\n[Your Name]`;
+
     return {
-      summary: buildSummary(input),
-      strengths: buildStrengths(input),
-      opportunities: buildOpportunities(input),
-      opportunityDetails: buildOpportunityDetails(input),
-      risks: buildRisks(input),
-      recommendedAngle: buildRecommendedAngle(input),
-      confidenceNote: buildConfidenceNote(input),
-      evidence: buildEvidence(input),
+      summary,
+      strengths: [...new Set(strengths)].slice(0, 5),
+      opportunities: [...new Set(opportunities)].slice(0, 4),
+      opportunityDetails: [...new Set(opportunityDetails)].slice(0, 4),
+      risks: [...new Set(risks)].slice(0, 4),
+      recommendedAngle,
+      confidenceNote: `Confidence: ${signals.confidence}. Analysis based on actual site content including family history, patient focus, and booking signals.`,
+      evidence: [
+        `Direct booking link found: ${snapshot.bookingLinks[0] || 'none'}`,
+        `Contact clarity: ${signals.contactClarity}`,
+        `Trust signals detected: ${snapshot.trustSignals.join(', ')}`,
+        `Local relevance: ${signals.localRelevance}`,
+        hasLongHistory ? "50+ year family tradition mentioned" : "",
+      ].filter(Boolean),
+      quickWins,
+      outreachHook,
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, type Router as ExpressRouter } from 'express';
 import { validateRequest } from '../../common/middleware/index.js';
 import { asyncHandler } from '../../common/utils/index.js';
 import { generateAudit, getAuditByLead } from './audits.controller.js';
@@ -7,7 +7,7 @@ import {
   getAuditByLeadRequestSchema,
 } from './audits.schema.js';
 
-const auditsRouter = Router();
+const auditsRouter: ExpressRouter = Router();
 
 auditsRouter.post(
   '/leads/:id/audit',

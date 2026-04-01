@@ -10,10 +10,7 @@ export interface OpenAiAuditGeneratorOptions {
 
 const extractJsonObject = (content: string): string => {
   const trimmed = content.trim();
-
-  if (trimmed.startsWith('{') && trimmed.endsWith('}')) {
-    return trimmed;
-  }
+  if (trimmed.startsWith('{') && trimmed.endsWith('}')) return trimmed;
 
   const firstBrace = trimmed.indexOf('{');
   const lastBrace = trimmed.lastIndexOf('}');
@@ -32,10 +29,7 @@ export class OpenAiAuditGenerator implements AuditGenerator {
   private static readonly BASE_RETRY_DELAY_MS = 500;
 
   constructor(options: OpenAiAuditGeneratorOptions) {
-    this.client = new OpenAI({
-      apiKey: options.apiKey,
-    });
-
+    this.client = new OpenAI({ apiKey: options.apiKey });
     this.model = options.model ?? 'gpt-4.1-mini';
   }
 
@@ -44,36 +38,23 @@ export class OpenAiAuditGenerator implements AuditGenerator {
   }
 
   private isRetryableError(error: unknown): boolean {
-    if (!error || typeof error !== 'object') {
-      return false;
-    }
-
+    if (!error || typeof error !== 'object') return false;
     const candidate = error as { status?: number; code?: string; response?: { status?: number } };
     const status = candidate.status ?? candidate.response?.status;
-
-    return (
-      status === 429 ||
-      status === 502 ||
-      status === 503 ||
-      status === 504 ||
-      candidate.code === 'rate_limit_error' ||
-      candidate.code === 'server_error'
-    );
+    return [429, 502, 503, 504].includes(status!) || 
+           ['rate_limit_error', 'server_error'].includes(candidate.code || '');
   }
 
   private async withRetry<T>(fn: () => Promise<T>): Promise<T> {
     let attempt = 0;
-
     while (true) {
       try {
         return await fn();
       } catch (error) {
         attempt += 1;
-
         if (attempt > OpenAiAuditGenerator.MAX_RETRIES || !this.isRetryableError(error)) {
           throw error;
         }
-
         const delayMs = OpenAiAuditGenerator.BASE_RETRY_DELAY_MS * 2 ** (attempt - 1);
         await this.delay(delayMs);
       }
@@ -91,14 +72,22 @@ export class OpenAiAuditGenerator implements AuditGenerator {
     );
 
     const outputText = response.output_text;
-
-    if (!outputText || !outputText.trim()) {
+    if (!outputText?.trim()) {
       throw new Error('AI response was empty');
     }
 
     const jsonText = extractJsonObject(outputText);
     const parsed = JSON.parse(jsonText);
     const validated = auditOutputSchema.parse(parsed);
+
+    // Safe extraction with defaults
+    const quickWins = Array.isArray((validated as any)?.quickWins) 
+      ? (validated as any).quickWins 
+      : [];
+
+    const outreachHook = typeof (validated as any)?.outreachHook === 'string' 
+      ? (validated as any).outreachHook 
+      : `I reviewed ${input.lead.companyName} and found several quick improvements that could help increase bookings.`;
 
     return {
       summary: validated.summary,
@@ -109,6 +98,8 @@ export class OpenAiAuditGenerator implements AuditGenerator {
       recommendedAngle: validated.recommendedAngle,
       confidenceNote: validated.confidenceNote,
       evidence: validated.evidence,
+      quickWins,
+      outreachHook,
     };
   }
 }

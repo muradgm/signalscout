@@ -12,10 +12,15 @@
     }
   },
   "scripts": {
-    "dev": "pnpm exec tsc -w -p tsconfig.json",
-    "build": "pnpm exec tsc -p tsconfig.json",
+    "dev": "pnpm exec tsc -b -w tsconfig.json",
+    "build": "pnpm exec tsc -b tsconfig.json",
+    "lint": "eslint .",
     "typecheck": "pnpm exec tsc -p tsconfig.json --noEmit",
-    "clean": "rimraf dist"
+    "test": "echo \"No tests yet\"",
+    "clean": "rimraf dist tsconfig.tsbuildinfo"
+  },
+  "dependencies": {
+    "mongoose": "^8.12.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",

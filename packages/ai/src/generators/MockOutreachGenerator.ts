@@ -4,6 +4,34 @@ import type {
   OutreachGenerator,
 } from '@signalscout/core';
 
+const buildPlaceholderOutreach = (
+  input: GenerateOutreachInput,
+): GeneratedOutreachDraft => {
+  const { snapshot, lead, audit } = input;
+
+  return {
+    recommendation: 'do_not_send',
+    fitReason:
+      'The website appears to be placeholder or inactive content, so there is not enough real information to justify outreach.',
+    bestAngle:
+      'Do not revisit this lead until the website shows real business content and a usable public-facing experience.',
+    subject: null,
+    body: null,
+    reasoning:
+      'The current site state does not provide a credible basis for outreach. Any message generated from placeholder content would be poorly grounded and likely misleading.',
+    evidence: [
+      ...(snapshot.pageTitle
+        ? [`The page title indicates placeholder-style content: ${snapshot.pageTitle}`]
+        : []),
+      'Visible page content is too limited to support a meaningful outreach decision.',
+      ...(snapshot.contactInfo.emails.length > 0
+        ? [`Only minimal contact content was visible, including: ${snapshot.contactInfo.emails[0]}`]
+        : []),
+      `Confidence note: ${audit.confidenceNote}`,
+    ],
+  };
+};
+
 const buildDoNotSendFitReason = (input: GenerateOutreachInput): string => {
   const { signals } = input;
 
@@ -78,7 +106,7 @@ const buildDoNotSendEvidence = (input: GenerateOutreachInput): string[] => {
 
   if (snapshot.pageTitle) {
     evidence.push(
-      `The page title reinforces a broad multi-location positioning: ${snapshot.pageTitle}`,
+      `The page title reinforces the current site positioning: ${snapshot.pageTitle}`,
     );
   }
 
@@ -211,7 +239,11 @@ export class MockOutreachGenerator implements OutreachGenerator {
   async generate(
     input: GenerateOutreachInput,
   ): Promise<GeneratedOutreachDraft> {
-    const { signals, lead } = input;
+    const { signals, lead, snapshot } = input;
+
+    if (snapshot.isPlaceholderContent) {
+      return buildPlaceholderOutreach(input);
+    }
 
     const isPoorFit =
       signals.outreachFit === 'poor' ||
