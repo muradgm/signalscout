@@ -80,14 +80,9 @@ export class OpenAiAuditGenerator implements AuditGenerator {
     const parsed = JSON.parse(jsonText);
     const validated = auditOutputSchema.parse(parsed);
 
-    // Safe extraction with defaults
-    const quickWins = Array.isArray((validated as any)?.quickWins) 
-      ? (validated as any).quickWins 
-      : [];
-
-    const outreachHook = typeof (validated as any)?.outreachHook === 'string' 
-      ? (validated as any).outreachHook 
-      : `I reviewed ${input.lead.companyName} and found several quick improvements that could help increase bookings.`;
+    const outreachHook =
+      validated.outreachHook ||
+      `I reviewed ${input.lead.companyName} and found several quick improvements that could help increase bookings.`;
 
     return {
       summary: validated.summary,
@@ -98,7 +93,7 @@ export class OpenAiAuditGenerator implements AuditGenerator {
       recommendedAngle: validated.recommendedAngle,
       confidenceNote: validated.confidenceNote,
       evidence: validated.evidence,
-      quickWins,
+      quickWins: validated.quickWins,
       outreachHook,
     };
   }

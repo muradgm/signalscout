@@ -64,7 +64,7 @@ export const extractContactInfo = (html: string): ContactInfo => {
     bodyText.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi) ?? [];
 
   const phoneMatches: string[] =
-    bodyText.match(/(\+?\d[\d\s\-()\/]{6,}\d)/g) ?? [];
+    bodyText.match(/(\+?\d[\d\s\-()/]{6,}\d)/g) ?? [];
 
   const addresses: string[] = [];
 

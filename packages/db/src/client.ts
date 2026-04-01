@@ -11,7 +11,10 @@ export const connectDb = async (mongoUri: string): Promise<void> => {
     return;
   }
 
-  await db.connect(mongoUri);
+  await db.connect(mongoUri, {
+    serverSelectionTimeoutMS: 10_000,
+    connectTimeoutMS: 10_000,
+  });
 };
 
 export const getDbReadyState = (): number => db.connection.readyState;

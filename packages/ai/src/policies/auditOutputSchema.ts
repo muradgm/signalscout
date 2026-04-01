@@ -8,6 +8,8 @@ export const auditOutputSchema = z.object({
   risks: z.array(z.string().min(1)).default([]),
   recommendedAngle: z.string().min(1),
   confidenceNote: z.string().min(1),
+  quickWins: z.array(z.string().min(1)).default([]),
+  outreachHook: z.string().min(1).default(''),
   evidence: z.array(z.string().min(1)).default([]),
 });
 
