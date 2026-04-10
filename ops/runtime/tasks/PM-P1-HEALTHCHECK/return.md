@@ -1,0 +1,413 @@
+# AGENT RETURN
+
+- task_id: PM-P1-HEALTHCHECK
+- files_read:
+  - ops/core/00_SYSTEM_OVERVIEW.md
+  - ops/core/01_OPERATING_MODEL.md
+  - ops/core/02_TASK_LIFECYCLE.md
+  - ops/core/03_ASSIGNMENT_PACKET.md
+  - ops/core/04_QA_GATE.md
+  - ops/core/05_OPERATING_PRINCIPLES.md
+  - ops/core/06_RUNTIME_RULES.md
+  - ops/core/TASK_BUNDLE_PROTOCOL.md
+  - ops/agents/PM/PM_AGENT.md
+  - ops/agents/PM/PM_PROMPT_SYSTEM.md
+  - ops/agents/PM/PM_VALIDATION_RULES.md
+  - ops/runtime/README.md
+  - ops/runtime/PM_REVIEW_QUEUE.md
+  - ops/runtime/STATUS_SNAPSHOT.md
+  - ops/truth/PROJECT.md
+  - ops/truth/PRODUCT_DEFINITION.md
+  - ops/truth/CODEBASE_AUDIT.md
+  - ops/truth/TRACKLIST.md
+  - ops/governance/ACTIVE_DECISIONS.md
+  - package.json
+  - apps/
+  - packages/
+  - scripts/
+  - apps/api/src/server.ts
+  - apps/dashboard/src/pages/LeadDetailPage.tsx
+  - packages/core/src/outreach/use-cases/GenerateOutreach.ts
+  - packages/db/src/repositories/MongoOutreachRepository.ts
+  - packages/scraper/src/adapters/RuleBasedSignalDetector.ts
+  - packages/ai/src/generators/MockAuditGenerator.ts
+  - scripts/ops/doctor.mjs
+  - tests/mvp/usecases.test.mjs
+- changed_files:
+  - ops/runtime/tasks/PM-P1-HEALTHCHECK/return.md
+- actual_work_performed:
+  - Reviewed the canonical PM, truth, runtime, and task-bundle files required by the assignment.
+  - Reviewed the assignment-authoritative PM lane files to confirm PM routing, truth, and validation obligations.
+  - Inspected the current runtime queue and status ledgers.
+  - Inspected implementation surface structure across `apps/`, `packages/`, and `scripts/`.
+  - Read representative implementation files across the major project surfaces:
+    - API bootstrap/startup path in `apps/api/src/server.ts`
+    - operator workflow page in `apps/dashboard/src/pages/LeadDetailPage.tsx`
+    - core outreach use case in `packages/core/src/outreach/use-cases/GenerateOutreach.ts`
+    - DB repository logic in `packages/db/src/repositories/MongoOutreachRepository.ts`
+    - signal detection logic in `packages/scraper/src/adapters/RuleBasedSignalDetector.ts`
+    - AI generator logic in `packages/ai/src/generators/MockAuditGenerator.ts`
+    - ops health tooling in `scripts/ops/doctor.mjs`
+    - MVP test path in `tests/mvp/usecases.test.mjs`
+  - Ran executable confidence checks where feasible: `pnpm ops:doctor`, `pnpm ops:status`, and `pnpm test:p1`.
+  - Inspected repository working-tree state with `git status --short`.
+- validation_evidence:
+  - `pnpm ops:doctor` executed successfully and returned `0` failures but `24484` warnings, including:
+    - missing legacy nested task artifacts for `AI-P1-003` and `PM-P1-HEALTHCHECK`
+    - `.env` present in the working tree snapshot
+    - `package-lock.json` present in a pnpm workspace
+    - large volumes of `dist` artifacts present
+  - `pnpm ops:status` failed with `EPERM: operation not permitted, lstat 'C:\\Users\\Murad'`.
+  - `pnpm test:p1` failed with the same `EPERM` realpath error before test execution.
+  - `git status --short` showed a heavily dirty worktree with broad modifications across app code, packages, scripts, docs, tests, and `ops/`.
+- unresolved_issues:
+  - Runtime ledgers do not fully reflect the newer PM task bundle state; `PM-P1-001` QA is updated, but decision/runtime status remains stale elsewhere.
+  - `ops:doctor` still expects legacy nested artifacts even though `ops/core/TASK_BUNDLE_PROTOCOL.md` defines flat task-bundle files as canonical.
+  - The repository is too dirty to treat build/test confidence as clean-repo confidence.
+  - `ops:status` and `test:p1` are currently blocked by a local filesystem permission problem outside the workspace root.
+- known_risks:
+  - Execution confidence is overstated if runtime-ledger state and actual task-bundle state diverge.
+  - Acceptance discipline is weakened when flat and legacy nested task-bundle conventions both remain live.
+  - The codebase has real product depth beyond the MVP wedge, but product truth and shell truth remain partially misaligned.
+  - The dirty working tree increases regression risk and makes causality hard to reason about.
+- completion_status: READY FOR QA
+
+## 1. Current project health summary
+
+- overall_confidence_level: medium
+- current_maturity_stage:
+  - Working MVP plus extension surfaces, currently in integration, truth-hardening, and operational-discipline tightening rather than clean feature expansion.
+- biggest_strengths:
+  - The core product loop is real in code and documented consistently enough to inspect:
+    - lead queue
+    - lead detail review
+    - snapshot refresh
+    - signals
+    - audit generation
+    - outreach generation
+    - review/edit/send
+  - The repo architecture is coherent at a high level:
+    - `apps/api`
+    - `apps/dashboard`
+    - `packages/core`
+    - `packages/db`
+    - `packages/scraper`
+    - `packages/ai`
+  - The ops system has a credible control model:
+    - explicit truth hierarchy
+    - QA gate
+    - runtime ledgers
+    - PM/QA separation
+  - Benchmark directories and lane-based task thinking exist, which is the right shape for evidence-first execution.
+- biggest_risks:
+  - Runtime discipline is incomplete:
+    - task queue, QA results, and PM decision state are not consistently synchronized.
+  - Task protocol is split between flat canonical bundles and legacy nested expectations.
+  - Technical confidence is limited by environment-level failures:
+    - `ops:status` and `test:p1` both fail with `EPERM` before delivering useful signal.
+  - Repo hygiene is weak:
+    - very dirty worktree
+    - many generated artifacts
+    - package-manager cross-contamination warning
+  - Product breadth in code exceeds the narrow wedge and can easily distort messaging and prioritization.
+
+## 2. Product reality vs vision
+
+- well_supported_now:
+  - The intended core product wedge is well supported in code and representative implementation files:
+    - local-service lead review
+    - website snapshot extraction
+    - structured signal generation
+    - audit generation
+    - outreach generation
+    - operator review workspace
+  - Representative inspected files support that claim:
+    - `apps/api/src/server.ts` confirms the API startup path is real
+    - `apps/dashboard/src/pages/LeadDetailPage.tsx` shows the operator workflow stitching together leads, audits, outreach, and replies
+    - `packages/core/src/outreach/use-cases/GenerateOutreach.ts` shows core use-case enforcement around outreach generation and persistence
+    - `packages/db/src/repositories/MongoOutreachRepository.ts` shows real persistence/reporting logic rather than placeholder structure only
+    - `packages/scraper/src/adapters/RuleBasedSignalDetector.ts` shows substantial signal-detection logic
+    - `packages/ai/src/generators/MockAuditGenerator.ts` shows non-trivial audit shaping logic beyond a thin mock
+  - Code and truth files agree that the product is strongest in the lead queue/detail workflow for a solo operator.
+- weak_missing_or_blocked:
+  - Audit quality breadth remains partial across broader real-world variation.
+  - Outreach quality breadth remains partial across broader real-world variation.
+  - Reporting and reply-related surfaces exist but remain less mature than the core loop.
+  - Deployment/runbook confidence is weak because executable validation is not stable in the current environment.
+  - Human decisions still block shell truth and messaging truth:
+    - D-001 empty secondary pages
+    - D-002 sending positioning
+    - D-003 reply workflow treatment
+- drift_from_product_truth:
+  - Code reality includes replies, delivery telemetry, sending, and feedback surfaces that are explicitly outside the MVP core in `ops/truth/PRODUCT_DEFINITION.md`.
+  - This is not necessarily bad, but it creates a repeated truth-drift risk:
+    - the product can look broader than the wedge the team says it is protecting.
+  - Runtime and task discipline are also drifting from the intended execution model:
+    - flat task-bundle protocol is canonical
+    - some tooling still warns based on nested legacy expectations
+
+## 3. Ops system audit
+
+- task_protocol_quality:
+  - Medium.
+  - Strength:
+    - `ops/core/TASK_BUNDLE_PROTOCOL.md` is clear and operationally useful.
+  - Weakness:
+    - `ops:doctor` still emits missing-artifact warnings for nested bundle paths, which conflicts with the stated flat canonical protocol.
+- lane_discipline_quality:
+  - Medium.
+  - Strength:
+    - PM, QA, and specialist lanes are conceptually separated.
+  - Weakness:
+    - runtime queue state and actual artifact state can diverge, which weakens acceptance discipline.
+- task_artifact_quality:
+  - Mixed.
+  - Strength:
+    - recent PM bundle work shows the flat bundle pattern can hold real planning artifacts.
+  - Weakness:
+    - several active tasks remain scaffold-like or placeholder-like according to runtime notes.
+- runtime_bootstrap_handoff_quality:
+  - Medium.
+  - Strength:
+    - bootstrap files exist and the bundle convention is explicit.
+  - Weakness:
+    - runtime ledgers are not consistently updated when task status changes.
+    - PM-P1-001 is a direct example of QA advancing while PM decision/runtime records lagged.
+- major_friction_points:
+  - legacy nested bundle expectations still present in tooling
+  - stale runtime records
+  - ops commands not all yielding usable signal in the local environment
+  - dirty repo state obscuring what is stable vs in-flight
+
+## 4. Technical confidence audit
+
+- build_confidence:
+  - medium
+  - Evidence:
+    - built `dist` directories exist across apps and packages.
+    - turbo logs exist under `.turbo`.
+    - root scripts include `build`, `build:p1`, and package-level builds.
+  - Limitation:
+    - this was not validated from a clean state in this task.
+- test_confidence:
+  - low-to-medium
+  - Evidence:
+    - meaningful MVP test files exist and truth docs reference them.
+    - `test:p1` is wired at the root.
+  - Limitation:
+    - `pnpm test:p1` failed before test execution with `EPERM`, so current test confidence is blocked by environment-level access issues.
+- deployment_confidence:
+  - low
+  - Evidence:
+    - `.env` and app startup wiring exist
+    - API and dashboard dev paths are real
+  - Limitation:
+    - no successful deployment-oriented validation was executed here
+    - operational commands are not reliably runnable in current local conditions
+- architecture_health:
+  - medium-high
+  - Evidence:
+    - package boundaries remain coherent
+    - core/db/scraper/ai/api/dashboard split is preserved
+    - representative code reads across those layers support the claim beyond directory-level inspection
+  - Limitation:
+    - reporting and reply surfaces remain broader and thinner than the protected wedge
+- code_quality_hotspots:
+  - audit/outreach quality breadth
+  - reporting boundary consistency
+  - reply workflow maturity
+  - environment/runbook reliability
+  - repo hygiene and dirty-state management
+
+## 5. Top risks / blockers
+
+- blocker:
+  - Runtime/decision drift
+  - why_it_matters:
+    - If QA, PM decisions, and runtime ledgers disagree, the system will accept or route work on stale status rather than evidence.
+  - impact_level: high
+  - recommended_owner_lane: PM
+
+- blocker:
+  - Task-bundle protocol split between flat canonical files and nested legacy expectations
+  - why_it_matters:
+    - This creates avoidable noise, false warnings, and confusion about which artifacts are acceptance-critical.
+  - impact_level: high
+  - recommended_owner_lane: DEVOPS
+
+- blocker:
+  - Environment-level failure on `ops:status` and `test:p1`
+  - why_it_matters:
+    - Current test and runtime-health confidence are partially blocked before meaningful signal is produced.
+  - impact_level: high
+  - recommended_owner_lane: DEVOPS
+
+- blocker:
+  - Product shell truth is still blocked by unresolved human decisions
+  - why_it_matters:
+    - Secondary pages, sending emphasis, and reply treatment can distort product truth and downstream execution priorities.
+  - impact_level: medium-high
+  - recommended_owner_lane: PM/HUMAN
+
+- blocker:
+  - Quality breadth gap in core recommendation outputs
+  - why_it_matters:
+    - The core wedge exists, but autonomy and trust cannot safely increase until audit/outreach quality is validated on broader real cases.
+  - impact_level: high
+  - recommended_owner_lane: AI
+
+- blocker:
+  - Dirty worktree and hygiene noise
+  - why_it_matters:
+    - Broad unrelated changes make regression attribution and clean confidence checks much weaker.
+  - impact_level: medium-high
+  - recommended_owner_lane: DEVOPS
+
+## 6. Highest-value next tasks
+
+- note:
+  - These are routing-ready next-task recommendations, not packet-complete specialist assignment artifacts.
+  - They are intentionally narrower than a roadmap, but they should not be treated as directly assignable under `ops/core/03_ASSIGNMENT_PACKET.md` until PM expands them into full assignment packets.
+
+- task_id: PM-P1-RUNTIME-ALIGN
+  - owner_lane: PM
+  - objective: Reconcile runtime queue, QA outcomes, and PM decision artifacts so recorded status reflects actual accepted evidence.
+  - why_now: Runtime state is the system-of-record. If it is stale, downstream routing decisions are unreliable.
+  - dependencies: none
+  - allowed_paths:
+    - ops/runtime/PM_REVIEW_QUEUE.md
+    - ops/runtime/STATUS_SNAPSHOT.md
+    - ops/runtime/tasks/**
+  - done_when:
+    - PM-P1-001 and any similarly drifted tasks have matching assignment, return, qa, decision, and runtime ledger states.
+    - runtime status no longer contradicts accepted bundle evidence.
+  - validation_requirements:
+    - compare flat task-bundle files against runtime ledger entries
+    - document each corrected mismatch
+  - evidence_required:
+    - list of mismatches found
+    - files updated
+    - final state table for corrected tasks
+  - gate_level: A
+
+- task_id: DEVOPS-P1-BUNDLE-PARITY
+  - owner_lane: DEVOPS
+  - objective: Align ops tooling with the canonical flat task-bundle protocol and remove false legacy-artifact warnings from health checks.
+  - why_now: Current tooling still enforces or warns against a non-canonical bundle shape, which weakens protocol trust.
+  - dependencies: none
+  - allowed_paths:
+    - scripts/ops/**
+    - ops/core/TASK_BUNDLE_PROTOCOL.md
+    - ops/README.md
+    - ops/runtime/tasks/README.md
+    - ops/runtime/tasks/DEVOPS-P1-001/**
+  - done_when:
+    - `ops:doctor` and related ops tooling treat flat bundle files as canonical and do not warn on missing nested compatibility artifacts unless a task explicitly overrides the rule.
+  - validation_requirements:
+    - run `pnpm ops:doctor`
+    - show before/after warning reduction specific to bundle-shape findings
+  - evidence_required:
+    - command output
+    - changed-file list
+    - explanation of canonical bundle enforcement
+  - gate_level: B
+
+- task_id: DEVOPS-P1-ENV-CONFIDENCE
+  - owner_lane: DEVOPS
+  - objective: Diagnose and eliminate the local permission failure preventing `ops:status` and `test:p1` from running to completion.
+  - why_now: Build/test/ops confidence is artificially capped while core confidence commands fail before meaningful work starts.
+  - dependencies: none
+  - allowed_paths:
+    - package.json
+    - scripts/**
+    - apps/**
+    - ops/runtime/tasks/DEVOPS-P1-001/**
+    - docs/** if needed for runbook notes
+  - done_when:
+    - `pnpm ops:status` runs successfully in the local repo context
+    - `pnpm test:p1` reaches actual test execution
+    - root cause and remediation are documented
+  - validation_requirements:
+    - rerun failed commands
+    - verify failure is resolved or precisely isolated
+  - evidence_required:
+    - command output before and after
+    - root cause statement
+    - affected paths and fix summary
+  - gate_level: B
+
+- task_id: AI-P0-AUDIT-BREADTH
+  - owner_lane: AI
+  - objective: Expand audit quality validation breadth against real-case diversity without broadening the product wedge.
+  - why_now: The core workflow is only as trustworthy as the recommendation quality bar that supports it.
+  - dependencies:
+    - QA-P1-001 or equivalent QA contract stability
+  - allowed_paths:
+    - packages/ai/**
+    - tests/mvp/**
+    - ops/benchmarks/ai/**
+    - ops/runtime/tasks/AI-P0-001/**
+  - done_when:
+    - audit benchmarks cover broader but still wedge-valid cases
+    - acceptance criteria for good-fit and bad-fit audit behavior are clearer
+  - validation_requirements:
+    - benchmark/test evidence
+    - QA-checkable output criteria
+  - evidence_required:
+    - changed benchmark cases
+    - test results
+    - residual risk statement
+  - gate_level: B
+
+- task_id: PM-P1-DECISION-NORMALIZE
+  - owner_lane: PM
+  - objective: Resolve or narrow active decisions D-001, D-002, and D-003 into execution-safe guidance so FS/GTM/product-shell work stops stalling on ambiguity.
+  - why_now: These decisions are repeatedly constraining truthful shell and messaging work.
+  - dependencies:
+    - human input for final decision authority
+  - allowed_paths:
+    - ops/governance/ACTIVE_DECISIONS.md
+    - ops/runtime/tasks/**
+    - ops/truth/**
+  - done_when:
+    - each active decision has either a final outcome or a narrowed temporary rule suitable for assignment packets
+  - validation_requirements:
+    - verify resulting guidance changes routing or scope decisions concretely
+  - evidence_required:
+    - updated decision record
+    - downstream task impact note
+  - gate_level: A
+
+## 7. Strategic recommendation
+
+- is_the_project_realistically_on_track:
+  - Yes, but only at medium confidence.
+  - The core product is real and the architecture is coherent.
+  - The project is not safely ready for broadening claims, broadening workflow scope, or relaxing review discipline.
+- what_must_be_fixed_first:
+  - runtime and decision-state alignment
+  - task-bundle/tooling parity
+  - environment-level failures blocking health and test commands
+  - core recommendation quality breadth, especially audit/output validation
+- what_should_be_protected_and_not_disrupted:
+  - the narrow lead-review wedge
+  - PM/QA separation
+  - the flat canonical task-bundle protocol
+  - the coherent package architecture across API, dashboard, core, DB, scraper, and AI
+  - the evidence-first product truth posture in the truth docs
+
+## evidence_basis
+
+- key_files_and_systems_inspected:
+  - core operating files
+  - PM authoritative lane files
+  - PM validation rules
+  - runtime queue and status ledgers
+  - task-bundle protocol
+  - project truth documents
+  - root package scripts
+  - representative implementation files under API, dashboard, core, DB, scraper, AI, ops tooling, and MVP tests
+- explicit_uncertainty_areas:
+  - clean-room build/test confidence is not available from this run because `test:p1` and `ops:status` are blocked by a local permission issue
+  - deployment confidence was inferred from repo structure and env wiring, not from an end-to-end deploy validation
+  - the current dirty worktree means some broad code-surface observations may reflect in-flight work rather than settled repo truth

@@ -1,0 +1,96 @@
+# AGENT RETURN
+
+- task_id: DEVOPS-P1-001
+- files_read:
+  - ops/core/00_SYSTEM_OVERVIEW.md
+  - ops/core/01_OPERATING_MODEL.md
+  - ops/core/02_TASK_LIFECYCLE.md
+  - ops/core/03_ASSIGNMENT_PACKET.md
+  - ops/core/04_QA_GATE.md
+  - ops/core/05_OPERATING_PRINCIPLES.md
+  - ops/core/06_RUNTIME_RULES.md
+  - ops/agents/DEVOPS/DEVOPS_AGENT.md
+  - ops/agents/DEVOPS/DEVOPS_VALIDATION_RULES.md
+  - ops/truth/PROJECT.md
+  - ops/truth/CODEBASE_AUDIT.md
+  - ops/benchmarks/devops/README.md
+  - ops/benchmarks/devops/readiness_checks.md
+  - ops/runtime/PM_REVIEW_QUEUE.md
+  - ops/runtime/TASK_BUNDLE_PROTOCOL.md
+  - ops/runtime/TASK_FAMILY_REGISTRY.md
+  - ops/runtime/tasks/PM-P1-001/return.md
+  - ops/runtime/tasks/DEVOPS-P1-001/packets/DEVOPS-P1-001.md
+  - ops/runtime/tasks/DEVOPS-P1-001/returns/DEVOPS-P1-001.md
+  - ops/runtime/tasks/DEVOPS-P1-001/qa/DEVOPS-P1-001.md
+  - ops/runtime/tasks/DEVOPS-P1-001/decisions/DEVOPS-P1-001.md
+  - ops/README.md
+  - ops/runtime/README.md
+  - ops/runtime/tasks/README.md
+  - package.json
+  - scripts/opsDoctor.mjs
+  - scripts/opsStatus.mjs
+  - scripts/opsContractPreflight.mjs
+  - scripts/opsTaskGate.mjs
+  - scripts/opsGuard.mjs
+  - scripts/opsTaskInit.mjs
+  - tests/mvp/usecases.test.mjs
+  - tests/mvp/api-boundary.test.mjs
+- changed_files:
+  - package.json
+  - scripts/ops/doctor.mjs
+  - scripts/ops/status.mjs
+  - scripts/ops/preflight.mjs
+  - scripts/ops/gate.mjs
+  - scripts/ops/guard.mjs
+  - scripts/ops/task-init.mjs
+  - ops/benchmarks/devops/readiness_checks.md
+  - ops/runtime/tasks/DEVOPS-P1-001/packets/DEVOPS-P1-001.md
+- deliverable_summary:
+  - Moved the documented ops command entrypoints used by `package.json` into `scripts/ops/` so the repo now matches the packet's allowed-path model.
+  - Corrected `test:p1` to point at real current MVP tests and updated `build:p1` plus `ops:preflight` to reflect the build outputs those tests actually require.
+  - Updated `ops:guard` to execute the documented ops commands plus `test:p1` through the package scripts rather than stale hard-coded test file paths.
+  - Replaced the placeholder DEVOPS task packet with the PM-authored executable packet so the bundle is reviewable.
+  - Extended the DEVOPS readiness benchmark notes to include command-surface and guard-to-test parity checks.
+- output_contract_status:
+  - PASS WITH NOTES
+  - Documented ops commands inspected: `ops:doctor`, `ops:task:init`, `ops:gate`, `ops:guard`, `ops:status`, `ops:preflight`
+  - Command disposition:
+    - `ops:doctor` retained and moved to `scripts/ops/doctor.mjs`
+    - `ops:task:init` retained and moved to `scripts/ops/task-init.mjs`
+    - `ops:gate` retained and moved to `scripts/ops/gate.mjs`
+    - `ops:guard` retained and moved to `scripts/ops/guard.mjs`
+    - `ops:status` retained and moved to `scripts/ops/status.mjs`
+    - `ops:preflight` retained and moved to `scripts/ops/preflight.mjs`
+  - Remaining gap: `ops:guard` still exits non-zero because `test:p1` exposes a real failing assertion in `tests/mvp/usecases.test.mjs`; the command surface is now accurate, but the P1 test baseline is not green.
+- benchmark_result:
+  - Referenced benchmark pack: `ops/benchmarks/devops/readiness_checks.md`
+  - Added command-execution parity checks to the benchmark pack.
+  - Benchmark outcome:
+    - command surface parity: PASS
+    - guard-to-test parity: PASS
+    - full guard green state: FAIL due to existing P1 test failure
+- validation_evidence:
+  - `pnpm ops:doctor` succeeded after the change and now runs from `scripts/ops/doctor.mjs`.
+  - `pnpm ops:status` succeeded after the change and reported the current queue summary.
+  - `pnpm ops:preflight` succeeded after the change and confirmed required build outputs exist for the current P1 tests.
+  - `pnpm ops:gate -- --task=DEVOPS-P1-001` succeeded after the packet update and confirmed aligned bundle artifacts.
+  - `pnpm ops:task:init -- --task=DEVOPS-P1-001 --owner=DEVOPS --family=readiness --gate=B --priority=P1` succeeded as a no-op and skipped all existing bundle files.
+  - `pnpm ops:guard` now reaches and executes `test:p1`; it fails only because `tests/mvp/usecases.test.mjs` has a live assertion mismatch on subject text (`/quick thought on booking/i` vs `Quick thought on Zahnarzt Michael Prenzlauer Berg`).
+  - Verified docs and package scripts agree on the documented ops command names.
+  - Verified no blocked paths were changed.
+- self_check_failures:
+  - `ops:guard` is not green at handoff because `test:p1` contains a real red test unrelated to the command wiring.
+  - `ops:doctor` still emits large hygiene warnings from existing repo state, including checked-in `.env`, `package-lock.json`, and accumulated `dist` artifacts.
+- known_risks:
+  - QA must distinguish command-surface repair from full runtime cleanliness; the command layer is fixed, but repo hygiene remains noisy.
+  - If PM expects `ops:guard` to pass in this task, the current packet is insufficient because the remaining blocker is in `tests/**`, which is outside DEVOPS allowed paths.
+  - The historical root-level ops scripts remain in the repo and could drift if they are kept around but unused.
+- unresolved_issues:
+  - Whether the legacy root-level ops scripts should be removed or left in place for backward compatibility requires either a broader packet or a follow-up maintenance task.
+  - Whether the red `test:p1` assertion should be handled by an engineering lane or by narrowing the expected P1 test surface is outside this packet.
+- confidence_note:
+  - High confidence that documented command/doc parity is now restored.
+  - High confidence that the remaining `ops:guard` failure is a real test failure, not an ops-command wiring failure.
+- recommended_next_action:
+  - Send this bundle to QA with the command evidence above.
+  - Route the failing `test:p1` assertion to the appropriate engineering lane if PM requires a fully green `ops:guard` before acceptance.

@@ -1,0 +1,31 @@
+# PM DECISION
+
+- Task ID: PM-P1-HEALTHCHECK
+- Decision owner: PM
+- Verdict: PASS WITH NOTES
+- Outcome: accepted with notes
+- Reason:
+  - QA confirmed the revised return now satisfies the assignment for the intended review scope.
+  - The return now covers the full authoritative PM lane set named in the assignment.
+  - The audit now includes representative file-level inspection across major implementation surfaces rather than relying only on directory-level inspection.
+  - The next-task section is now framed correctly as routing-ready recommendations, not packet-complete specialist assignments.
+  - The remaining issues are real but non-blocking for accepting this PM audit artifact:
+    - the local `EPERM` failure still limits technical confidence
+    - tooling still warns on legacy nested task artifacts even though flat bundles are canonical
+    - selected next tasks still need packet-complete expansion before specialist execution
+- QA verdict reference:
+  - ops/runtime/tasks/PM-P1-HEALTHCHECK/qa.md
+- Accepted / rejected / accepted with notes:
+  - accepted with notes
+- Follow-up tasks:
+  - PM-P1-HEALTHCHECK-F1: convert selected routing-ready recommendations into packet-complete assignment artifacts before dispatching specialist lanes.
+  - PM-P1-HEALTHCHECK-F2: route the flat-vs-legacy task-bundle contradiction to DEVOPS for tooling/protocol alignment.
+  - PM-P1-HEALTHCHECK-F3: route the local `EPERM` confidence blocker to DEVOPS as an environment-confidence task.
+  - PM-P1-HEALTHCHECK-F4: update runtime ledgers if this healthcheck is being used as an accepted planning reference.
+- Runtime state recommendation:
+  - Mark `PM-P1-HEALTHCHECK` as `PASS WITH NOTES`.
+  - Do not treat the recommended next tasks in `return.md` as directly assignable until PM expands them into packet-complete artifacts.
+  - Use this healthcheck as accepted planning input, not as a substitute for specialist assignment packets.
+- Notes:
+  - The accepted artifact is the audit and prioritization judgment, not a set of ready-to-send specialist packets.
+  - The evidence around `ops:doctor`, `ops:status`, `test:p1`, runtime drift, and repo hygiene should be preserved as current planning context for follow-up tasks.

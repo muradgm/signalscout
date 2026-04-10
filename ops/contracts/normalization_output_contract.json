@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "required": [
+    "raw_field",
+    "normalized_value",
+    "confidence",
+    "notes"
+  ],
+  "properties": {
+    "raw_field": {
+      "type": "string"
+    },
+    "normalized_value": {
+      "type": "string"
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}

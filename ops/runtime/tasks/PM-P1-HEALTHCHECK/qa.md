@@ -1,0 +1,74 @@
+# QA Findings
+
+- Task ID: PM-P1-HEALTHCHECK
+- Reviewer: QA
+- Reviewed agent: PM
+- Scope checked:
+  - whether the revised return now covers the full authoritative PM lane set named in the assignment
+  - whether major implementation surfaces are now supported by representative file-level inspection rather than directory-level inspection only
+  - whether the next-task section is now framed correctly as routing-ready recommendations rather than directly assignable packets
+  - whether risks, blockers, and uncertainty remain specific and honest
+  - whether any blocking contradiction with truth docs or runtime/task protocol remains
+- Files inspected:
+  - ops/runtime/tasks/PM-P1-HEALTHCHECK/assignment.md
+  - ops/runtime/tasks/PM-P1-HEALTHCHECK/return.md
+  - ops/runtime/bootstrap/QA_BOOT.md
+  - ops/core/TASK_BUNDLE_PROTOCOL.md
+  - ops/truth/PROJECT.md
+  - ops/truth/PRODUCT_DEFINITION.md
+- Files changed checked:
+  - ops/runtime/tasks/PM-P1-HEALTHCHECK/return.md
+- Benchmark evidence:
+  - No benchmark pack was required for this PM audit task.
+  - The return still relies on executable health evidence from `pnpm ops:doctor`, `pnpm ops:status`, and `pnpm test:p1`.
+  - Those claims had previously been independently checked by QA and remain internally consistent in the revised return.
+- Validation evidence:
+  - The revised `files_read` now covers the full authoritative PM lane set named in the assignment:
+    - `ops/agents/PM/PM_AGENT.md`
+    - `ops/agents/PM/PM_PROMPT_SYSTEM.md`
+    - `ops/agents/PM/PM_VALIDATION_RULES.md`
+  - The revised `files_read` now includes representative file-level reads across major implementation surfaces:
+    - API: `apps/api/src/server.ts`
+    - Dashboard/operator workflow: `apps/dashboard/src/pages/LeadDetailPage.tsx`
+    - Core domain/use case: `packages/core/src/outreach/use-cases/GenerateOutreach.ts`
+    - DB repository: `packages/db/src/repositories/MongoOutreachRepository.ts`
+    - Scraper/signal logic: `packages/scraper/src/adapters/RuleBasedSignalDetector.ts`
+    - AI generation logic: `packages/ai/src/generators/MockAuditGenerator.ts`
+    - Ops tooling: `scripts/ops/doctor.mjs`
+    - MVP test path: `tests/mvp/usecases.test.mjs`
+  - The next-task section is now framed correctly for this review focus:
+    - PM explicitly states the tasks are `routing-ready next-task recommendations`
+    - PM explicitly states they are `not packet-complete specialist assignment artifacts`
+    - PM explicitly states they should not be treated as directly assignable under `ops/core/03_ASSIGNMENT_PACKET.md` until expanded into full assignment packets
+- Unresolved issues checked:
+  - The environment-level `EPERM` failure still blocks meaningful status/test signal.
+  - The runtime/tooling contradiction remains live:
+    - `ops/core/TASK_BUNDLE_PROTOCOL.md` makes flat bundle files canonical
+    - tooling still warns on missing nested compatibility artifacts
+  - Product truth and runtime protocol issues are surfaced honestly rather than hidden.
+- Findings:
+  - Blocking:
+    - none
+  - Non-blocking:
+    - The return no longer over-claims direct assignability for the next tasks; it now frames them correctly as routing-ready recommendations.
+    - A live contradiction still remains between canonical flat task bundles and tooling that warns on nested legacy artifacts, but PM calls this out directly and treats it as a real issue rather than silently reconciling it.
+    - Technical confidence remains constrained by the unresolved local `EPERM` failure.
+- Decision: PASS WITH NOTES
+- Reasons for verdict:
+  - The revised return now covers the full authoritative PM lane set named in the assignment.
+  - Major implementation surfaces are now supported by representative file-level inspection rather than directory-level inspection only.
+  - The next-task section is framed correctly for this review focus as routing-ready recommendations, not packet-complete assignments.
+  - Risks, blockers, and uncertainty remain specific and honest.
+  - No hidden blocking contradiction with truth docs or runtime/task protocol remains; the known contradictions are explicitly surfaced.
+- Residual risks:
+  - The `EPERM` failure still limits build/test/runtime confidence.
+  - The flat-vs-legacy task-bundle contradiction remains active until tooling and protocol are aligned.
+  - PM still needs a follow-up step to convert selected routing-ready recommendations into packet-complete specialist assignments before execution.
+- Confidence: high
+- Next owner: PM
+- Notes:
+  - Required fixes:
+    - none for this narrowed review scope
+  - Follow-up recommended:
+    - route or create the selected next tasks as packet-complete assignment artifacts before specialist execution
+    - reconcile tooling with the canonical flat task-bundle protocol

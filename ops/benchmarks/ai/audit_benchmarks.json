@@ -1,0 +1,32 @@
+[
+  {
+    "id": "AI-AUDIT-001",
+    "case": "local gym with weak local SEO and thin trust signals",
+    "input_signals": [
+      "few Google reviews",
+      "no location landing page",
+      "generic hero copy",
+      "no visible testimonials"
+    ],
+    "expected_minimum": [
+      "must mention local trust weakness",
+      "must mention missing location-specific or local search relevance",
+      "must avoid generic 'improve SEO' without evidence"
+    ]
+  },
+  {
+    "id": "AI-AUDIT-002",
+    "case": "dentist site with outdated design but strong trust signals",
+    "input_signals": [
+      "old layout",
+      "visible certifications",
+      "good contact visibility",
+      "many patient reviews"
+    ],
+    "expected_minimum": [
+      "must not exaggerate severity",
+      "must separate aesthetics from trust performance",
+      "must include balanced judgment"
+    ]
+  }
+]

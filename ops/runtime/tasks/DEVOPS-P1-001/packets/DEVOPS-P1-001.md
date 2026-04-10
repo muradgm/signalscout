@@ -1,0 +1,61 @@
+# ASSIGNMENT PACKET
+
+- task_id: DEVOPS-P1-001
+- title: ops enforcement parity for documented runtime controls
+- owner_lane: DEVOPS
+- priority: P1
+- gate: B
+- objective: Make the documented ops enforcement loop real by implementing or reconciling the documented ops commands so PM and QA can rely on executable runtime checks instead of markdown-only claims.
+- in_scope:
+  - audit the documented ops command surface in ops docs
+  - implement missing ops command entrypoints or narrow the docs to match reality
+  - add minimal runnable scripts for status, doctor, gate, task-init, guard, and preflight if those commands are intended to exist now
+  - update readiness benchmark references to the implemented command surface
+- out_of_scope:
+  - changing product behavior
+  - adding new runtime policy not already described in ops docs
+  - broad repo tooling refactors unrelated to ops enforcement
+- allowed_files:
+  - package.json
+  - scripts/ops/**
+  - ops/README.md
+  - ops/runtime/README.md
+  - ops/runtime/tasks/README.md
+  - ops/benchmarks/devops/**
+  - ops/runtime/tasks/DEVOPS-P1-001/**
+- blocked_files:
+  - apps/**
+  - packages/**
+  - ops/truth/**
+- inputs:
+  - ops/README.md
+  - ops/runtime/README.md
+  - ops/runtime/tasks/README.md
+  - ops/core/03_ASSIGNMENT_PACKET.md
+  - ops/core/04_QA_GATE.md
+  - ops/core/06_RUNTIME_RULES.md
+  - ops/benchmarks/devops/readiness_checks.md
+- expected_outputs:
+  - runnable or explicitly reconciled ops command surface
+  - updated docs that match the actual command surface
+  - readiness notes describing what each command verifies
+- output_contract:
+  - list every documented ops command inspected
+  - state whether it was implemented, retained, renamed, or removed
+  - list files changed
+  - include command run evidence and any remaining gaps
+- benchmark_pack:
+  - ops/benchmarks/devops/readiness_checks.md
+- validation_steps:
+  - run each documented ops command after the change
+  - verify docs and package scripts agree
+  - verify no blocked paths were changed
+- blast_radius: low
+- rollback_plan:
+  - revert the added or changed scripts and restore prior docs if the command surface becomes unreliable or misleading
+- done_when:
+  - every currently documented ops command is either runnable in this repo or removed from the docs
+  - DEVOPS return includes command evidence
+  - QA can verify command/doc parity without inference
+- escalation_condition:
+  - escalate if implementing parity requires introducing new operating policy rather than codifying existing documented policy
