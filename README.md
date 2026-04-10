@@ -112,3 +112,4 @@ pnpm --filter @signalscout/dashboard dev
 - This repo uses `pnpm`; `pnpm-lock.yaml` should be the authoritative lockfile.
 - Do not commit `.env` or generated `*.tsbuildinfo` files.
 - Review local changes with `git status` and `git diff` before creating the initial GitHub commit.
+- Follow the push discipline rule in [docs/operations/push-discipline.md](docs/operations/push-discipline.md): `assignment -> return -> qa -> decision -> runtime update -> push`.
