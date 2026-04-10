@@ -1,0 +1,14 @@
+# AGENT RETURN
+
+- task_id:
+- files_read:
+- changed_files:
+- deliverable_summary:
+- output_contract_status:
+- benchmark_result:
+- validation_evidence:
+- self_check_failures:
+- known_risks:
+- unresolved_issues:
+- confidence_note:
+- recommended_next_action:

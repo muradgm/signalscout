@@ -1,0 +1,78 @@
+{
+  "type": "object",
+  "required": [
+    "task_id",
+    "files_read",
+    "changed_files",
+    "deliverable_summary",
+    "output_contract_status",
+    "benchmark_result",
+    "validation_evidence",
+    "known_risks",
+    "unresolved_issues",
+    "confidence_note",
+    "recommended_next_action"
+  ],
+  "properties": {
+    "task_id": {
+      "type": "string"
+    },
+    "files_read": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "changed_files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "deliverable_summary": {
+      "type": "string"
+    },
+    "output_contract_status": {
+      "type": "string",
+      "enum": [
+        "pass",
+        "fail",
+        "partial",
+        "not_applicable"
+      ]
+    },
+    "benchmark_result": {
+      "type": "string"
+    },
+    "validation_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "self_check_failures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "known_risks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "unresolved_issues": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "confidence_note": {
+      "type": "string"
+    },
+    "recommended_next_action": {
+      "type": "string"
+    }
+  }
+}
