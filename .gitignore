@@ -21,6 +21,7 @@ pnpm-debug.log*
 .pnpm
 .vite
 .cache
+/ops
 .vscode/*
 !.vscode/extensions.json
 scripts/tmp/gmailReplyBridgeState.json
