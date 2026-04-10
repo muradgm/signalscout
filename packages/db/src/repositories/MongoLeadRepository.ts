@@ -44,4 +44,18 @@ export class MongoLeadRepository implements LeadRepository {
 
     return documents.map(mapLeadDocumentToEntity);
   }
+
+  async updateStatus(id: string, status: Lead['status']): Promise<Lead | null> {
+    const document = await LeadModel.findByIdAndUpdate(
+      id,
+      {
+        $set: {
+          status,
+        },
+      },
+      { new: true },
+    ).exec();
+
+    return document ? mapLeadDocumentToEntity(document) : null;
+  }
 }

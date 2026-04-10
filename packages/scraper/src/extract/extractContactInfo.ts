@@ -182,6 +182,7 @@ const streetSuffixPattern =
   '(?:straße|str(?:a(?:ss|ß)e)?\\.?|str\\.?|weg|allee|platz|ring|gasse|ufer|damm|chaussee|steig|pfad|markt|kai)';
 
 const addressCandidatePatterns = [
+  /\bAm\s+[A-Z][\p{L}.'-]+\s+\d{1,4}[A-Za-z]?(?:\s*,)?\s+\d{5}\s+[A-Z][\p{L}.'-]+(?:\s+[A-Z][\p{L}.'-]+){0,3}(?:\s*[–-]\s*[A-Z][\p{L}.'-]+(?:\s+[A-Z][\p{L}.'-]+){0,2})?/giu,
   /\b[A-ZÄÖÜ][\p{L}.']+(?:-[A-ZÄÖÜ][\p{L}.']+)+\s+\d{1,4}[A-Za-z]?(?:\s*[·,])?\s+\d{5}\s+[A-ZÄÖÜ][\p{L}.'-]+(?:\s*[–-]\s*[A-ZÄÖÜ][\p{L}.'-]+(?:\s+[A-ZÄÖÜ][\p{L}.'-]+){0,2})?/giu,
   /\b[A-ZÄÖÜ][\p{L}.']*(?:-[A-ZÄÖÜ][\p{L}.']*)*-(?:Straße|Str\.|Strasse|Weg|Allee|Platz|Ring|Gasse|Ufer|Damm|Chaussee|Steig|Pfad|Markt|Kai)\s+\d{1,4}[A-Za-z]?(?:\s*,)?\s+\d{5}\s+[A-ZÄÖÜ][\p{L}.'-]+(?:\s*[–-]\s*[A-ZÄÖÜ][\p{L}.'-]+(?:\s+[A-ZÄÖÜ][\p{L}.'-]+){0,2})?/giu,
   new RegExp(
@@ -278,7 +279,10 @@ const isLikelyAddress = (value: string): boolean => {
     return false;
   }
 
-  return new RegExp(`(?:${streetSuffixPattern})\\s+\\d`, 'i').test(trimmed);
+  return (
+    /^Am\s+[A-Z][\p{L}.'-]+\s+\d/iu.test(trimmed) ||
+    new RegExp(`(?:${streetSuffixPattern})\\s+\\d`, 'i').test(trimmed)
+  );
 };
 
 const toAddressKey = (value: string): string => {

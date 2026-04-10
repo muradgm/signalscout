@@ -19,6 +19,7 @@ export interface SaveAuditInput {
 
 export interface AuditRepository {
   save(input: SaveAuditInput): Promise<Audit>;
+  findById(auditId: string): Promise<Audit | null>;
   findLatestByLeadId(leadId: string): Promise<Audit | null>;
   findLatestByLeadIdAndSnapshotId(
     leadId: string,

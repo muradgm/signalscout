@@ -21,6 +21,16 @@ export class MongoAuditRepository implements AuditRepository {
     return mapAuditDocumentToEntity(document);
   }
 
+  async findById(auditId: string): Promise<Audit | null> {
+    const document = await AuditModel.findById(new Types.ObjectId(auditId)).exec();
+
+    if (!document) {
+      return null;
+    }
+
+    return mapAuditDocumentToEntity(document);
+  }
+
   async findLatestByLeadId(leadId: string): Promise<Audit | null> {
     const document = await AuditModel.findOne({
       leadId: new Types.ObjectId(leadId),

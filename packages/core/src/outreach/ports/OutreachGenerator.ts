@@ -11,6 +11,7 @@ export interface GenerateOutreachInput {
   snapshot: LeadSnapshot;
   signals: SignalSet;
   audit: Audit;
+  regenerationIndex?: number;
 }
 
 export interface GeneratedOutreachDraft {

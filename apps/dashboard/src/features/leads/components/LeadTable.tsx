@@ -59,7 +59,7 @@ export function LeadTable({
               <div>
                 <strong className="lead-row__title">{lead.companyName}</strong>
                 <p className="lead-row__meta">
-                  {lead.location ?? 'Unknown location'} · {lead.niche}
+                  {lead.location ?? 'Unknown location'} | {lead.niche}
                 </p>
               </div>
               <LeadStatusBadge

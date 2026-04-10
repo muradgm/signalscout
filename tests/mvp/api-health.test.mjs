@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import { createApp } from '../../apps/api/dist/app.js';
+import { healthResponseSchema } from '../../apps/api/dist/modules/health/health.schema.js';
 
 test('api health endpoint responds with ok payload', async () => {
   const app = createApp();
@@ -19,8 +20,9 @@ test('api health endpoint responds with ok payload', async () => {
 
     assert.equal(response.status, 200);
     assert.equal(payload.success, true);
-    assert.equal(payload.data.service, 'api');
-    assert.equal(payload.data.status, 'ok');
+    const parsed = healthResponseSchema.parse(payload.data);
+    assert.equal(parsed.service, 'api');
+    assert.equal(parsed.status, 'ok');
   } finally {
     await new Promise((resolve, reject) => {
       server.close((error) => {

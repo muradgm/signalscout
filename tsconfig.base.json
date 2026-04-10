@@ -20,9 +20,7 @@
       "@signalscout/core": ["packages/core/src/index.ts"],
       "@signalscout/db": ["packages/db/src/index.ts"],
       "@signalscout/ai": ["packages/ai/src/index.ts"],
-      "@signalscout/scraper": ["packages/scraper/src/index.ts"],
-      "@signalscout/email": ["packages/email/src/index.ts"],
-      "@signalscout/queue": ["packages/queue/src/index.ts"]
+      "@signalscout/scraper": ["packages/scraper/src/index.ts"]
     }
   }
 }

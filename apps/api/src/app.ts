@@ -11,11 +11,24 @@ export const createApp = (): Express => {
   app.use(helmet());
   app.use(
     cors({
-      origin: env.dashboardOrigin,
+      origin: (origin, callback) => {
+        if (!origin || env.dashboardOrigins.includes(origin)) {
+          callback(null, true);
+          return;
+        }
+
+        callback(new Error(`Origin ${origin} is not allowed by CORS`));
+      },
       credentials: true,
     }),
   );
-  app.use(express.json());
+  app.use(
+    express.json({
+      verify: (req, _res, buffer) => {
+        (req as express.Request & { rawBody?: string }).rawBody = buffer.toString('utf8');
+      },
+    }),
+  );
 
   app.use(env.apiBasePath, router);
 

@@ -1,4 +1,4 @@
-import type { Lead, LeadNiche, LeadSource } from '../entities/Lead.js';
+import type { Lead, LeadNiche, LeadSource, LeadStatus } from '../entities/Lead.js';
 
 export interface CreateLeadInput {
   companyName: string;
@@ -13,4 +13,5 @@ export interface LeadRepository {
   create(input: CreateLeadInput): Promise<Lead>;
   findById(id: string): Promise<Lead | null>;
   findMany(): Promise<Lead[]>;
+  updateStatus(id: string, status: LeadStatus): Promise<Lead | null>;
 }
