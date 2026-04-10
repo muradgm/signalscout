@@ -313,7 +313,7 @@ test('generate audit and outreach persist coherent lineage for the MVP path', as
   assert.equal(outreach.generatedSubject, outreach.subject);
   assert.equal(outreach.generatedBody, outreach.body);
   assert.equal(outreach.recommendation, 'send');
-  assert.match(outreach.subject ?? '', /quick thought on booking/i);
+  assert.match(outreach.subject ?? '', /quick thought on zahnarzt michael prenzlauer berg/i);
 });
 
 test('regenerating outreach on the same audit rotates to a different draft variant', async () => {
