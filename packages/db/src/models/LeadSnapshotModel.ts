@@ -152,7 +152,10 @@ const leadSnapshotSchema = new Schema<LeadSnapshotDocument>(
   },
 );
 
-leadSnapshotSchema.index({ leadId: 1, extractedAt: -1 });
+// Supports latest-snapshot lookups by lead with the same tiebreak sort used in the repository.
+leadSnapshotSchema.index({ leadId: 1, extractedAt: -1, _id: -1 });
+leadSnapshotSchema.index({ 'contactInfo.emails': 1, extractedAt: -1, _id: -1 });
+leadSnapshotSchema.index({ 'contactEnrichment.emails.value': 1, extractedAt: -1, _id: -1 });
 
 export const LeadSnapshotModel: Model<LeadSnapshotDocument> =
   (mongoose.models.LeadSnapshot as Model<LeadSnapshotDocument> | undefined) ||

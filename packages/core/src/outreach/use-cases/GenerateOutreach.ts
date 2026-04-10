@@ -56,7 +56,14 @@ export class GenerateOutreach {
   ) {}
 
   async execute(input: GenerateOutreachInput): Promise<OutreachMessage> {
-    const draft = await this.outreachGenerator.generate(input);
+    const regenerationIndex = await this.outreachRepository.countByLeadIdAndAuditId(
+      input.lead.id,
+      input.audit.id,
+    );
+    const draft = await this.outreachGenerator.generate({
+      ...input,
+      regenerationIndex,
+    });
 
     const fitReason = assertNonEmptyString(draft.fitReason, 'Outreach fit reason');
     const bestAngle = assertNonEmptyString(draft.bestAngle, 'Outreach best angle');
@@ -70,11 +77,23 @@ export class GenerateOutreach {
       recommendation: draft.recommendation,
       fitReason,
       bestAngle,
+      generatedSubject: normalizeNullableString(draft.subject),
+      generatedBody: normalizeNullableString(draft.body),
       subject: normalizeNullableString(draft.subject),
       body: normalizeNullableString(draft.body),
       reasoning,
       evidence,
       status: resolveStatus(draft.recommendation),
+      reviewStatus: 'not_reviewed',
+      reviewedAt: null,
+      sentAt: null,
+      sendAttemptCount: 0,
+      lastSendAttemptAt: null,
+      lastSendErrorCode: null,
+      lastSendError: null,
+      lastSendRetryable: false,
+      deliveryProvider: null,
+      providerMessageId: null,
     });
   }
 }

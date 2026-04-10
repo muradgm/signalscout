@@ -11,13 +11,25 @@ export interface OutreachMessageDocument {
   fitReason: string;
   bestAngle: string;
 
+  generatedSubject: string | null;
+  generatedBody: string | null;
   subject: string | null;
   body: string | null;
 
   reasoning: string;
   evidence: string[];
 
-  status: 'withheld' | 'review_required' | 'drafted' | 'sent' | 'replied' | 'closed';
+  status: 'withheld' | 'review_required' | 'drafted' | 'approved' | 'sent' | 'replied' | 'closed';
+  reviewStatus: 'not_reviewed' | 'accepted' | 'edited' | 'skipped' | 'held';
+  reviewedAt: Date | null;
+  sentAt: Date | null;
+  sendAttemptCount: number;
+  lastSendAttemptAt: Date | null;
+  lastSendErrorCode: string | null;
+  lastSendError: string | null;
+  lastSendRetryable: boolean;
+  deliveryProvider: 'resend' | null;
+  providerMessageId: string | null;
 
   createdAt: Date;
   updatedAt: Date;
@@ -58,6 +70,16 @@ const outreachMessageSchema = new Schema<OutreachMessageDocument>(
       required: true,
       trim: true,
     },
+    generatedSubject: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    generatedBody: {
+      type: String,
+      default: null,
+      trim: true,
+    },
     subject: {
       type: String,
       default: null,
@@ -81,8 +103,57 @@ const outreachMessageSchema = new Schema<OutreachMessageDocument>(
     status: {
       type: String,
       required: true,
-      enum: ['withheld', 'review_required', 'drafted', 'sent', 'replied', 'closed'],
+      enum: ['withheld', 'review_required', 'drafted', 'approved', 'sent', 'replied', 'closed'],
       default: 'drafted',
+    },
+    reviewStatus: {
+      type: String,
+      required: true,
+      enum: ['not_reviewed', 'accepted', 'edited', 'skipped', 'held'],
+      default: 'not_reviewed',
+    },
+    reviewedAt: {
+      type: Date,
+      default: null,
+    },
+    sentAt: {
+      type: Date,
+      default: null,
+    },
+    sendAttemptCount: {
+      type: Number,
+      required: true,
+      default: 0,
+      min: 0,
+    },
+    lastSendAttemptAt: {
+      type: Date,
+      default: null,
+    },
+    lastSendErrorCode: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    lastSendError: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+    lastSendRetryable: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    deliveryProvider: {
+      type: String,
+      enum: ['resend'],
+      default: null,
+    },
+    providerMessageId: {
+      type: String,
+      default: null,
+      trim: true,
     },
   },
   {
@@ -90,8 +161,10 @@ const outreachMessageSchema = new Schema<OutreachMessageDocument>(
   },
 );
 
-outreachMessageSchema.index({ leadId: 1, createdAt: -1 });
-outreachMessageSchema.index({ auditId: 1, createdAt: -1 });
+// Supports latest-outreach lookups by lead with the same tiebreak sort used in the repository.
+outreachMessageSchema.index({ leadId: 1, createdAt: -1, _id: -1 });
+outreachMessageSchema.index({ auditId: 1, createdAt: -1, _id: -1 });
+outreachMessageSchema.index({ deliveryProvider: 1, providerMessageId: 1 });
 
 export const OutreachMessageModel: Model<OutreachMessageDocument> =
   (mongoose.models.OutreachMessage as Model<OutreachMessageDocument> | undefined) ||

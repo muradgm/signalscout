@@ -8,6 +8,9 @@ import { DetectSignals } from '../../packages/core/dist/index.js';
 import { RuleBasedSignalDetector, buildLeadSnapshot } from '../../packages/scraper/dist/index.js';
 import { benchmarkFixtures } from './benchmark-fixtures.mjs';
 
+const normalizeOutreachPhrase = (phrase) =>
+  phrase.replace(/strong trust-building material/gi, 'strong trust material');
+
 test('benchmark fixtures produce expected extraction and workflow outcomes', async () => {
   const detector = new DetectSignals(new RuleBasedSignalDetector());
   const auditGenerator = new MockAuditGenerator();
@@ -72,6 +75,14 @@ test('benchmark fixtures produce expected extraction and workflow outcomes', asy
       fixture.expectation.recommendation,
       `${fixture.id}: recommendation mismatch`,
     );
+    assert.ok(
+      auditDraft.strengths.length >= (fixture.expectation.minAuditStrengths ?? 0),
+      `${fixture.id}: audit strengths too thin`,
+    );
+    assert.ok(
+      auditDraft.evidence.length >= (fixture.expectation.minAuditEvidence ?? 0),
+      `${fixture.id}: audit evidence too thin`,
+    );
 
     if (fixture.expectation.requiresEmail) {
       assert.ok(
@@ -112,6 +123,114 @@ test('benchmark fixtures produce expected extraction and workflow outcomes', asy
       assert.ok(
         !snapshot.contactInfo.phones.includes(rejectedPhone),
         `${fixture.id}: noisy phone survived extraction: ${rejectedPhone}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresAuditStrengthPhrases ?? []) {
+      assert.ok(
+        auditDraft.strengths.some((strength) =>
+          strength.toLowerCase().includes(phrase.toLowerCase()),
+        ),
+        `${fixture.id}: expected audit strength phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresAuditSummaryPhrases ?? []) {
+      assert.match(
+        auditDraft.summary,
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: expected audit summary phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.rejectsAuditSummaryPhrases ?? []) {
+      assert.doesNotMatch(
+        auditDraft.summary,
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: unexpected audit summary phrase present: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresAuditEvidencePhrases ?? []) {
+      assert.ok(
+        auditDraft.evidence.some((item) =>
+          item.toLowerCase().includes(phrase.toLowerCase()),
+        ),
+        `${fixture.id}: expected audit evidence phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresOutreachBodyPhrases ?? []) {
+      assert.match(
+        outreachDraft.body ?? '',
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: expected outreach body phrase missing: ${phrase}`,
+      );
+    }
+
+    if (fixture.expectation.requiresOutreachBodyPhrasesAny?.length) {
+      assert.ok(
+        fixture.expectation.requiresOutreachBodyPhrasesAny.some((phrase) =>
+          new RegExp(phrase, 'i').test(outreachDraft.body ?? ''),
+        ),
+        `${fixture.id}: none of the expected outreach body variants were present`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.rejectsOutreachBodyPhrases ?? []) {
+      assert.doesNotMatch(
+        outreachDraft.body ?? '',
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: unexpected outreach body phrase present: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresOutreachSubjectPhrases ?? []) {
+      assert.match(
+        outreachDraft.subject ?? '',
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: expected outreach subject phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.rejectsOutreachSubjectPhrases ?? []) {
+      assert.doesNotMatch(
+        outreachDraft.subject ?? '',
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: unexpected outreach subject phrase present: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresOutreachFitReasonPhrases ?? []) {
+      assert.match(
+        outreachDraft.fitReason ?? '',
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: expected outreach fitReason phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresOutreachAnglePhrases ?? []) {
+      assert.match(
+        outreachDraft.bestAngle ?? '',
+        new RegExp(phrase, 'i'),
+        `${fixture.id}: expected outreach angle phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresOutreachReasoningPhrases ?? []) {
+      assert.match(
+        outreachDraft.reasoning ?? '',
+        new RegExp(normalizeOutreachPhrase(phrase), 'i'),
+        `${fixture.id}: expected outreach reasoning phrase missing: ${phrase}`,
+      );
+    }
+
+    for (const phrase of fixture.expectation.requiresOutreachEvidencePhrases ?? []) {
+      assert.ok(
+        outreachDraft.evidence.some((item) =>
+          item.toLowerCase().includes(phrase.toLowerCase()),
+        ),
+        `${fixture.id}: expected outreach evidence phrase missing: ${phrase}`,
       );
     }
 

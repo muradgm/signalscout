@@ -80,8 +80,11 @@ const auditSchema = new Schema<AuditDocument>(
   },
 );
 
-auditSchema.index({ leadId: 1, createdAt: -1 });
-auditSchema.index({ snapshotId: 1, createdAt: -1 });
+// Supports latest-audit lookups by lead with the same tiebreak sort used in the repository.
+auditSchema.index({ leadId: 1, createdAt: -1, _id: -1 });
+// Supports latest-audit lookups for a specific lead/snapshot pair.
+auditSchema.index({ leadId: 1, snapshotId: 1, createdAt: -1, _id: -1 });
+auditSchema.index({ snapshotId: 1, createdAt: -1, _id: -1 });
 
 export const AuditModel: Model<AuditDocument> =
   (mongoose.models.Audit as Model<AuditDocument> | undefined) ||

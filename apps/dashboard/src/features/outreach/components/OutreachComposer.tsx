@@ -7,8 +7,16 @@ type OutreachComposerProps = {
   onBodyChange: (value: string) => void;
   onRegenerate: () => void;
   onCopy: () => void;
+  onAccept: () => void;
+  onSaveEdits: () => void;
   onSkip: () => void;
-  onSendLater: () => void;
+  onSend: () => void;
+  isDirty?: boolean;
+  canSend?: boolean;
+  sendHelpText?: string | null;
+  isWorking?: boolean;
+  isSending?: boolean;
+  hasSendFailure?: boolean;
 };
 
 export function OutreachComposer({
@@ -20,8 +28,16 @@ export function OutreachComposer({
   onBodyChange,
   onRegenerate,
   onCopy,
+  onAccept,
+  onSaveEdits,
   onSkip,
-  onSendLater,
+  onSend,
+  isDirty = false,
+  canSend = false,
+  sendHelpText = null,
+  isWorking = false,
+  isSending = false,
+  hasSendFailure = false,
 }: OutreachComposerProps) {
   return (
     <section className="content-card">
@@ -44,7 +60,7 @@ export function OutreachComposer({
           type="text"
           value={subject}
           onChange={(event) => onSubjectChange(event.target.value)}
-          disabled={isDisabled}
+          disabled={isDisabled || isWorking}
           placeholder="No subject generated yet"
         />
       </label>
@@ -54,24 +70,41 @@ export function OutreachComposer({
         <textarea
           value={body}
           onChange={(event) => onBodyChange(event.target.value)}
-          disabled={isDisabled}
+          disabled={isDisabled || isWorking}
           rows={12}
           placeholder="No body generated yet"
         />
       </label>
 
+      {sendHelpText ? <p className="status-note">{sendHelpText}</p> : null}
+
       <div className="action-row">
-        <button type="button" onClick={onRegenerate}>
+        <button type="button" onClick={onRegenerate} disabled={isWorking}>
           Regenerate
         </button>
-        <button type="button" className="button-secondary" onClick={onCopy}>
+        <button type="button" className="button-secondary" onClick={onCopy} disabled={isWorking}>
           Copy
         </button>
-        <button type="button" className="button-secondary" onClick={onSkip}>
+        <button type="button" className="button-secondary" onClick={onAccept} disabled={isWorking}>
+          Accept draft
+        </button>
+        <button
+          type="button"
+          className="button-secondary"
+          onClick={onSaveEdits}
+          disabled={isDisabled || isWorking || !isDirty}
+        >
+          Save edits
+        </button>
+        <button type="button" className="button-secondary" onClick={onSkip} disabled={isWorking}>
           Skip
         </button>
-        <button type="button" className="button-secondary" onClick={onSendLater}>
-          Send later
+        <button
+          type="button"
+          onClick={onSend}
+          disabled={isDisabled || isWorking || !canSend}
+        >
+          {isSending ? 'Sending...' : hasSendFailure ? 'Retry send' : 'Send now'}
         </button>
       </div>
     </section>

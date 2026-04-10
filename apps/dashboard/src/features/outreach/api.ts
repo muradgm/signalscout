@@ -15,5 +15,28 @@ export const fetchLatestOutreach = async (
   }
 };
 
-export const generateOutreach = (leadId: string): Promise<Outreach> =>
-  apiRequest(`/leads/${leadId}/outreach`, { method: 'POST' });
+export const generateOutreach = (
+  leadId: string,
+  auditId?: string,
+): Promise<Outreach> =>
+  apiRequest(`/leads/${leadId}/outreach`, {
+    method: 'POST',
+    body: JSON.stringify(auditId ? { auditId } : {}),
+  });
+
+export const reviewOutreach = (
+  outreachId: string,
+  input:
+    | { action: 'accepted'; subject: string | null; body: string | null }
+    | { action: 'edited'; subject: string; body: string }
+    | { action: 'skipped'; subject: string | null; body: string | null },
+): Promise<Outreach> =>
+  apiRequest(`/outreach/${outreachId}/review`, {
+    method: 'PATCH',
+    body: JSON.stringify(input),
+  });
+
+export const sendOutreach = (outreachId: string): Promise<Outreach> =>
+  apiRequest(`/outreach/${outreachId}/send`, {
+    method: 'POST',
+  });

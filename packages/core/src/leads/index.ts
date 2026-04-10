@@ -7,6 +7,7 @@ export * from './ports/LeadSnapshotRepository.js';
 
 export * from './use-cases/CreateLead.js';
 export * from './use-cases/GetLeadById.js';
+export * from './use-cases/GetLeadSnapshotById.js';
 export * from './use-cases/GetLatestLeadSnapshot.js';
 export * from './use-cases/ListLeads.js';
 export * from './use-cases/RefreshLeadSnapshot.js';
