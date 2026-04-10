@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const root = process.cwd();
 const ok = (msg) => console.log(`✅ ${msg}`);
@@ -33,6 +34,12 @@ const VALID_REVIEW_STATUSES = new Set(['NOT STARTED', 'IN PROGRESS', 'PASS WITH 
 
 let failures = 0;
 let warnings = 0;
+const trackedFiles = new Set(
+  execFileSync('git', ['ls-files'], { cwd: root, encoding: 'utf8' })
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean),
+);
 
 function read(relPath) {
   return fs.readFileSync(path.join(root, relPath), 'utf8');
@@ -115,9 +122,29 @@ function checkTaskBundles() {
 
   const missingArtifacts = [];
   for (const taskId of bundles) {
-    for (const segment of ['packets', 'returns', 'qa', 'decisions']) {
-      const expected = path.join(taskRoot, taskId, segment, `${taskId}.md`);
-      if (!fs.existsSync(expected)) missingArtifacts.push(rel(expected));
+    const artifactCandidates = new Map([
+      ['assignment', [
+        path.join(taskRoot, taskId, 'assignment.md'),
+        path.join(taskRoot, taskId, 'packets', `${taskId}.md`),
+      ]],
+      ['return', [
+        path.join(taskRoot, taskId, 'return.md'),
+        path.join(taskRoot, taskId, 'returns', `${taskId}.md`),
+      ]],
+      ['qa', [
+        path.join(taskRoot, taskId, 'qa.md'),
+        path.join(taskRoot, taskId, 'qa', `${taskId}.md`),
+      ]],
+      ['decision', [
+        path.join(taskRoot, taskId, 'decision.md'),
+        path.join(taskRoot, taskId, 'decisions', `${taskId}.md`),
+      ]],
+    ]);
+
+    for (const [artifact, candidates] of artifactCandidates) {
+      if (!candidates.some((candidate) => fs.existsSync(candidate))) {
+        missingArtifacts.push(`${rel(path.join(taskRoot, taskId))} missing ${artifact}`);
+      }
     }
   }
 
@@ -131,15 +158,13 @@ function checkTaskBundles() {
 
 function checkRepoHygiene() {
   const hygieneFindings = [];
-  if (fs.existsSync(path.join(root, '.env'))) hygieneFindings.push('.env checked into snapshot');
-  if (fs.existsSync(path.join(root, 'package-lock.json'))) hygieneFindings.push('package-lock.json present in pnpm workspace');
+  if (trackedFiles.has('.env')) hygieneFindings.push('.env is tracked in git');
+  if (trackedFiles.has('package-lock.json')) hygieneFindings.push('package-lock.json is tracked in a pnpm workspace');
 
-  for (const p of walk(root)) {
-    const normalized = rel(p);
-    if (normalized.startsWith('.git/')) continue;
-    if (normalized.startsWith('.github/')) continue;
-    if (/\bnode_modules\b/.test(normalized)) hygieneFindings.push(`node_modules present: ${normalized}`);
-    if (/\bdist\//.test(normalized) || normalized.endsWith('/dist')) hygieneFindings.push(`dist artifact present: ${normalized}`);
+  for (const tracked of trackedFiles) {
+    if (tracked.startsWith('.github/')) continue;
+    if (/\bnode_modules\b/.test(tracked)) hygieneFindings.push(`node_modules tracked: ${tracked}`);
+    if (/(^|\/)dist\//.test(tracked) || tracked.endsWith('/dist')) hygieneFindings.push(`dist artifact tracked: ${tracked}`);
   }
 
   if (hygieneFindings.length === 0) ok('Repo hygiene clean');
