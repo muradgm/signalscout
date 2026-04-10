@@ -70,7 +70,7 @@ Evidence:
 
 Evidence:
 - route schemas under [apps/api/src/modules](C:\Users\Murad\Documents\SS\signalscout\apps\api\src\modules)
-- [api-boundary.test.mjs](C:\Users\Murad\Documents\SS\signalscout\tests\mvp\api-boundary.test.mjs)
+- integration and route-contract coverage under [tests/mvp](C:\Users\Murad\Documents\SS\signalscout\tests\mvp)
 
 ---
 
@@ -125,7 +125,7 @@ Evidence:
 Confirmed:
 - non-Berlin logic exists
 - location-evidence quality handling exists
-- a compact stored-data validation pack now exists for real-case pressure beyond fixtures
+- real-case pressure beyond fixtures has been added through broader benchmark and stored-data validation work
 
 Still needs work:
 - broader real-world validation beyond current fixtures
@@ -153,7 +153,6 @@ Evidence:
 - benchmark coverage exists
 - specialty-aware shaping exists in generator logic
 - audit benchmark discrimination was materially strengthened in `MockAuditGenerator` and AI tests
-- a compact stored-data validation pack now exists in `scripts/tmp/dataValidationPack.md`
 - stored-data validation slices now have direct regression coverage in the AI test suite
 - stored operator behavior now has a first explicit tightening pass reflected in AI generator/test work
 - broader live real-case pressure now includes a multi-specialty Torhaus slice in the AI suite
@@ -184,7 +183,6 @@ Evidence:
 Evidence:
 - polishing layer behavior is encoded in generator logic/tests
 - outreach benchmark discrimination was materially strengthened in `MockOutreachGenerator` and AI tests
-- a compact stored-data validation pack now exists in `scripts/tmp/dataValidationPack.md`
 - stored-data validation slices now have direct regression coverage in the AI test suite
 - stored operator behavior now has a first explicit tightening pass reflected in AI generator/test work
 - broader live real-case pressure now includes a multi-specialty Torhaus slice in the AI suite

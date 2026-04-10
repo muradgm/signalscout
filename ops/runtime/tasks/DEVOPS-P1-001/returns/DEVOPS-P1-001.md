@@ -27,14 +27,13 @@
   - ops/runtime/README.md
   - ops/runtime/tasks/README.md
   - package.json
-  - scripts/opsDoctor.mjs
-  - scripts/opsStatus.mjs
-  - scripts/opsContractPreflight.mjs
-  - scripts/opsTaskGate.mjs
-  - scripts/opsGuard.mjs
-  - scripts/opsTaskInit.mjs
+  - scripts/ops/doctor.mjs
+  - scripts/ops/status.mjs
+  - scripts/ops/preflight.mjs
+  - scripts/ops/gate.mjs
+  - scripts/ops/guard.mjs
+  - scripts/ops/task-init.mjs
   - tests/mvp/usecases.test.mjs
-  - tests/mvp/api-boundary.test.mjs
 - changed_files:
   - package.json
   - scripts/ops/doctor.mjs

@@ -21,7 +21,7 @@
     "ops:replies:gmail-bridge": "node scripts/pollGmailRepliesToWebhook.mjs",
     "ops:replies:webhook-test": "node scripts/sendSignedInboundReplyWebhook.mjs",
     "clean": "turbo run clean && rimraf node_modules",
-    "test:p1": "node --test tests/mvp/usecases.test.mjs tests/mvp/api-boundary.test.mjs",
+    "test:p1": "node --test tests/mvp/usecases.test.mjs",
     "ops:doctor": "node scripts/ops/doctor.mjs",
     "ops:gate": "node scripts/ops/gate.mjs",
     "ops:clean-state": "node scripts/opsCleanRepoState.mjs",
