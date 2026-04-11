@@ -315,22 +315,24 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               </div>
             </div>
 
-            <div
-              className="marketing-product-callout marketing-product-callout--confidence"
-              data-reveal-item="2"
-            >
-              <span className="marketing-card-label">Confidence</span>
-              <strong>High</strong>
-              <p>Enough signal is present to support a real operator decision.</p>
-            </div>
+            <div className="marketing-product-stage__aside">
+              <div
+                className="marketing-product-callout marketing-product-callout--confidence"
+                data-reveal-item="2"
+              >
+                <span className="marketing-card-label">Confidence</span>
+                <strong>High</strong>
+                <p>Enough signal is present to support a real operator decision.</p>
+              </div>
 
-            <div
-              className="marketing-product-callout marketing-product-callout--evidence"
-              data-reveal-item="3"
-            >
-              <span className="marketing-card-label">Evidence</span>
-              <strong>Booking path is visible</strong>
-              <p>Contact quality and trust cues remain visible inside the same surface.</p>
+              <div
+                className="marketing-product-callout marketing-product-callout--evidence"
+                data-reveal-item="3"
+              >
+                <span className="marketing-card-label">Evidence</span>
+                <strong>Booking path is visible</strong>
+                <p>Contact quality and trust cues remain visible inside the same surface.</p>
+              </div>
             </div>
           </div>
         </section>
