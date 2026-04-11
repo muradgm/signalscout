@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap");
+
 * {
   box-sizing: border-box;
 }
@@ -582,6 +584,7 @@ button:disabled {
 .marketing-home {
   min-height: 100vh;
   padding: 0 0 6.5rem;
+  font-family: "Instrument Sans", Aptos, "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
   --marketing-bg: #f7f9fc;
   --marketing-bg-soft: #eef3fb;
   --marketing-surface: rgba(255, 255, 255, 0.78);
@@ -665,7 +668,7 @@ button:disabled {
 .marketing-nav__links a {
   text-decoration: none;
   color: var(--marketing-muted);
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .marketing-nav__links a:hover {
@@ -730,6 +733,7 @@ button:disabled {
   margin: 0;
   color: var(--marketing-muted);
   line-height: 1.65;
+  letter-spacing: -0.01em;
 }
 
 .marketing-copy--lead {
