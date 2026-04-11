@@ -124,19 +124,21 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
   return (
     <div className="marketing-home">
       <header className="marketing-nav">
-        <a className="marketing-brand" href="#top">
-          <span className="eyebrow">SignalScout</span>
-          <strong>Decision Workspace</strong>
-        </a>
-
-        <nav className="marketing-nav__links" aria-label="Marketing">
-          <a href="#product">Product</a>
-          <a href="#workflow">How it works</a>
-          <a href="#fit">Fit</a>
-          <a className="marketing-nav__cta" href="#cta">
-            Request demo
+        <div className="marketing-nav__inner">
+          <a className="marketing-brand" href="#top">
+            <strong className="marketing-brand__wordmark">SignalScout</strong>
+            <span className="marketing-brand__descriptor">Decision workspace</span>
           </a>
-        </nav>
+
+          <nav className="marketing-nav__links" aria-label="Marketing">
+            <a href="#product">Product</a>
+            <a href="#workflow">How it works</a>
+            <a href="#fit">Fit</a>
+            <a className="marketing-nav__cta" href="#cta">
+              Request demo
+            </a>
+          </nav>
+        </div>
       </header>
 
       <main className="marketing-shell" id="top">
@@ -201,7 +203,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                   </div>
                 </div>
 
-                <div className="marketing-hero-rail">
+                <div className="marketing-hero-support-grid">
                   <div className="marketing-hero-card marketing-hero-card--note" data-reveal-item="1">
                     <span className="marketing-card-label">Evidence</span>
                     <strong>Booking path is visible</strong>
