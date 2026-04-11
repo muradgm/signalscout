@@ -162,6 +162,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               </a>
             </div>
 
+            <p className="marketing-action-note">
+              Built for selective outbound review. No CRM sprawl, no automation theater, just a
+              clearer next-step decision.
+            </p>
+
             <div className="marketing-proof-row" aria-label="Highlights">
               <span>Evidence-led review</span>
               <span>Local relevance and confidence</span>
@@ -178,7 +183,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               <div className="marketing-hero-art__glow marketing-hero-art__glow--olive" />
               <div className="marketing-hero-art__glow marketing-hero-art__glow--warm" />
               <div className="marketing-hero-grid">
-                <div className="marketing-hero-card marketing-hero-card--main">
+                <div className="marketing-hero-card marketing-hero-card--main" data-reveal-item="0">
                   <div className="marketing-hero-card__bar">
                     <span className="marketing-pill marketing-pill--accent">High local fit</span>
                     <span className="marketing-pill">Decision in progress</span>
@@ -197,13 +202,13 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                 </div>
 
                 <div className="marketing-hero-rail">
-                  <div className="marketing-hero-card marketing-hero-card--note">
+                  <div className="marketing-hero-card marketing-hero-card--note" data-reveal-item="1">
                     <span className="marketing-card-label">Evidence</span>
                     <strong>Booking path is visible</strong>
                     <p>Trust is strong, but the next action still feels softer than it should.</p>
                   </div>
 
-                  <div className="marketing-hero-card marketing-hero-card--signal">
+                  <div className="marketing-hero-card marketing-hero-card--signal" data-reveal-item="2">
                     <span className="marketing-card-label">Confidence</span>
                     <strong>High</strong>
                     <p>Clear local cues with enough signal to support an operator decision.</p>
@@ -226,7 +231,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
 
           <div className="marketing-workflow-rail">
             {workflowSteps.map((step, index) => (
-              <article key={step.title} className="marketing-step-card">
+              <article
+                key={step.title}
+                className="marketing-step-card"
+                data-reveal-item={index}
+              >
                 <span className="marketing-step-card__index">0{index + 1}</span>
                 <strong>{step.title}</strong>
                 <p>{step.body}</p>
@@ -249,7 +258,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
 
           <div className="marketing-proof-grid">
             {proofCards.map((card) => (
-              <article key={card.title} className="marketing-proof-card">
+              <article
+                key={card.title}
+                className="marketing-proof-card"
+                data-reveal-item={proofCards.indexOf(card)}
+              >
                 <span className="marketing-card-label">Proof</span>
                 <strong>{card.title}</strong>
                 <p>{card.body}</p>
@@ -334,7 +347,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
 
           <div className="marketing-fit-grid">
             {fitCards.map((card) => (
-              <article key={card.title} className="marketing-fit-card">
+              <article
+                key={card.title}
+                className="marketing-fit-card"
+                data-reveal-item={fitCards.indexOf(card)}
+              >
                 <strong>{card.title}</strong>
                 <p>{card.body}</p>
               </article>
@@ -357,12 +374,12 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <div className="marketing-secondary__grid">
-            <article className="marketing-secondary-card">
+            <article className="marketing-secondary-card" data-reveal-item="0">
               <span className="marketing-card-label">Sending supported</span>
               <strong>Move from review to send in one workflow.</strong>
               <p>Execution is real, but it stays downstream of the review and audit loop.</p>
             </article>
-            <article className="marketing-secondary-card">
+            <article className="marketing-secondary-card" data-reveal-item="1">
               <span className="marketing-card-label">Replies visible</span>
               <strong>Reply visibility exists, without taking over the promise.</strong>
               <p>Replies stay secondary to the main review, judgment, and outreach flow.</p>
