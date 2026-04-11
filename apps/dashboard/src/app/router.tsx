@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { DashboardLayout } from './layout/DashboardLayout';
 import { LeadDetailPage } from '../pages/LeadDetailPage';
 import { LeadsPage } from '../pages/LeadsPage';
+import { MarketingHomePage } from '../pages/MarketingHomePage';
 
 type Route =
+  | { kind: 'marketing'; path: '/' }
   | { kind: 'leads'; path: '/leads' }
   | { kind: 'lead-detail'; path: string; leadId: string };
 
 const parseRoute = (pathname: string): Route => {
   if (pathname === '/' || pathname === '') {
-    return { kind: 'leads', path: '/leads' };
+    return { kind: 'marketing', path: '/' };
   }
 
   const detailMatch = pathname.match(/^\/leads\/([^/]+)$/);
@@ -22,24 +24,17 @@ const parseRoute = (pathname: string): Route => {
     };
   }
 
-  return { kind: 'leads', path: '/leads' };
-};
-
-const ensureInitialPath = (): void => {
-  if (window.location.pathname === '/' || window.location.pathname === '') {
-    window.history.replaceState({}, '', '/leads');
+  if (pathname === '/leads') {
+    return { kind: 'leads', path: '/leads' };
   }
+
+  return { kind: 'marketing', path: '/' };
 };
 
 export function AppRouter() {
-  const [route, setRoute] = useState<Route>(() => {
-    ensureInitialPath();
-    return parseRoute(window.location.pathname);
-  });
+  const [route, setRoute] = useState<Route>(() => parseRoute(window.location.pathname));
 
   useEffect(() => {
-    ensureInitialPath();
-
     const handlePopState = (): void => {
       setRoute(parseRoute(window.location.pathname));
     };
@@ -61,6 +56,10 @@ export function AppRouter() {
     window.history.pushState({}, '', nextPath);
     setRoute(parseRoute(nextPath));
   };
+
+  if (route.kind === 'marketing') {
+    return <MarketingHomePage onNavigate={navigate} />;
+  }
 
   const layoutTitle =
     route.kind === 'lead-detail' ? 'Lead review' : 'Lead queue';
