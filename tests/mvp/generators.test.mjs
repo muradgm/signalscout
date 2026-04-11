@@ -369,6 +369,93 @@ test('mock outreach generator uses a narrower voice for a valid but thinner send
   assert.doesNotMatch(outreachDraft.body ?? '', /long-standing local presence and family feel/i);
 });
 
+test('mock outreach generator keeps the stored validation direct-booking slice narrow and grounded', async () => {
+  const fixture = benchmarkFixtures.find((entry) => entry.id === 'stored-validation-decent-quality');
+  assert.ok(fixture, 'stored-validation-decent-quality fixture not found');
+
+  const extracted = buildLeadSnapshot(fixture.html, fixture.lead.website);
+  const snapshot = {
+    id: `snapshot-${fixture.id}`,
+    leadId: fixture.lead.id,
+    ...extracted,
+  };
+
+  const detector = new DetectSignals(new RuleBasedSignalDetector());
+  const signals = await detector.execute(fixture.lead, snapshot);
+  const auditDraft = await new MockAuditGenerator().generate({
+    lead: fixture.lead,
+    snapshot,
+    signals,
+  });
+
+  const outreachDraft = await createDefaultOutreachGenerator().generate({
+    lead: fixture.lead,
+    snapshot,
+    signals,
+    audit: {
+      id: `audit-${fixture.id}`,
+      leadId: fixture.lead.id,
+      snapshotId: snapshot.id,
+      summary: auditDraft.summary,
+      strengths: auditDraft.strengths,
+      opportunities: auditDraft.opportunities,
+      opportunityDetails: auditDraft.opportunityDetails,
+      risks: auditDraft.risks,
+      recommendedAngle: auditDraft.recommendedAngle,
+      confidenceNote: auditDraft.confidenceNote,
+      evidence: auditDraft.evidence,
+      createdAt: new Date('2026-04-02T10:45:00.000Z'),
+    },
+  });
+
+  assert.equal(outreachDraft.recommendation, 'send');
+  assert.match(outreachDraft.subject ?? '', /direct booking/i);
+  assert.match(outreachDraft.body ?? '', /direct way to book/i);
+  assert.match(outreachDraft.body ?? '', /surrounding contact surface still feels thinner/i);
+  assert.match(outreachDraft.reasoning ?? '', /surrounding contact surface still feels thinner/i);
+  assert.match(outreachDraft.evidence.join(' '), /contact surface is sparse/i);
+  assert.match(outreachDraft.evidence.join(' '), /A direct booking path is already present/i);
+});
+
+test('mock audit generator keeps mixed-language booking friction grounded for thinner bilingual leads', async () => {
+  const fixture = benchmarkFixtures.find(
+    (entry) => entry.id === 'multilingual-local-nuremberg-langwasser',
+  );
+  assert.ok(fixture, 'multilingual-local-nuremberg-langwasser fixture not found');
+
+  const extracted = buildLeadSnapshot(fixture.html, fixture.lead.website);
+  const snapshot = {
+    id: `snapshot-${fixture.id}`,
+    leadId: fixture.lead.id,
+    ...extracted,
+  };
+
+  const detector = new DetectSignals(new RuleBasedSignalDetector());
+  const signals = await detector.execute(fixture.lead, snapshot);
+  const auditDraft = await new MockAuditGenerator().generate({
+    lead: fixture.lead,
+    snapshot,
+    signals,
+  });
+
+  assert.match(auditDraft.summary, /bilingual presentation broadens accessibility/i);
+  assert.match(auditDraft.summary, /mixed German\/English copy/i);
+  assert.ok(
+    auditDraft.opportunities.some((item) =>
+      /mixed German\/English/i.test(item),
+    ),
+  );
+  assert.ok(
+    auditDraft.evidence.some((item) =>
+      /mixed German\/English copy rather than one clean action/i.test(item),
+    ),
+  );
+  assert.doesNotMatch(
+    auditDraft.summary,
+    /brand-heavy multi-specialty practice|recorded lead geography/i,
+  );
+});
+
 test('mock outreach generator differentiates benchmark classes instead of collapsing to generic outreach copy', async () => {
   const detector = new DetectSignals(new RuleBasedSignalDetector());
   const auditGenerator = new MockAuditGenerator();
@@ -489,6 +576,18 @@ test('mock outreach generator differentiates benchmark classes instead of collap
     /oral-surgery care practice/i,
   );
   assert.match(
+    drafts.get('multilingual-specialty-stuttgart').fitReason ?? '',
+    /bilingual presentation/i,
+  );
+  assert.match(
+    drafts.get('multilingual-specialty-stuttgart').bestAngle ?? '',
+    /bilingual presentation/i,
+  );
+  assert.match(
+    drafts.get('multilingual-specialty-stuttgart').reasoning ?? '',
+    /bilingual presentation/i,
+  );
+  assert.match(
     drafts.get('multilingual-specialty-stuttgart').evidence.join(' '),
     /German and English/i,
   );
@@ -520,7 +619,19 @@ test('mock outreach generator differentiates benchmark classes instead of collap
   );
   assert.match(
     drafts.get('multilingual-aligners-bonn').fitReason ?? '',
-    /aligner-focused treatment focus/i,
+    /aligner-focused treatment focus|bilingual presentation/i,
+  );
+  assert.match(
+    drafts.get('multilingual-aligners-bonn').fitReason ?? '',
+    /bilingual presentation/i,
+  );
+  assert.match(
+    drafts.get('multilingual-aligners-bonn').bestAngle ?? '',
+    /bilingual presentation/i,
+  );
+  assert.match(
+    drafts.get('multilingual-aligners-bonn').reasoning ?? '',
+    /bilingual presentation/i,
   );
   assert.match(
     drafts.get('multilingual-aligners-bonn').evidence.join(' '),

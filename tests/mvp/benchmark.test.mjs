@@ -70,6 +70,13 @@ test('benchmark fixtures produce expected extraction and workflow outcomes', asy
       fixture.expectation.confidence,
       `${fixture.id}: confidence mismatch`,
     );
+    if (fixture.expectation.localRelevance) {
+      assert.equal(
+        signals.localRelevance,
+        fixture.expectation.localRelevance,
+        `${fixture.id}: local relevance mismatch`,
+      );
+    }
     assert.equal(
       outreachDraft.recommendation,
       fixture.expectation.recommendation,

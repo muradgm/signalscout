@@ -648,6 +648,10 @@ const buildGoodLeadFitReason = (input: GenerateOutreachInput): string => {
   const tone = detectLanguageTone(text);
   const contactSurface = describeContactSurface(input);
 
+  if (specialtyFocus && tone === 'bilingual') {
+    return `The lead is strongly aligned with the current local-practice outreach strategy, and the combination of bilingual presentation with a visible ${specialtyFocus} focus makes it specific enough to justify a send-ready draft.`;
+  }
+
   if (specialtyFocus) {
     return `The lead is strongly aligned with the current local-practice outreach strategy, and the visible ${specialtyFocus} focus makes it specific enough to justify a send-ready draft.`;
   }
@@ -683,6 +687,17 @@ const buildMediumValidFitReason = (input: GenerateOutreachInput): string => {
   const trustNarrativeLead =
     input.signals.trustSignalStrength === 'high' && input.signals.confidence === 'medium';
   const strongTrustNarrative = hasStrongTrustNarrative(input);
+
+  if (specialtyFocus && tone === 'bilingual') {
+    const contactSuffix =
+      contactSurface === 'email_only'
+        ? ' Only an email path stands out.'
+        : contactSurface === 'phone_only'
+          ? ' Only a phone path stands out.'
+          : '';
+
+    return `The lead is commercially usable and locally relevant, but the case is thinner than a top-tier send candidate and the outreach should stay narrower because the bilingual presentation around the visible ${specialtyFocus} focus still needs a more immediate booking hook.${contactSuffix}`;
+  }
 
   if (specialtyFocus) {
     const contactSuffix =
@@ -755,6 +770,10 @@ const buildMediumValidBestAngle = (input: GenerateOutreachInput): string => {
   const tone = detectLanguageTone(text);
   const contactSurface = describeContactSurface(input);
 
+  if (specialtyFocus && tone === 'bilingual') {
+    return `Lead with the bilingual presentation around ${specialtyFocus}, then point to one specific improvement that makes the next step feel easier and more immediate.`;
+  }
+
   if (specialtyFocus) {
     return `Lead with ${specialtyFocus} and one specific improvement that makes the next step feel easier and more immediate.`;
   }
@@ -787,6 +806,10 @@ const buildGoodLeadBestAngle = (input: GenerateOutreachInput): string => {
   const specialtyFocus = detectSpecialtyFocus(text);
   const tone = detectLanguageTone(text);
   const contactSurface = describeContactSurface(input);
+
+  if (specialtyFocus && tone === 'bilingual') {
+    return `Lead with the bilingual presentation around ${specialtyFocus} and the gap between strong trust-building and a more decisive booking case.`;
+  }
 
   if (specialtyFocus) {
     return `Lead with ${specialtyFocus} and the gap between strong trust-building and a more decisive booking case.`;
@@ -1191,6 +1214,17 @@ const buildMediumValidReasoning = (input: GenerateOutreachInput): string => {
   const trustNarrativeLead =
     input.signals.trustSignalStrength === 'high' && input.signals.confidence === 'medium';
 
+  if (specialtyFocus && tone === 'bilingual') {
+    const contactSuffix =
+      contactSurface === 'email_only'
+        ? ' The contact setup is email-only, so the wording stays especially narrow.'
+        : contactSurface === 'phone_only'
+          ? ' The contact setup is phone-only, so the wording stays especially narrow.'
+          : '';
+
+    return `The draft stays narrower than the strongest good-lead angle. It treats the practice as commercially valid, but avoids overselling the case by focusing on one believable point: the bilingual presentation around ${specialtyFocus} still needs a clearer next step.${contactSuffix}`;
+  }
+
   if (specialtyFocus) {
     const contactSuffix =
       contactSurface === 'email_only'
@@ -1234,7 +1268,7 @@ const buildMediumValidReasoning = (input: GenerateOutreachInput): string => {
             ? ' No clear contact path stands out, so the wording stays especially narrow.'
             : '';
 
-    return `The draft stays narrower than the strongest good-lead angle. It treats the practice as commercially valid, but avoids overselling the case by focusing on one believable point: the site already offers a direct booking path, while the surrounding contact surface still feels thinner than the strongest leads.${contactSuffix}`;
+    return `The draft stays narrower than the strongest good-lead angle. It treats the practice as commercially valid, but avoids overselling the case by focusing on one believable point: the site already offers a direct booking path, while the surrounding contact surface still feels thinner than the strongest leads and the site feels sparse around the booking path.${contactSuffix}`;
   }
 
   if (contactSurface === 'email_only') {
@@ -1292,6 +1326,9 @@ const buildMediumValidEvidence = (input: GenerateOutreachInput): string[] => {
 
   if (hasThinDirectBooking(input) && snapshot.bookingLinks[0]) {
     evidence.push(`A direct booking path is already present: ${snapshot.bookingLinks[0]}`);
+    evidence.push(
+      'The booking path carries most of the weight because the surrounding contact surface is sparse.',
+    );
   }
 
   if (specialtyFocus) {
@@ -1330,6 +1367,10 @@ const buildGoodLeadReasoning = (input: GenerateOutreachInput): string => {
   const tone = detectLanguageTone(combinedText);
   const contactSurface = describeContactSurface(input);
   const strongTrustNarrative = hasStrongTrustNarrative(input);
+
+  if (specialtyFocus && tone === 'bilingual') {
+    return `The draft uses a specific, credible angle: the practice combines bilingual presentation with visible ${specialtyFocus}, but that strength is described more than it is converted into booking momentum. That makes the message more specific and more commercially relevant than a generic booking-friction pitch.`;
+  }
 
   if (
     specialtyFocus &&
@@ -1725,4 +1766,3 @@ export class MockOutreachGenerator implements OutreachGenerator {
     };
   }
 }
-

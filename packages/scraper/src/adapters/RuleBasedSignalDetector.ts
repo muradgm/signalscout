@@ -247,6 +247,7 @@ const createPhrasePattern = (phrase: string): RegExp =>
   new RegExp(`(^|[^a-z0-9])${escapeRegExp(phrase)}([^a-z0-9]|$)`, 'i');
 
 const LOCATION_PROFILE_BY_ALIAS = new Map<string, LocationProfile>();
+const DISTRICT_PROFILE_COUNT_BY_ALIAS = new Map<string, number>();
 
 const buildSpellingVariants = (value: string): string[] => {
   const variants = new Set<string>([value]);
@@ -317,6 +318,17 @@ for (const profile of LOCATION_REGISTRY) {
   for (const alias of new Set([profile.canonical, ...profile.aliases])) {
     for (const variant of buildAllLocationVariants(alias)) {
       LOCATION_PROFILE_BY_ALIAS.set(variant, profile);
+    }
+  }
+}
+
+for (const profile of LOCATION_REGISTRY) {
+  for (const district of profile.districts) {
+    for (const variant of buildAllLocationVariants(district)) {
+      DISTRICT_PROFILE_COUNT_BY_ALIAS.set(
+        variant,
+        (DISTRICT_PROFILE_COUNT_BY_ALIAS.get(variant) ?? 0) + 1,
+      );
     }
   }
 }
@@ -442,6 +454,24 @@ const countDistinctLocationFootprints = (text: string): number => {
   }
 
   return matches.size;
+};
+
+const isAmbiguousDistrictOnlyPageMatch = (
+  matchedPageCandidate: string | null,
+  matchedAddressCandidate: string | null,
+  matchedLocationCandidate: string | null,
+  location: string,
+): boolean => {
+  if (
+    matchedPageCandidate === null ||
+    matchedAddressCandidate !== null ||
+    matchedLocationCandidate === null ||
+    matchedLocationCandidate === location
+  ) {
+    return false;
+  }
+
+  return (DISTRICT_PROFILE_COUNT_BY_ALIAS.get(matchedLocationCandidate) ?? 0) > 1;
 };
 
 const getBookingHintMatches = (snapshot: LeadSnapshot): string[] => {
@@ -685,6 +715,12 @@ const detectLocalRelevance = (
   const locationMatch = matchedLocationCandidate !== null;
   const countryMatch = country.length > 0 && containsPhrase(pageText, country);
   const hasAddressLevelSupport = matchedAddressCandidate !== null;
+  const ambiguousDistrictOnlyPageMatch = isAmbiguousDistrictOnlyPageMatch(
+    matchedPageCandidate,
+    matchedAddressCandidate,
+    matchedLocationCandidate,
+    location,
+  );
 
   if (!lead.location?.trim()) {
     evidence.push('lead location is missing');
@@ -702,6 +738,10 @@ const detectLocalRelevance = (
     if (matchedPageCandidate === location) {
       evidence.push(
         `moderate-quality location evidence: lead location appears in site content: ${lead.location}`,
+      );
+    } else if (ambiguousDistrictOnlyPageMatch) {
+      evidence.push(
+        `moderate-quality but ambiguous location evidence: district or locality appears in site content without a unique city tie: ${matchedPageCandidate}`,
       );
     } else {
       evidence.push(
@@ -746,7 +786,12 @@ const detectLocalRelevance = (
     };
   }
 
-  if (locationMatch && matchedPageCandidate !== null && matchedLocationCandidate !== location) {
+  if (
+    locationMatch &&
+    matchedPageCandidate !== null &&
+    matchedLocationCandidate !== location &&
+    !ambiguousDistrictOnlyPageMatch
+  ) {
     return {
       value: 'high_match',
       evidence,
@@ -754,7 +799,7 @@ const detectLocalRelevance = (
     };
   }
 
-  if (locationMatch && matchedPageCandidate !== null && countryMatch) {
+  if (locationMatch && matchedPageCandidate !== null && countryMatch && !ambiguousDistrictOnlyPageMatch) {
     return {
       value: 'high_match',
       evidence,

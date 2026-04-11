@@ -373,10 +373,10 @@ export const benchmarkFixtures = [
         'oral-surgery care practice',
         'The bilingual presentation is a strength',
       ],
-      requiresOutreachFitReasonPhrases: ['oral-surgery care focus'],
+      requiresOutreachFitReasonPhrases: ['oral-surgery care focus', 'bilingual presentation'],
       requiresOutreachBodyPhrasesAny: ['an oral-surgery care practice', 'oral-surgery care practice'],
-      requiresOutreachAnglePhrases: ['oral-surgery care'],
-      requiresOutreachReasoningPhrases: ['oral-surgery care'],
+      requiresOutreachAnglePhrases: ['oral-surgery care', 'bilingual presentation'],
+      requiresOutreachReasoningPhrases: ['oral-surgery care', 'bilingual presentation'],
       requiresOutreachEvidencePhrases: ['German and English', 'oral-surgery care'],
     },
     lead: {
@@ -860,6 +860,13 @@ export const benchmarkFixtures = [
       requiresAddress: true,
       requiresPhone: true,
       requiresEmail: true,
+      requiresAuditSummaryPhrases: [
+        'bilingual presentation broadens accessibility',
+        'mixed German/English copy',
+      ],
+      requiresAuditEvidencePhrases: [
+        'mixed German/English copy rather than one clean action',
+      ],
     },
     lead: {
       id: 'lead-multilingual-local-nuremberg-langwasser',
@@ -1319,9 +1326,9 @@ export const benchmarkFixtures = [
         'aligner-focused treatment practice',
         'The bilingual presentation is a strength',
       ],
-      requiresOutreachFitReasonPhrases: ['aligner-focused treatment focus'],
-      requiresOutreachAnglePhrases: ['aligner-focused treatment'],
-      requiresOutreachReasoningPhrases: ['aligner-focused treatment'],
+      requiresOutreachFitReasonPhrases: ['aligner-focused treatment focus', 'bilingual presentation'],
+      requiresOutreachAnglePhrases: ['aligner-focused treatment', 'bilingual presentation'],
+      requiresOutreachReasoningPhrases: ['aligner-focused treatment', 'bilingual presentation'],
       requiresOutreachEvidencePhrases: ['German and English'],
     },
     lead: {
@@ -1608,6 +1615,50 @@ export const benchmarkFixtures = [
         <body>
           <p>This site is under construction.</p>
           <p>Website coming soon.</p>
+        </body>
+      </html>
+    `,
+  },
+  {
+    id: 'ambiguous-district-page-only-dresden-neustadt',
+    expectation: {
+      placeholder: false,
+      outreachFit: 'good',
+      recommendation: 'send',
+      trustSignalStrength: 'medium',
+      confidence: 'medium',
+      localRelevance: 'partial_match',
+      minAuditStrengths: 3,
+      minAuditEvidence: 3,
+      requiresAddress: false,
+      requiresPhone: true,
+      requiresEmail: true,
+    },
+    lead: {
+      id: 'lead-ambiguous-district-page-only-dresden-neustadt',
+      companyName: 'Endo Studio Neustadt',
+      website: 'https://endo-studio-neustadt-ambiguous.example/',
+      niche: 'dentist',
+      location: 'Dresden',
+      country: 'Germany',
+      source: 'manual',
+      status: 'new',
+      completeness: 'complete',
+      createdAt: new Date('2026-03-24T10:40:00.000Z'),
+      updatedAt: new Date('2026-03-24T10:40:00.000Z'),
+    },
+    html: `
+      <html lang="de">
+        <head>
+          <title>Endo Studio Neustadt</title>
+          <meta name="description" content="Endodontie in Neustadt, Germany, mit ruhiger Behandlung und Online-Anfrage." />
+        </head>
+        <body>
+          <h1>Endodontie in Neustadt</h1>
+          <p>Ruhige Wurzelbehandlung, klare Online-Anfrage und patientenfreundliche Begleitung in Neustadt, Germany.</p>
+          <a href="/anfrage">Termin anfragen</a>
+          <a href="mailto:kontakt@endo-studio-neustadt-ambiguous.example">kontakt@endo-studio-neustadt-ambiguous.example</a>
+          <a href="tel:+493511234567">0351 123 45 67</a>
         </body>
       </html>
     `,

@@ -249,6 +249,20 @@ const detectLanguageTone = (
   return null;
 };
 
+const hasMixedLanguageBookingFriction = (
+  input: GenerateAuditInput,
+): boolean => {
+  const text = getSnapshotText(input.snapshot);
+
+  if (detectLanguageTone(text) !== 'bilingual') {
+    return false;
+  }
+
+  return /(?:jetzt|termin|anfragen|buchen|buchung|praxis|zahnarzt)[^.]{0,40}(?:appointment|request|book)|(?:appointment|request|book)[^.]{0,40}(?:jetzt|termin|anfragen|buchen|buchung|praxis|zahnarzt)/i.test(
+    text,
+  );
+};
+
 const detectNetworkStyle = (text: string): boolean => {
   return /praxisnetz|zahnzentrum|standortleitung|geschaeftsleitung|gesch[aä]ftsleitung|medical board|more than \d+ locations|over \d+ locations|locations across germany|nationwide|multi[- ]location|network/i.test(
     text,
@@ -331,12 +345,15 @@ const buildGoodLeadSummary = (input: GenerateAuditInput): string => {
   const tone = detectLanguageTone(combinedText);
   const bookingPhrase = describeBookingPath(input.signals.bookingPresence);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   const hasTradition = mentionsLongTradition(combinedText);
   const hasFamily = mentionsFamilyPositioning(combinedText);
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const toneClause =
-    tone === 'bilingual'
+    tone === 'bilingual' && mixedLanguageBookingFriction
+      ? ' The bilingual presentation broadens accessibility, but some of the booking language still reads as mixed German/English copy instead of one clean action.'
+      : tone === 'bilingual'
       ? ' The site also uses bilingual German/English messaging, which broadens accessibility.'
       : tone === 'english_led'
         ? ' The site uses English-led messaging while still naming the local market clearly.'
@@ -362,6 +379,10 @@ const buildGoodLeadSummary = (input: GenerateAuditInput): string => {
   }
 
   if (tone === 'bilingual') {
+    if (mixedLanguageBookingFriction) {
+      return `${lead.companyName} has a credible local presence with ${bookingPhrase} and bilingual German/English messaging. The site is easy to understand overall, but some of the booking language still reads as mixed German/English copy instead of one clean next step.${buildWeakContactSummaryClause(weakContactSurface)}`;
+    }
+
     return `${lead.companyName} has a credible local presence with ${bookingPhrase} and bilingual German/English messaging. The site is easy to understand, but it still needs a sharper reason to book now.${buildWeakContactSummaryClause(weakContactSurface)}`;
   }
 
@@ -433,6 +454,7 @@ const buildGoodLeadOpportunities = (input: GenerateAuditInput): string[] => {
     mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText);
   const hasComfortPositioning = mentionsComfortReassurance(combinedText);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
   const opportunities: string[] = [];
 
   if (hasTrustPositioning || hasComfortPositioning) {
@@ -448,6 +470,12 @@ const buildGoodLeadOpportunities = (input: GenerateAuditInput): string[] => {
     opportunities.push(weakContactOpportunity);
   }
 
+  if (mixedLanguageBookingFriction) {
+    opportunities.push(
+      'Some of the booking wording still reads as mixed German/English copy rather than one clean action.',
+    );
+  }
+
   return [...new Set(opportunities)].slice(0, 3);
 };
 
@@ -460,6 +488,7 @@ const buildGoodLeadOpportunityDetails = (
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
     details.push(
@@ -482,6 +511,12 @@ const buildGoodLeadOpportunityDetails = (
   const weakContactDetail = buildWeakContactDetail(weakContactSurface);
   if (weakContactDetail) {
     details.push(weakContactDetail);
+  }
+
+  if (mixedLanguageBookingFriction) {
+    details.push(
+      'German and English are both visible on the site, but some of the booking language still reads as mixed phrasing rather than one clean action. That softens the next step more than the strongest bilingual examples.',
+    );
   }
 
   if (tone === 'bilingual') {
@@ -518,12 +553,21 @@ const buildGoodLeadRecommendedAngle = (input: GenerateAuditInput): string => {
   const { snapshot } = input;
   const combinedText = getSnapshotText(snapshot);
   const tone = detectLanguageTone(combinedText);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
+    if (mixedLanguageBookingFriction) {
+      return 'Lead with the gap between strong trust-building and decisive booking momentum: the site already feels credible, but the mixed German/English booking copy should be cleaned up so the next step feels more deliberate.';
+    }
+
     return 'Lead with the gap between strong trust-building and decisive booking momentum: the site already feels credible, but it could convert that trust into action more deliberately.';
   }
 
   if (tone === 'bilingual') {
+    if (mixedLanguageBookingFriction) {
+      return 'Lead with the bilingual accessibility, then clean up the mixed German/English booking wording so the next step reads more clearly.';
+    }
+
     return 'Lead with how the bilingual presentation could be turned into a clearer and less hesitant booking step.';
   }
 
@@ -554,6 +598,7 @@ const buildGoodLeadQuickWins = (input: GenerateAuditInput): string[] => {
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
     quickWins.push('Use the long-standing family-led positioning directly beside the main booking call to action.');
@@ -567,7 +612,9 @@ const buildGoodLeadQuickWins = (input: GenerateAuditInput): string[] => {
     quickWins.push(`Place the ${specialtyFocus} message closer to the primary booking action.`);
   }
 
-  if (tone === 'bilingual') {
+  if (tone === 'bilingual' && mixedLanguageBookingFriction) {
+    quickWins.push('Rewrite the mixed German/English booking copy into one cleaner call to action.');
+  } else if (tone === 'bilingual') {
     quickWins.push('Use the bilingual presentation to make the primary booking action impossible to miss.');
   } else if (tone === 'english_led') {
     quickWins.push('Pair the English-led explanation with one very clear booking call to action.');
@@ -587,12 +634,21 @@ const buildGoodLeadOutreachHook = (input: GenerateAuditInput): string => {
   const combinedText = getSnapshotText(snapshot);
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (mentionsLongTradition(combinedText) || mentionsFamilyPositioning(combinedText)) {
+    if (mixedLanguageBookingFriction) {
+      return 'The site already feels trustworthy and established, but some of the booking language still reads as mixed copy, which softens the next step.';
+    }
+
     return 'The site already feels trustworthy and established; the opportunity is to convert that credibility into a more decisive booking moment.';
   }
 
   if (tone === 'bilingual') {
+    if (mixedLanguageBookingFriction) {
+      return 'The site already feels easy to approach in both German and English, but some of the booking wording still reads as mixed copy instead of one clean next step.';
+    }
+
     return 'The site already feels easy to approach in both German and English, but the booking case could be more decisive.';
   }
 
@@ -614,6 +670,7 @@ const buildGoodLeadEvidence = (input: GenerateAuditInput): string[] => {
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (signals.bookingPresence === 'direct' && snapshot.bookingLinks[0]) {
     evidence.push(`Direct booking link found: ${snapshot.bookingLinks[0]}`);
@@ -652,7 +709,11 @@ const buildGoodLeadEvidence = (input: GenerateAuditInput): string[] => {
     evidence.push(`A visible specialty focus is present in the page messaging: ${specialtyFocus}.`);
   }
 
-  if (tone === 'bilingual') {
+  if (tone === 'bilingual' && mixedLanguageBookingFriction) {
+    evidence.push(
+      'German and English are both visible, but some booking wording still reads as mixed German/English copy rather than one clean action.',
+    );
+  } else if (tone === 'bilingual') {
     evidence.push('The site blends German and English messaging, which broadens accessibility for local visitors.');
   } else if (tone === 'english_led') {
     evidence.push('The site is written in English while still naming the local market explicitly.');
@@ -724,6 +785,7 @@ const buildMediumLeadSummary = (input: GenerateAuditInput): string => {
   const combinedText = getSnapshotText(input.snapshot);
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
   const locationMismatch = hasLocationMismatchRisk(input);
   const weakContactSurface = detectWeakContactSurface(input);
   const brandHeavyMultiSpecialty =
@@ -757,7 +819,9 @@ const buildMediumLeadSummary = (input: GenerateAuditInput): string => {
       ? ` The site also signals ${specialtyFocus}, which makes the lead more commercially specific than a generic local practice.`
       : '';
     const toneClause =
-      tone === 'bilingual'
+      tone === 'bilingual' && mixedLanguageBookingFriction
+        ? ' The bilingual presentation broadens reach, but some of the booking wording still reads as mixed German/English copy instead of one clean next step.'
+        : tone === 'bilingual'
         ? ' The bilingual presentation makes the lead feel broader and more usable than a plain local listing.'
         : tone === 'english_led'
           ? ' The English-led presentation keeps the lead easy to read even while the action path stays soft.'
@@ -768,7 +832,9 @@ const buildMediumLeadSummary = (input: GenerateAuditInput): string => {
 
   if (specialtyFocus) {
     const toneClause =
-      tone === 'bilingual'
+      tone === 'bilingual' && mixedLanguageBookingFriction
+        ? ' The bilingual presentation broadens reach, but some of the booking wording still reads as mixed German/English copy instead of one clean next step.'
+        : tone === 'bilingual'
         ? ' The bilingual presentation adds accessibility, but the specialist story still needs a sharper next step.'
         : tone === 'english_led'
           ? ' The English-led presentation keeps the lead readable, but the specialist story still needs a clearer next step.'
@@ -778,6 +844,10 @@ const buildMediumLeadSummary = (input: GenerateAuditInput): string => {
   }
 
   if (tone === 'bilingual') {
+    if (mixedLanguageBookingFriction) {
+      return `${lead.companyName} looks commercially valid and locally relevant, with bilingual German/English messaging that broadens accessibility. The opportunity is less about fixing a broken site and more about cleaning up the mixed German/English booking language so the next step feels sharper and more decisive.${buildWeakContactSummaryClause(weakContactSurface)}`;
+    }
+
     return `${lead.companyName} looks commercially valid and locally relevant, with bilingual German/English messaging that makes the site easier to work with. The opportunity is less about fixing a broken site and more about making the existing trust and action path feel sharper and more decisive.${buildWeakContactSummaryClause(weakContactSurface)}`;
   }
 
@@ -857,6 +927,7 @@ const buildMediumLeadOpportunities = (input: GenerateAuditInput): string[] => {
   const { signals } = input;
   const opportunities: string[] = [];
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (hasLocationMismatchRisk(input)) {
     opportunities.push(
@@ -866,6 +937,12 @@ const buildMediumLeadOpportunities = (input: GenerateAuditInput): string[] => {
 
   if (signals.bookingPresence === 'indirect') {
     opportunities.push('The booking path is present, but it still feels softer and less direct than it should.');
+  }
+
+  if (mixedLanguageBookingFriction) {
+    opportunities.push(
+      'The bilingual copy broadens reach, but parts of the booking wording still read as mixed German/English rather than one clean next step.',
+    );
   }
 
   if (signals.bookingPresence === 'direct' && hasNoLeadLevelContactSurface(input)) {
@@ -890,6 +967,7 @@ const buildMediumLeadOpportunityDetails = (input: GenerateAuditInput): string[] 
   const { signals, snapshot } = input;
   const details: string[] = [];
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
   const specialtyFocus = detectSpecialtyFocus(
     `${snapshot.pageTitle ?? ''} ${snapshot.metaDescription ?? ''} ${snapshot.visibleText}`,
   );
@@ -909,6 +987,12 @@ const buildMediumLeadOpportunityDetails = (input: GenerateAuditInput): string[] 
   if (signals.bookingPresence === 'indirect') {
     details.push(
       'Visitors can likely find a route to book, but the site still makes the action feel more optional than immediate. That usually means some intent is being left on the table.',
+    );
+  }
+
+  if (mixedLanguageBookingFriction) {
+    details.push(
+      'German and English are both visible, but some of the booking language still reads like mixed phrasing rather than one clean action. That softens the conversion step more than the stronger bilingual examples.',
     );
   }
 
@@ -947,6 +1031,7 @@ const buildMediumLeadOpportunityDetails = (input: GenerateAuditInput): string[] 
 const buildMediumLeadRecommendedAngle = (input: GenerateAuditInput): string => {
   const { signals, snapshot } = input;
   const tone = detectLanguageTone(getSnapshotText(snapshot));
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (hasLocationMismatchRisk(input)) {
     return 'Lead with the qualification gap first: the site looks real, but the visible local market does not line up cleanly with the recorded lead geography.';
@@ -965,6 +1050,10 @@ const buildMediumLeadRecommendedAngle = (input: GenerateAuditInput): string => {
   }
 
   if (signals.bookingPresence === 'indirect') {
+    if (tone === 'bilingual' && mixedLanguageBookingFriction) {
+      return 'Lead with the usable bilingual reach, then clean up the mixed German/English booking language so the next step reads clearly and feels less hesitant.';
+    }
+
     if (tone === 'bilingual') {
       return 'Lead with how the bilingual presentation could be turned into a clearer and less hesitant booking step.';
     }
@@ -977,6 +1066,10 @@ const buildMediumLeadRecommendedAngle = (input: GenerateAuditInput): string => {
   }
 
   if (tone === 'bilingual') {
+    if (mixedLanguageBookingFriction) {
+      return 'Lead with the bilingual accessibility, then clean up the mixed German/English wording around the main next step.';
+    }
+
     return 'Lead with how the bilingual presentation could be turned into a clearer and more direct next step for visitors.';
   }
 
@@ -1007,6 +1100,7 @@ const buildMediumLeadQuickWins = (input: GenerateAuditInput): string[] => {
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
   const quickWins: string[] = [
     'Make the main next step easier to identify and easier to trust.',
     'Turn the strongest visible trust cue into a more explicit reason to act now.',
@@ -1040,7 +1134,9 @@ const buildMediumLeadQuickWins = (input: GenerateAuditInput): string[] => {
     quickWins.push(`Bring the ${specialtyFocus} positioning closer to the main booking or contact action.`);
   }
 
-  if (tone === 'bilingual') {
+  if (tone === 'bilingual' && mixedLanguageBookingFriction) {
+    quickWins.push('Rewrite the mixed German/English booking copy into one cleaner primary action.');
+  } else if (tone === 'bilingual') {
     quickWins.push('Use the bilingual presentation to make one primary next step obvious.');
   } else if (tone === 'english_led') {
     quickWins.push('Pair the English-led explanation with one very clear action prompt.');
@@ -1054,6 +1150,7 @@ const buildMediumLeadOutreachHook = (input: GenerateAuditInput): string => {
   const combinedText = getSnapshotText(snapshot);
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
 
   if (hasLocationMismatchRisk(input)) {
     return 'The site looks real, but the visible local market does not line up cleanly with the recorded lead location, so this needs qualification before outreach.';
@@ -1076,6 +1173,10 @@ const buildMediumLeadOutreachHook = (input: GenerateAuditInput): string => {
   }
 
   if (signals.bookingPresence === 'indirect') {
+    if (tone === 'bilingual' && mixedLanguageBookingFriction) {
+      return 'The site already feels commercially usable in both German and English, but some of the booking language still reads as mixed copy, so the next step feels softer than it should.';
+    }
+
     if (tone === 'bilingual') {
       return 'The site already feels credible enough to work in both German and English, but the path from interest to booking still feels too soft.';
     }
@@ -1092,6 +1193,10 @@ const buildMediumLeadOutreachHook = (input: GenerateAuditInput): string => {
   }
 
   if (tone === 'bilingual') {
+    if (mixedLanguageBookingFriction) {
+      return 'The site feels commercially valid, and its bilingual presentation broadens reach, but the mixed booking wording still needs to be cleaned up into a clearer next step.';
+    }
+
     return 'The site feels commercially valid, and its bilingual presentation keeps it easy to approach, but that clarity could still become a more decisive next step.';
   }
 
@@ -1113,6 +1218,7 @@ const buildMediumLeadEvidence = (input: GenerateAuditInput): string[] => {
   const specialtyFocus = detectSpecialtyFocus(combinedText);
   const tone = detectLanguageTone(combinedText);
   const weakContactSurface = detectWeakContactSurface(input);
+  const mixedLanguageBookingFriction = hasMixedLanguageBookingFriction(input);
   const brandHeavyMultiSpecialty =
     specialtyFocus === 'multi-specialty practice' &&
     detectBrandHeavyMultiSpecialtyPresentation(combinedText);
@@ -1176,7 +1282,11 @@ const buildMediumLeadEvidence = (input: GenerateAuditInput): string[] => {
     evidence.push(`A visible specialty focus is present in the site copy: ${specialtyFocus}.`);
   }
 
-  if (tone === 'bilingual') {
+  if (tone === 'bilingual' && mixedLanguageBookingFriction) {
+    evidence.push(
+      'German and English are both visible, but some booking wording still reads as mixed German/English copy rather than one clean action.',
+    );
+  } else if (tone === 'bilingual') {
     evidence.push('The site blends German and English messaging, which keeps the lead broadly accessible.');
   } else if (tone === 'english_led') {
     evidence.push('The site is written in English while still naming the local market explicitly.');

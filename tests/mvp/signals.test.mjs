@@ -315,3 +315,51 @@ test('district aliases with transliteration still resolve across additional non-
     ),
   );
 });
+
+test('shared district names stay partial when page text lacks a unique city tie', async () => {
+  const useCase = new DetectSignals(new RuleBasedSignalDetector());
+
+  const lead = {
+    ...leadFixture,
+    id: 'lead-dresden-neustadt-ambiguous',
+    companyName: 'Endo Studio Neustadt',
+    website: 'https://endo-studio-neustadt-ambiguous.example',
+    location: 'Dresden',
+    country: 'Germany',
+    completeness: 'complete',
+  };
+
+  const snapshot = {
+    id: 'snapshot-dresden-neustadt-ambiguous',
+    leadId: lead.id,
+    url: lead.website,
+    pageTitle: 'Endo Studio Neustadt',
+    metaDescription: 'Endodontie in Neustadt, Germany, mit ruhiger Behandlung und Online-Anfrage.',
+    visibleText:
+      'Ruhige Wurzelbehandlung, klare Online-Anfrage und patientenfreundliche Begleitung in Neustadt, Germany.',
+    contactInfo: {
+      emails: ['kontakt@endo-studio-neustadt-ambiguous.example'],
+      phones: ['0351 123 45 67'],
+      addresses: [],
+    },
+    contactEnrichment: { emails: [], phones: [], addresses: [] },
+    bookingLinks: ['https://booking.example/neustadt'],
+    trustSignals: ['mentions patient comfort', 'mentions team'],
+    isPlaceholderContent: false,
+    extractedAt: new Date('2026-04-02T10:45:00.000Z'),
+  };
+
+  const result = await useCase.execute(lead, snapshot);
+
+  assert.equal(result.localRelevance, 'partial_match');
+  assert.equal(result.outreachFit, 'good');
+  assert.equal(result.confidence, 'medium');
+  assert.ok(
+    result.evidence.includes(
+      'moderate-quality but ambiguous location evidence: district or locality appears in site content without a unique city tie: neustadt',
+    ),
+  );
+  assert.ok(
+    result.evidence.includes('country evidence present in site content: Germany'),
+  );
+});
