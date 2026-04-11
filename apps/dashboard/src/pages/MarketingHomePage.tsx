@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { MouseEvent } from 'react';
 
 type MarketingHomePageProps = {
@@ -66,6 +67,52 @@ const fitCards = [
 ];
 
 export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
+  useEffect(() => {
+    const sections = Array.from(
+      document.querySelectorAll<HTMLElement>('[data-reveal]'),
+    );
+
+    if (sections.length === 0) {
+      return;
+    }
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduceMotion) {
+      sections.forEach((section) => section.classList.add('is-visible'));
+      return;
+    }
+
+    sections.forEach((section) => {
+      const rect = section.getBoundingClientRect();
+
+      section.classList.add('motion-ready');
+
+      if (rect.top < window.innerHeight * 0.88) {
+        section.classList.add('is-visible');
+      }
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        rootMargin: '0px 0px -10% 0px',
+        threshold: 0.18,
+      },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => observer.disconnect();
+  }, []);
+
   const handleRouteNavigate =
     (path: string) =>
     (event: MouseEvent<HTMLAnchorElement>): void => {
@@ -93,7 +140,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
       </header>
 
       <main className="marketing-shell" id="top">
-        <section className="marketing-hero" id="product">
+        <section className="marketing-hero" id="product" data-reveal>
           <div className="marketing-hero__copy">
             <p className="eyebrow">Evidence-led lead review</p>
             <h1>Lead review and outreach recommendations for local-service websites.</h1>
@@ -130,38 +177,44 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             <div className="marketing-hero-art">
               <div className="marketing-hero-art__glow marketing-hero-art__glow--olive" />
               <div className="marketing-hero-art__glow marketing-hero-art__glow--warm" />
-
-              <div className="marketing-hero-card marketing-hero-card--main">
-                <div className="marketing-hero-card__bar">
-                  <span className="marketing-pill marketing-pill--accent">High local fit</span>
-                  <span className="marketing-pill">Decision in progress</span>
+              <div className="marketing-hero-grid">
+                <div className="marketing-hero-card marketing-hero-card--main">
+                  <div className="marketing-hero-card__bar">
+                    <span className="marketing-pill marketing-pill--accent">High local fit</span>
+                    <span className="marketing-pill">Decision in progress</span>
+                  </div>
+                  <strong>Lead review</strong>
+                  <p>
+                    Dental clinic site with visible trust, clear contact paths, and a softer
+                    booking next step.
+                  </p>
+                  <div className="marketing-mini-grid">
+                    <span>Signals</span>
+                    <span>Audit</span>
+                    <span>Draft</span>
+                    <span>Decision</span>
+                  </div>
                 </div>
-                <strong>Lead review</strong>
-                <p>Dental clinic site with visible trust, clear contact paths, and a softer booking next step.</p>
-                <div className="marketing-mini-grid">
-                  <span>Signals</span>
-                  <span>Audit</span>
-                  <span>Draft</span>
-                  <span>Decision</span>
+
+                <div className="marketing-hero-rail">
+                  <div className="marketing-hero-card marketing-hero-card--note">
+                    <span className="marketing-card-label">Evidence</span>
+                    <strong>Booking path is visible</strong>
+                    <p>Trust is strong, but the next action still feels softer than it should.</p>
+                  </div>
+
+                  <div className="marketing-hero-card marketing-hero-card--signal">
+                    <span className="marketing-card-label">Confidence</span>
+                    <strong>High</strong>
+                    <p>Clear local cues with enough signal to support an operator decision.</p>
+                  </div>
                 </div>
-              </div>
-
-              <div className="marketing-hero-card marketing-hero-card--note">
-                <span className="marketing-card-label">Evidence</span>
-                <strong>Booking path is visible</strong>
-                <p>Trust is strong, but the next action still feels softer than it should.</p>
-              </div>
-
-              <div className="marketing-hero-card marketing-hero-card--signal">
-                <span className="marketing-card-label">Confidence</span>
-                <strong>High</strong>
-                <p>Clear local cues with enough signal to support an operator decision.</p>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="marketing-workflow" id="workflow">
+        <section className="marketing-workflow" id="workflow" data-reveal>
           <div className="marketing-section-heading">
             <p className="eyebrow">How it works</p>
             <h2>One workflow from website review to outreach decision.</h2>
@@ -182,7 +235,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
         </section>
 
-        <section className="marketing-credibility">
+        <section className="marketing-credibility" data-reveal>
           <div className="marketing-section-heading marketing-section-heading--split">
             <div>
               <p className="eyebrow">Why it works</p>
@@ -206,7 +259,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
         </section>
 
-        <section className="marketing-workspace">
+        <section className="marketing-workspace" data-reveal>
           <div className="marketing-section-heading marketing-section-heading--split">
             <div>
               <p className="eyebrow">Workspace</p>
@@ -269,7 +322,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
         </section>
 
-        <section className="marketing-fit" id="fit">
+        <section className="marketing-fit" id="fit" data-reveal>
           <div className="marketing-section-heading">
             <p className="eyebrow">Best fit</p>
             <h2>Built for focused outbound review, not broad workflow sprawl.</h2>
@@ -293,7 +346,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </p>
         </section>
 
-        <section className="marketing-secondary">
+        <section className="marketing-secondary" data-reveal>
           <div className="marketing-secondary__heading">
             <p className="eyebrow">Secondary capabilities</p>
             <h2>Real execution support, kept in the right place.</h2>
@@ -317,7 +370,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
         </section>
 
-        <section className="marketing-cta" id="cta">
+        <section className="marketing-cta" id="cta" data-reveal>
           <div className="marketing-cta__inner">
             <p className="eyebrow">See the workflow</p>
             <h2>See how SignalScout sharpens the next outreach decision.</h2>
