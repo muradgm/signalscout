@@ -585,12 +585,12 @@ button:disabled {
   min-height: 100vh;
   padding: 0 0 6.5rem;
   font-family: "Onest", Aptos, "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
-  --marketing-bg: #f7f9fc;
-  --marketing-bg-soft: #eef3fb;
+  --marketing-bg: #f4f7fb;
+  --marketing-bg-soft: #eef2f8;
   --marketing-surface: rgba(255, 255, 255, 0.78);
   --marketing-surface-strong: rgba(255, 255, 255, 0.9);
-  --marketing-ink: #111827;
-  --marketing-muted: #667085;
+  --marketing-ink: #141b29;
+  --marketing-muted: #5d687d;
   --marketing-line: rgba(17, 24, 39, 0.09);
   --marketing-line-strong: rgba(17, 24, 39, 0.14);
   --marketing-accent: #335cff;
@@ -686,10 +686,10 @@ button:disabled {
 
 .marketing-shell {
   display: grid;
-  gap: clamp(8.4rem, 14vw, 12.6rem);
+  gap: clamp(9.5rem, 13vw, 10rem);
   max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(4rem, 7.5vw, 6.85rem) clamp(1.1rem, 3vw, 2.6rem) 0;
+  padding: clamp(5.5rem, 8vw, 7rem) clamp(1.1rem, 3vw, 2.6rem) 0;
 }
 
 .marketing-hero,
@@ -723,18 +723,19 @@ button:disabled {
   grid-template-columns: minmax(0, 1fr) minmax(24rem, 0.9fr);
   gap: clamp(3.5rem, 7vw, 7rem);
   align-items: center;
-  padding: clamp(1.4rem, 3vw, 2.4rem) 0 1.8rem;
+  padding: clamp(2.5rem, 6vw, 4.5rem) 0 2.25rem;
 }
 
 .marketing-hero__copy {
   display: grid;
-  gap: 1.6rem;
-  max-width: 36rem;
+  gap: 1.85rem;
+  max-width: 34rem;
 }
 
 .marketing-hero h1 {
-  font-size: clamp(3.35rem, 7vw, 6.2rem);
-  max-width: 8ch;
+  font-size: clamp(3.65rem, 7.4vw, 6.5rem);
+  max-width: 7.6ch;
+  letter-spacing: -0.045em;
 }
 
 .marketing-copy {
@@ -745,15 +746,16 @@ button:disabled {
 }
 
 .marketing-copy--lead {
-  max-width: 60ch;
+  max-width: 34rem;
   font-size: 1.08rem;
+  line-height: 1.72;
 }
 
 .marketing-action-note {
-  margin: -0.25rem 0 0;
-  max-width: 45ch;
+  margin: -0.1rem 0 0;
+  max-width: 35rem;
   color: rgba(17, 24, 39, 0.72);
-  font-size: 0.96rem;
+  font-size: 0.94rem;
   line-height: 1.55;
 }
 
@@ -792,30 +794,33 @@ button:disabled {
   color: var(--marketing-ink);
 }
 
-.marketing-proofline {
-  display: flex;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-  color: rgba(17, 24, 39, 0.64);
-  font-size: 0.84rem;
+.marketing-proofgrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
+  max-width: 38rem;
+  padding-top: 0.35rem;
+}
+
+.marketing-proofgrid__item {
+  display: grid;
+  gap: 0.35rem;
+  padding-top: 0.95rem;
+  border-top: 1px solid var(--marketing-line);
+}
+
+.marketing-proofgrid__item strong {
+  font-size: 0.82rem;
   font-weight: 700;
   letter-spacing: 0.04em;
+  color: rgba(17, 24, 39, 0.78);
 }
 
-.marketing-proofline span {
-  position: relative;
-}
-
-.marketing-proofline span + span::before {
-  content: "";
-  position: absolute;
-  left: -0.72rem;
-  top: 50%;
-  width: 0.2rem;
-  height: 0.2rem;
-  border-radius: 999px;
-  background: rgba(17, 24, 39, 0.34);
-  transform: translateY(-50%);
+.marketing-proofgrid__item p {
+  margin: 0;
+  color: var(--marketing-muted);
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .marketing-note {
@@ -830,19 +835,19 @@ button:disabled {
 
 .marketing-hero__visual {
   width: 100%;
-  max-width: 38rem;
+  max-width: 39rem;
   justify-self: end;
 }
 
 .marketing-artifact {
   position: relative;
   display: grid;
-  gap: 1.5rem;
-  min-height: 34rem;
-  padding: 1.45rem;
+  gap: 1.7rem;
+  min-height: 35rem;
+  padding: 1.6rem;
   border-radius: 38px;
   overflow: hidden;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(243, 247, 253, 0.94));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(242, 246, 252, 0.98));
   border: 1px solid var(--marketing-line);
 }
 
@@ -878,7 +883,7 @@ button:disabled {
   inset: 1.8rem -1.4rem auto auto;
   width: 13rem;
   height: 13rem;
-  background: rgba(15, 118, 110, 0.11);
+  background: rgba(15, 118, 110, 0.07);
   animation-delay: -6s;
 }
 
@@ -889,12 +894,12 @@ button:disabled {
   background: linear-gradient(
     90deg,
     transparent,
-    rgba(255, 255, 255, 0.6),
-    rgba(255, 255, 255, 0.12),
+    rgba(255, 255, 255, 0.78),
+    rgba(255, 255, 255, 0.16),
     transparent
   );
   transform: skewX(-14deg);
-  opacity: 0.58;
+  opacity: 0.62;
   pointer-events: none;
   animation: marketingScanSweep 7.6s cubic-bezier(0.32, 0, 0.2, 1) infinite;
 }
@@ -945,27 +950,27 @@ button:disabled {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: minmax(12rem, 13.5rem) minmax(0, 1fr);
-  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) minmax(11rem, 12.25rem);
+  gap: 1.1rem;
   align-items: start;
-  min-height: 22rem;
+  min-height: 23.25rem;
 }
 
 .marketing-artifact__stream {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.9rem;
   align-content: start;
-  padding-top: 3.3rem;
+  padding-top: 2.8rem;
 }
 
 .marketing-artifact__signal {
   position: relative;
   display: grid;
   gap: 0.45rem;
-  padding: 0.95rem 0.95rem 1rem;
-  border-radius: 20px;
+  padding: 1rem 1rem 1.05rem;
+  border-radius: 18px;
   border: 1px solid rgba(17, 24, 39, 0.08);
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.74);
   backdrop-filter: blur(8px);
   animation: marketingSignalDrift 8.5s cubic-bezier(0.32, 0, 0.2, 1) infinite;
   will-change: transform, opacity;
@@ -974,7 +979,8 @@ button:disabled {
 .marketing-artifact__signal strong,
 .marketing-artifact__recommendation strong,
 .marketing-product-callout strong {
-  font-size: 1rem;
+  font-size: 0.96rem;
+  line-height: 1.35;
 }
 
 .marketing-artifact__signal p,
@@ -1026,8 +1032,8 @@ button:disabled {
   display: grid;
   gap: 1rem;
   align-self: end;
-  min-height: 21.8rem;
-  padding: 1.7rem 1.75rem 1.55rem;
+  min-height: 23.25rem;
+  padding: 1.85rem 1.85rem 1.65rem;
   border-radius: 30px;
   border: 1px solid rgba(17, 24, 39, 0.08);
   background: rgba(255, 255, 255, 0.8);
@@ -1038,7 +1044,7 @@ button:disabled {
 }
 
 .marketing-artifact__focus strong {
-  font-size: 2rem;
+  font-size: 2.25rem;
 }
 
 .marketing-artifact__focus p,
@@ -1056,8 +1062,8 @@ button:disabled {
 .marketing-artifact__metric-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.8rem;
-  padding-top: 0.1rem;
+  gap: 0.9rem;
+  padding-top: 0.25rem;
 }
 
 .marketing-artifact__metric {
@@ -1073,7 +1079,7 @@ button:disabled {
 
 .marketing-artifact__metric strong {
   font-family: "Onest", Aptos, "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
-  font-size: 0.94rem;
+  font-size: 0.88rem;
   line-height: 1.3;
 }
 
@@ -1098,12 +1104,14 @@ button:disabled {
   justify-content: space-between;
   align-items: end;
   margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--marketing-line);
 }
 
 .marketing-artifact__recommendation {
   display: grid;
   gap: 0.42rem;
-  max-width: 18rem;
+  max-width: 20rem;
 }
 
 .marketing-artifact__ticker {
@@ -1130,7 +1138,7 @@ button:disabled {
 .marketing-section-heading {
   display: grid;
   gap: 1rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: clamp(2.9rem, 4.5vw, 3.8rem);
 }
 
 .marketing-section-heading--split {
@@ -1195,7 +1203,7 @@ button:disabled {
 .marketing-product-stage {
   display: grid;
   grid-template-columns: minmax(15rem, 17rem) minmax(0, 1fr) minmax(14rem, 16rem);
-  min-height: 34rem;
+  min-height: 35.5rem;
   border-radius: 38px;
   overflow: hidden;
   border: 1px solid var(--marketing-line);
@@ -1231,9 +1239,9 @@ button:disabled {
 
 .marketing-product-stage__body {
   display: grid;
-  gap: 1.85rem;
+  gap: 2rem;
   align-content: start;
-  padding: 2.1rem 2.3rem 2.3rem;
+  padding: 2.35rem 2.45rem 2.4rem;
 }
 
 .marketing-product-stage h3 {
@@ -1305,8 +1313,8 @@ button:disabled {
 .marketing-selective__layout {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-  gap: clamp(2.6rem, 6vw, 5rem);
-  margin-bottom: 2.4rem;
+  gap: clamp(3rem, 6vw, 5.6rem);
+  margin-bottom: 2.8rem;
 }
 
 .marketing-selective__column {
@@ -1329,9 +1337,9 @@ button:disabled {
 .marketing-close {
   display: grid;
   grid-template-columns: minmax(16rem, 20rem) 1fr;
-  gap: clamp(2.6rem, 6vw, 5rem);
+  gap: clamp(3rem, 6vw, 5.6rem);
   align-items: start;
-  padding-top: 0.8rem;
+  padding-top: 1rem;
 }
 
 .marketing-close__note {
@@ -1572,6 +1580,7 @@ html {
     justify-content: space-between;
   }
 
+  .marketing-proofgrid,
   .marketing-system-track,
   .marketing-product-stage__metrics,
   .marketing-artifact__metric-grid,

@@ -65,34 +65,44 @@ const credibilityNotes = [
 
 const heroSignals = [
   {
-    label: 'Surface',
-    title: 'Visible trust cues',
-    body: 'Reviews, practitioner context, and local fit stay attached to the site surface.',
-  },
-  {
-    label: 'Audit',
-    title: 'Clear next move',
-    body: 'The audit turns visible strengths and gaps into a grounded commercial read.',
+    label: 'Evidence',
+    title: 'Trust and contact cues stay attached',
+    body: 'The review surface keeps local fit, trust, and contact quality in view.',
   },
   {
     label: 'Draft',
-    title: 'Operator-led send',
-    body: 'The recommendation is worth reviewing because the evidence is still in frame.',
+    title: 'The draft stays grounded',
+    body: 'The next move is easier to judge because the reasoning never leaves the surface.',
   },
 ];
 
 const heroMetrics = [
   {
     label: 'Local fit',
-    value: 'High',
-  },
-  {
-    label: 'Contact path',
-    value: 'Clear',
-  },
-  {
-    label: 'Confidence',
     value: 'Strong',
+  },
+  {
+    label: 'Trust',
+    value: 'Visible',
+  },
+  {
+    label: 'Decision',
+    value: 'Operator-led',
+  },
+];
+
+const heroProofs = [
+  {
+    title: 'Visible evidence',
+    body: 'Signals stay tied to what the site actually shows.',
+  },
+  {
+    title: 'Grounded confidence',
+    body: 'Strong cases stay strong without hiding ambiguity.',
+  },
+  {
+    title: 'Selective outbound',
+    body: 'Built for better decisions, not more activity.',
   },
 ];
 
@@ -174,11 +184,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
       <main className="marketing-shell" id="top">
         <section className="marketing-hero" id="product" data-reveal>
           <div className="marketing-hero__copy">
-            <p className="eyebrow">Evidence-led operator workflow</p>
-            <h1>Review the site. Read the signals. Decide what to send.</h1>
+            <p className="eyebrow">Decision workspace for selective outbound</p>
+            <h1>Read the site before you decide the outreach.</h1>
             <p className="marketing-copy marketing-copy--lead">
-              SignalScout gives a single operator one calm surface for local-service website
-              review, grounded audits, and outreach decisions.
+              SignalScout gives a single operator one calm surface to review local-service
+              websites, inspect visible evidence, and decide whether a draft is worth sending.
             </p>
 
             <div className="marketing-actions">
@@ -195,14 +205,16 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             </div>
 
             <p className="marketing-action-note">
-              Built for selective outbound review. No CRM sprawl, no automation theater, just a
-              clearer next-step decision.
+              Built for teams that care more about signal quality than lead volume.
             </p>
 
-            <div className="marketing-proofline" aria-label="Highlights">
-              <span>Visible evidence</span>
-              <span>Local fit and confidence</span>
-              <span>Operator judgment</span>
+            <div className="marketing-proofgrid" aria-label="Highlights">
+              {heroProofs.map((proof) => (
+                <article key={proof.title} className="marketing-proofgrid__item">
+                  <strong>{proof.title}</strong>
+                  <p>{proof.body}</p>
+                </article>
+              ))}
             </div>
           </div>
 
@@ -218,27 +230,12 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               </div>
 
               <div className="marketing-artifact__stage">
-                <div className="marketing-artifact__stream" data-reveal-item="1">
-                  {heroSignals.map((signal, index) => (
-                    <article
-                      key={signal.title}
-                      className="marketing-artifact__signal"
-                      data-signal-index={index}
-                    >
-                      <small>{signal.label}</small>
-                      <strong>{signal.title}</strong>
-                      <p>{signal.body}</p>
-                      <span className="marketing-artifact__signal-line" />
-                    </article>
-                  ))}
-                </div>
-
                 <div className="marketing-artifact__focus" data-reveal-item="0">
                   <small>Lead review</small>
                   <strong>Praxis am Park</strong>
                   <p>
-                    Trust is visible, the contact path is credible, and the opportunity is to make
-                    the next action clearer.
+                    Trust is already visible. The opportunity is to turn that confidence into a
+                    clearer booking path and a sharper next step.
                   </p>
 
                   <div className="marketing-artifact__metric-grid">
@@ -258,17 +255,32 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                     <span>Decision</span>
                   </div>
                 </div>
+
+                <div className="marketing-artifact__stream" data-reveal-item="1">
+                  {heroSignals.map((signal, index) => (
+                    <article
+                      key={signal.title}
+                      className="marketing-artifact__signal"
+                      data-signal-index={index}
+                    >
+                      <small>{signal.label}</small>
+                      <strong>{signal.title}</strong>
+                      <p>{signal.body}</p>
+                      <span className="marketing-artifact__signal-line" />
+                    </article>
+                  ))}
+                </div>
               </div>
 
               <div className="marketing-artifact__footer" data-reveal-item="2">
                 <div className="marketing-artifact__recommendation">
                   <span className="marketing-card-label">Recommendation</span>
-                  <strong>A grounded draft is worth reviewing, not auto-sending.</strong>
+                  <strong>The draft is worth reviewing because the evidence is still in frame.</strong>
                 </div>
 
                 <div className="marketing-artifact__ticker">
                   <span>Visible evidence</span>
-                  <span>Local fit</span>
+                  <span>Commercial fit</span>
                   <span>Operator judgment</span>
                 </div>
               </div>
