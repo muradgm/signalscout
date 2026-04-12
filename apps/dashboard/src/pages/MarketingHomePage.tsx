@@ -292,17 +292,20 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               </p>
 
               <div className="marketing-product-stage__metrics">
-                <div>
+                <div className="marketing-product-stage__metric">
                   <small>Signals</small>
                   <strong>High local relevance</strong>
+                  <p>Local fit, trust cues, and contact quality still read clearly.</p>
                 </div>
-                <div>
+                <div className="marketing-product-stage__metric">
                   <small>Audit</small>
                   <strong>Visible strengths, clear next move</strong>
+                  <p>The reasoning stays visible instead of getting compressed into a score.</p>
                 </div>
-                <div>
+                <div className="marketing-product-stage__metric">
                   <small>Outreach</small>
                   <strong>Grounded draft with operator control</strong>
+                  <p>The draft stays tied to the site while the final send decision stays human.</p>
                 </div>
               </div>
 

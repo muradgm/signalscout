@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -584,7 +584,7 @@ button:disabled {
 .marketing-home {
   min-height: 100vh;
   padding: 0 0 6.5rem;
-  font-family: "Instrument Sans", Aptos, "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Onest", Aptos, "Segoe UI Variable", "Helvetica Neue", Arial, sans-serif;
   --marketing-bg: #f7f9fc;
   --marketing-bg-soft: #eef3fb;
   --marketing-surface: rgba(255, 255, 255, 0.78);
@@ -685,10 +685,10 @@ button:disabled {
 
 .marketing-shell {
   display: grid;
-  gap: clamp(7.25rem, 13vw, 11.5rem);
+  gap: clamp(8.4rem, 14vw, 12.6rem);
   max-width: 1320px;
   margin: 0 auto;
-  padding: clamp(3.65rem, 7vw, 6.25rem) clamp(1.1rem, 3vw, 2.6rem) 0;
+  padding: clamp(4rem, 7.5vw, 6.85rem) clamp(1.1rem, 3vw, 2.6rem) 0;
 }
 
 .marketing-hero,
@@ -705,9 +705,15 @@ button:disabled {
 .marketing-close::before {
   content: "";
   position: absolute;
-  inset: -3.35rem 0 auto;
+  inset: -4.1rem 0 auto;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--marketing-line-strong), transparent);
+}
+
+.marketing-home .eyebrow {
+  margin-bottom: 0.65rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.13em;
 }
 
 .marketing-hero {
@@ -974,7 +980,7 @@ button:disabled {
 .marketing-section-heading {
   display: grid;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 3.5rem;
 }
 
 .marketing-section-heading--split {
@@ -1091,13 +1097,14 @@ button:disabled {
 
 .marketing-product-stage__metrics {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.15rem;
+  padding-top: 0.35rem;
 }
 
-.marketing-product-stage__metrics div {
+.marketing-product-stage__metric {
   display: grid;
-  gap: 0.4rem;
+  gap: 0.45rem;
   padding-top: 1rem;
   border-top: 1px solid var(--marketing-line);
 }
@@ -1105,6 +1112,10 @@ button:disabled {
 .marketing-product-stage__metrics strong {
   font-size: 0.98rem;
   line-height: 1.35;
+}
+
+.marketing-product-stage__metrics p {
+  font-size: 0.94rem;
 }
 
 .marketing-product-stage__note {
