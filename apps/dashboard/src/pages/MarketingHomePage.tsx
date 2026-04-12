@@ -63,6 +63,39 @@ const credibilityNotes = [
   },
 ];
 
+const heroSignals = [
+  {
+    label: 'Surface',
+    title: 'Visible trust cues',
+    body: 'Reviews, practitioner context, and local fit stay attached to the site surface.',
+  },
+  {
+    label: 'Audit',
+    title: 'Clear next move',
+    body: 'The audit turns visible strengths and gaps into a grounded commercial read.',
+  },
+  {
+    label: 'Draft',
+    title: 'Operator-led send',
+    body: 'The recommendation is worth reviewing because the evidence is still in frame.',
+  },
+];
+
+const heroMetrics = [
+  {
+    label: 'Local fit',
+    value: 'High',
+  },
+  {
+    label: 'Contact path',
+    value: 'Clear',
+  },
+  {
+    label: 'Confidence',
+    value: 'Strong',
+  },
+];
+
 export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
   useEffect(() => {
     const sections = Array.from(
@@ -175,45 +208,69 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
 
           <div className="marketing-hero__visual" aria-hidden="true">
             <div className="marketing-artifact">
-              <div className="marketing-artifact__glow marketing-artifact__glow--blue" />
-              <div className="marketing-artifact__glow marketing-artifact__glow--green" />
+              <div className="marketing-artifact__wash marketing-artifact__wash--blue" />
+              <div className="marketing-artifact__wash marketing-artifact__wash--green" />
+              <div className="marketing-artifact__scan" />
 
               <div className="marketing-artifact__top">
                 <span className="marketing-card-label">Decision surface</span>
                 <span className="marketing-surface-chip">High local fit</span>
               </div>
 
-              <div className="marketing-artifact__focus" data-reveal-item="0">
-                <small>Lead review</small>
-                <strong>Praxis am Park</strong>
-                <p>
-                  Trust is visible, the contact path is credible, and the opportunity is to make
-                  the next action clearer.
-                </p>
+              <div className="marketing-artifact__stage">
+                <div className="marketing-artifact__stream" data-reveal-item="1">
+                  {heroSignals.map((signal, index) => (
+                    <article
+                      key={signal.title}
+                      className="marketing-artifact__signal"
+                      data-signal-index={index}
+                    >
+                      <small>{signal.label}</small>
+                      <strong>{signal.title}</strong>
+                      <p>{signal.body}</p>
+                      <span className="marketing-artifact__signal-line" />
+                    </article>
+                  ))}
+                </div>
 
-                <div className="marketing-artifact__rail">
-                  <span>Inspect</span>
-                  <span>Signals</span>
-                  <span>Audit</span>
-                  <span>Draft</span>
-                  <span>Decision</span>
+                <div className="marketing-artifact__focus" data-reveal-item="0">
+                  <small>Lead review</small>
+                  <strong>Praxis am Park</strong>
+                  <p>
+                    Trust is visible, the contact path is credible, and the opportunity is to make
+                    the next action clearer.
+                  </p>
+
+                  <div className="marketing-artifact__metric-grid">
+                    {heroMetrics.map((metric) => (
+                      <div key={metric.label} className="marketing-artifact__metric">
+                        <span>{metric.label}</span>
+                        <strong>{metric.value}</strong>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="marketing-artifact__rail">
+                    <span>Inspect</span>
+                    <span>Signals</span>
+                    <span>Audit</span>
+                    <span>Draft</span>
+                    <span>Decision</span>
+                  </div>
                 </div>
               </div>
 
-              <div
-                className="marketing-artifact__detail marketing-artifact__detail--left"
-                data-reveal-item="1"
-              >
-                <span className="marketing-card-label">Signals</span>
-                <strong>Local relevance, trust cues, and contact quality stay visible.</strong>
-              </div>
+              <div className="marketing-artifact__footer" data-reveal-item="2">
+                <div className="marketing-artifact__recommendation">
+                  <span className="marketing-card-label">Recommendation</span>
+                  <strong>A grounded draft is worth reviewing, not auto-sending.</strong>
+                </div>
 
-              <div
-                className="marketing-artifact__detail marketing-artifact__detail--right"
-                data-reveal-item="2"
-              >
-                <span className="marketing-card-label">Recommendation</span>
-                <strong>A grounded draft is worth reviewing, not auto-sending.</strong>
+                <div className="marketing-artifact__ticker">
+                  <span>Visible evidence</span>
+                  <span>Local fit</span>
+                  <span>Operator judgment</span>
+                </div>
               </div>
             </div>
           </div>
