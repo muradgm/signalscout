@@ -53,16 +53,24 @@ const notForNotes = [
   },
 ];
 
-const heroSignals = [
+const heroOrbitNodes = [
   {
-    label: 'Signals',
-    title: 'Trust, booking, and contact quality in one view',
-    body: 'The operator can judge whether a lead is real, reachable, and worth attention without leaving the review flow.',
+    label: 'Signal read',
+    title: 'Trust and booking are visible',
+    body: 'The site already shows enough evidence to deserve operator attention.',
+    position: 'left',
   },
   {
-    label: 'Decision',
-    title: 'The draft only moves forward if the evidence holds up',
-    body: 'Audit reasoning and outreach stay attached to the same lead before anyone sends.',
+    label: 'Decision state',
+    title: 'Qualified to review',
+    body: 'The draft moves only when the lead still holds up under inspection.',
+    position: 'right',
+  },
+  {
+    label: 'Send rule',
+    title: 'Approval never disappears',
+    body: 'The operator still decides whether this lead is worth sending to at all.',
+    position: 'bottom',
   },
 ];
 
@@ -162,6 +170,52 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const artifact = document.querySelector<HTMLElement>('.marketing-artifact');
+
+    if (!artifact) {
+      return;
+    }
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const resetArtifactMotion = () => {
+      artifact.style.setProperty('--artifact-rotate-x', '0deg');
+      artifact.style.setProperty('--artifact-rotate-y', '0deg');
+      artifact.style.setProperty('--artifact-shift-x', '0px');
+      artifact.style.setProperty('--artifact-shift-y', '0px');
+      artifact.style.setProperty('--artifact-glow-x', '50%');
+      artifact.style.setProperty('--artifact-glow-y', '36%');
+    };
+
+    resetArtifactMotion();
+
+    if (reduceMotion) {
+      return;
+    }
+
+    const handlePointerMove = (event: PointerEvent) => {
+      const rect = artifact.getBoundingClientRect();
+      const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
+      const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
+
+      artifact.style.setProperty('--artifact-rotate-x', `${relativeY * -10}deg`);
+      artifact.style.setProperty('--artifact-rotate-y', `${relativeX * 13}deg`);
+      artifact.style.setProperty('--artifact-shift-x', `${relativeX * 18}px`);
+      artifact.style.setProperty('--artifact-shift-y', `${relativeY * 18}px`);
+      artifact.style.setProperty('--artifact-glow-x', `${50 + relativeX * 18}%`);
+      artifact.style.setProperty('--artifact-glow-y', `${36 + relativeY * 18}%`);
+    };
+
+    artifact.addEventListener('pointermove', handlePointerMove);
+    artifact.addEventListener('pointerleave', resetArtifactMotion);
+
+    return () => {
+      artifact.removeEventListener('pointermove', handlePointerMove);
+      artifact.removeEventListener('pointerleave', resetArtifactMotion);
+    };
+  }, []);
+
   const handleRouteNavigate =
     (path: string) =>
     (event: MouseEvent<HTMLAnchorElement>): void => {
@@ -238,68 +292,68 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               <div className="marketing-artifact__wash marketing-artifact__wash--blue" />
               <div className="marketing-artifact__wash marketing-artifact__wash--green" />
               <div className="marketing-artifact__scan" />
+              <div className="marketing-artifact__grid" />
+              <div className="marketing-artifact__glow" />
 
-              <div className="marketing-artifact__top">
-                <span className="marketing-card-label">Live workflow</span>
-                <span className="marketing-surface-chip">Operator approval required</span>
-              </div>
+              <div className="marketing-artifact__scene">
+                <div className="marketing-artifact__orb marketing-artifact__orb--one" />
+                <div className="marketing-artifact__orb marketing-artifact__orb--two" />
 
-              <div className="marketing-artifact__stage">
-                <div className="marketing-artifact__focus" data-reveal-item="0">
-                  <small>Selected lead</small>
-                  <strong>Praxis am Park</strong>
-                  <p>
-                    Website snapshot, trust cues, booking friction, and contact
-                    readiness stay visible while the draft is reviewed.
-                  </p>
+                {heroOrbitNodes.map((node, index) => (
+                  <article
+                    key={node.title}
+                    className={`marketing-artifact__token marketing-artifact__token--${node.position}`}
+                    data-reveal-item={index + 2}
+                  >
+                    <small>{node.label}</small>
+                    <strong>{node.title}</strong>
+                    <p>{node.body}</p>
+                  </article>
+                ))}
 
-                  <div className="marketing-artifact__metric-grid">
-                    {heroMetrics.map((metric) => (
-                      <div key={metric.label} className="marketing-artifact__metric">
-                        <span>{metric.label}</span>
-                        <strong>{metric.value}</strong>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="marketing-artifact__rail">
-                    <span>Inspect</span>
-                    <span>Signals</span>
-                    <span>Audit</span>
-                    <span>Draft</span>
-                    <span>Approve</span>
+                <div className="marketing-artifact__platform" data-reveal-item="0">
+                  <div className="marketing-artifact__platform-ring" />
+                  <div className="marketing-artifact__platform-track">
+                    <span>Inspect site</span>
+                    <span>Read signals</span>
+                    <span>Approve send</span>
                   </div>
                 </div>
 
-                <div className="marketing-artifact__stream" data-reveal-item="1">
-                  {heroSignals.map((signal, index) => (
-                    <article
-                      key={signal.title}
-                      className="marketing-artifact__signal"
-                      data-signal-index={index}
-                    >
-                      <small>{signal.label}</small>
-                      <strong>{signal.title}</strong>
-                      <p>{signal.body}</p>
-                      <span className="marketing-artifact__signal-line" />
-                    </article>
-                  ))}
-                </div>
-              </div>
+                <div className="marketing-artifact__slab" data-reveal-item="1">
+                  <div className="marketing-artifact__slab-top">
+                    <span className="marketing-card-label">Selected lead</span>
+                    <span className="marketing-surface-chip">Qualified to review</span>
+                  </div>
 
-              <div className="marketing-artifact__footer" data-reveal-item="2">
-                <div className="marketing-artifact__recommendation">
-                  <span className="marketing-card-label">Recommendation</span>
-                  <strong>
-                    Review now: trust is visible, booking friction is fixable, and
-                    contact quality is usable.
-                  </strong>
-                </div>
+                  <div className="marketing-artifact__slab-body">
+                    <div className="marketing-artifact__slab-copy">
+                      <small>Lead review</small>
+                      <strong>Praxis am Park</strong>
+                      <p>
+                        Trust is visible, the booking path can be improved, and the
+                        contact surface is strong enough to justify a real operator
+                        decision.
+                      </p>
+                    </div>
 
-                <div className="marketing-artifact__ticker">
-                  <span>Visible evidence</span>
-                  <span>Operator review</span>
-                  <span>Selective outbound</span>
+                    <div className="marketing-artifact__metric-grid">
+                      {heroMetrics.map((metric) => (
+                        <div key={metric.label} className="marketing-artifact__metric">
+                          <span>{metric.label}</span>
+                          <strong>{metric.value}</strong>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="marketing-artifact__slab-note">
+                    <span className="marketing-card-label">Next move</span>
+                    <p>
+                      Review now: the evidence is strong enough to shape a selective
+                      outreach draft without hiding ambiguity.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
