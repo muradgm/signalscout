@@ -5,104 +5,113 @@ type MarketingHomePageProps = {
   onNavigate: (path: string) => void;
 };
 
-const systemMoments = [
+const workflowMoments = [
   {
     step: '01',
     title: 'Inspect the site',
-    body: 'Pull the visible website surface into one place so the review starts from what is actually on the page.',
+    body: 'Pull the visible site into one place and judge whether the business looks local, credible, and commercially relevant.',
   },
   {
     step: '02',
-    title: 'Read the signals',
-    body: 'See local relevance, trust cues, booking strength, and contact quality with the evidence still attached.',
+    title: 'Review the evidence',
+    body: 'Read trust, booking, and contact signals, then inspect the audit and draft without losing the source context.',
   },
   {
     step: '03',
-    title: 'Review the audit',
-    body: 'Turn that surface into a grounded audit with strengths, opportunities, and visible reasoning.',
-  },
-  {
-    step: '04',
-    title: 'Shape the draft',
-    body: 'Generate outreach that stays tied to the site, the visible gaps, and the commercial context.',
-  },
-  {
-    step: '05',
-    title: 'Decide the next move',
-    body: 'Keep the operator in control of what gets sent, edited, held, or skipped.',
+    title: 'Approve or skip',
+    body: 'Edit, hold, send, or skip with the operator still in control of the final action.',
   },
 ];
 
 const fitNotes = [
   {
     title: 'Founder-led outbound',
-    body: 'Review fewer leads, understand the opportunity faster, and send outreach with better grounding.',
+    body: 'Useful when the founder still reviews leads personally and wants fewer, better outreach decisions.',
   },
   {
-    title: 'Solo operator research',
-    body: 'Keep website review, audit reasoning, and outreach generation inside one calm decision surface.',
+    title: 'Solo research operators',
+    body: 'Useful when one person needs to qualify local-service businesses quickly before outreach becomes a task.',
   },
   {
-    title: 'Small internal review workflows',
-    body: 'Give a compact team a cleaner way to assess local-service business websites before anyone sends.',
+    title: 'Small internal teams',
+    body: 'Useful when a compact team needs one workspace for qualification before the lead enters a heavier sales process.',
   },
 ];
 
-const credibilityNotes = [
+const notForNotes = [
   {
-    title: 'Evidence stays visible',
-    body: 'Signals, audit framing, and outreach guidance stay tied to what the site actually shows.',
+    title: 'High-volume sequence teams',
+    body: 'If the goal is to blast volume, the review step will feel like drag instead of leverage.',
   },
   {
-    title: 'Ambiguity stays explicit',
-    body: 'Strong cases stay strong, and partial matches stay honest instead of being polished into certainty.',
+    title: 'CRM-first orchestration buyers',
+    body: 'This is a qualification layer before outreach, not a replacement for your CRM or sequencing stack.',
   },
   {
-    title: 'Commercial fit still matters',
-    body: 'Local relevance, contact quality, and booking clarity all shape whether a lead deserves attention.',
+    title: 'Broad, low-context prospecting',
+    body: 'It is strongest where trust, booking clarity, and local relevance actually change the send decision.',
   },
 ];
 
 const heroSignals = [
   {
-    label: 'Evidence',
-    title: 'Trust and contact cues stay attached',
-    body: 'The review surface keeps local fit, trust, and contact quality in view.',
+    label: 'Signals',
+    title: 'Trust, booking, and contact quality in one view',
+    body: 'The operator can judge whether a lead is real, reachable, and worth attention without leaving the review flow.',
   },
   {
-    label: 'Draft',
-    title: 'The draft stays grounded',
-    body: 'The next move is easier to judge because the reasoning never leaves the surface.',
+    label: 'Decision',
+    title: 'The draft only moves forward if the evidence holds up',
+    body: 'Audit reasoning and outreach stay attached to the same lead before anyone sends.',
   },
 ];
 
 const heroMetrics = [
   {
     label: 'Local fit',
-    value: 'Strong',
+    value: 'Qualified',
   },
   {
     label: 'Trust',
     value: 'Visible',
   },
   {
-    label: 'Decision',
-    value: 'Operator-led',
+    label: 'Send control',
+    value: 'Operator',
   },
 ];
 
 const heroProofs = [
   {
-    title: 'Visible evidence',
-    body: 'Signals stay tied to what the site actually shows.',
+    title: 'Lead queue + detail review',
+    body: 'Move from the queue into a full lead review without switching tools.',
   },
   {
-    title: 'Grounded confidence',
-    body: 'Strong cases stay strong without hiding ambiguity.',
+    title: 'Operator approves every send',
+    body: 'The system can draft and send, but the send decision stays human.',
   },
   {
-    title: 'Selective outbound',
-    body: 'Built for better decisions, not more activity.',
+    title: 'Reply visibility already exists',
+    body: 'Send and reply activity support the review loop instead of replacing it.',
+  },
+];
+
+const productProofs = [
+  {
+    title: 'Review queue',
+    body: 'Open a lead, inspect the site, and decide whether it deserves time before the draft becomes work.',
+  },
+  {
+    title: 'Signals stay attached',
+    body: 'Local fit, trust cues, booking strength, and contact quality stay tied to visible site evidence.',
+  },
+  {
+    title: 'Audit and draft',
+    body: 'The product generates an audit and outreach draft from the same lead context instead of forcing manual copy-paste.',
+  },
+  {
+    title: 'Send and reply visibility',
+    body: 'Sending and reply tracking exist, but they stay subordinate to the core qualification decision.',
   },
 ];
 
@@ -167,15 +176,19 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <div className="marketing-nav__inner">
           <a className="marketing-brand" href="#top">
             <strong className="marketing-brand__wordmark">SignalScout</strong>
-            <span className="marketing-brand__descriptor">Decision workspace</span>
+            <span className="marketing-brand__descriptor">Lead review workspace</span>
           </a>
 
           <nav className="marketing-nav__links" aria-label="Marketing">
-            <a href="#product">Product</a>
-            <a href="#system">System</a>
+            <a href="#workflow">Workflow</a>
+            <a href="#proof">Proof</a>
             <a href="#fit">Fit</a>
-            <a className="marketing-nav__cta" href="#cta">
-              Request demo
+            <a
+              className="marketing-nav__cta"
+              href="/leads"
+              onClick={handleRouteNavigate('/leads')}
+            >
+              See lead review
             </a>
           </nav>
         </div>
@@ -184,28 +197,30 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
       <main className="marketing-shell" id="top">
         <section className="marketing-hero" id="product" data-reveal>
           <div className="marketing-hero__copy">
-            <p className="eyebrow">Decision workspace for selective outbound</p>
-            <h1>Read the site before you decide the outreach.</h1>
+            <p className="eyebrow">Website review and outreach qualification for local-service outbound</p>
+            <h1>Qualify local-service leads before you write the first outreach email.</h1>
             <p className="marketing-copy marketing-copy--lead">
-              SignalScout gives a single operator one calm surface to review local-service
-              websites, inspect visible evidence, and decide whether a draft is worth sending.
+              SignalScout reviews the site, surfaces trust, booking, and contact
+              signals, builds a grounded audit, and keeps the final send decision with
+              the operator.
             </p>
 
             <div className="marketing-actions">
-              <a className="marketing-button" href="#cta">
-                Request demo
-              </a>
               <a
-                className="marketing-button marketing-button--secondary"
+                className="marketing-button"
                 href="/leads"
                 onClick={handleRouteNavigate('/leads')}
               >
-                See the workflow
+                See a real lead review
+              </a>
+              <a className="marketing-button marketing-button--secondary" href="#cta">
+                Request demo
               </a>
             </div>
 
             <p className="marketing-action-note">
-              Built for teams that care more about signal quality than lead volume.
+              Best for teams that would rather review 20 qualified opportunities than
+              blast 200 weak ones.
             </p>
 
             <div className="marketing-proofgrid" aria-label="Highlights">
@@ -225,17 +240,17 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               <div className="marketing-artifact__scan" />
 
               <div className="marketing-artifact__top">
-                <span className="marketing-card-label">Decision surface</span>
-                <span className="marketing-surface-chip">High local fit</span>
+                <span className="marketing-card-label">Live workflow</span>
+                <span className="marketing-surface-chip">Operator approval required</span>
               </div>
 
               <div className="marketing-artifact__stage">
                 <div className="marketing-artifact__focus" data-reveal-item="0">
-                  <small>Lead review</small>
+                  <small>Selected lead</small>
                   <strong>Praxis am Park</strong>
                   <p>
-                    Trust is already visible. The opportunity is to turn that confidence into a
-                    clearer booking path and a sharper next step.
+                    Website snapshot, trust cues, booking friction, and contact
+                    readiness stay visible while the draft is reviewed.
                   </p>
 
                   <div className="marketing-artifact__metric-grid">
@@ -252,7 +267,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                     <span>Signals</span>
                     <span>Audit</span>
                     <span>Draft</span>
-                    <span>Decision</span>
+                    <span>Approve</span>
                   </div>
                 </div>
 
@@ -275,33 +290,72 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               <div className="marketing-artifact__footer" data-reveal-item="2">
                 <div className="marketing-artifact__recommendation">
                   <span className="marketing-card-label">Recommendation</span>
-                  <strong>The draft is worth reviewing because the evidence is still in frame.</strong>
+                  <strong>
+                    Review now: trust is visible, booking friction is fixable, and
+                    contact quality is usable.
+                  </strong>
                 </div>
 
                 <div className="marketing-artifact__ticker">
                   <span>Visible evidence</span>
-                  <span>Commercial fit</span>
-                  <span>Operator judgment</span>
+                  <span>Operator review</span>
+                  <span>Selective outbound</span>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section className="marketing-system" id="system" data-reveal>
+        <section className="marketing-proof" id="proof" data-reveal>
+          <div className="marketing-proof__intro">
+            <div className="marketing-section-heading">
+              <p className="eyebrow">Concrete proof</p>
+              <h2>What the product already does today.</h2>
+              <p className="marketing-copy">
+                This is not a promise stack. The current product already supports the
+                core review loop from website inspection to operator-approved outreach.
+              </p>
+            </div>
+
+            <aside className="marketing-proof-callout" data-reveal-item="0">
+              <span className="marketing-card-label">What it is</span>
+              <strong>Qualification layer before outreach</strong>
+              <p>
+                SignalScout is strongest when a single operator or small team needs to
+                decide whether a local-service lead deserves attention at all.
+              </p>
+            </aside>
+          </div>
+
+          <div className="marketing-proof__grid">
+            {productProofs.map((proof, index) => (
+              <article
+                key={proof.title}
+                className="marketing-proof-card"
+                data-reveal-item={index + 1}
+              >
+                <span className="marketing-card-label">Live capability</span>
+                <strong>{proof.title}</strong>
+                <p>{proof.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="marketing-system" id="workflow" data-reveal>
           <div className="marketing-section-heading marketing-section-heading--split">
             <div>
-              <p className="eyebrow">System reveal</p>
-              <h2>Five quiet moves from site review to the next action.</h2>
+              <p className="eyebrow">How it works</p>
+              <h2>Three steps from site review to an outreach decision.</h2>
             </div>
             <p className="marketing-copy">
-              The workflow is strongest when the reasoning stays visible from the first website
-              snapshot through the final operator decision.
+              The product is strongest when it answers the questions a skeptical operator
+              actually has before the draft becomes another task.
             </p>
           </div>
 
-          <div className="marketing-system-track">
-            {systemMoments.map((moment, index) => (
+          <div className="marketing-system-track marketing-system-track--compact">
+            {workflowMoments.map((moment, index) => (
               <article
                 key={moment.title}
                 className="marketing-system-step"
@@ -318,71 +372,72 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <section className="marketing-product" data-reveal>
           <div className="marketing-section-heading marketing-section-heading--split">
             <div>
-              <p className="eyebrow">Product surface</p>
-              <h2>One product surface, not a stack of disconnected tools.</h2>
+              <p className="eyebrow">Inside the workspace</p>
+              <h2>See the whole lead before you touch the draft.</h2>
             </div>
             <p className="marketing-copy">
-              The queue, the lead review, the audit, and the draft stay close enough to support
-              judgment instead of pushing the operator across different systems.
+              The workspace is built to answer four questions fast: Is the lead local?
+              Is it credible? Is the booking path clear? Is the contact surface good
+              enough to act on?
             </p>
           </div>
 
           <div className="marketing-product-stage">
             <div className="marketing-product-stage__sidebar" data-reveal-item="0">
-              <span className="marketing-card-label">Review lane</span>
+              <span className="marketing-card-label">Current review</span>
               <div className="marketing-product-stage__list">
                 <article className="marketing-product-stage__item marketing-product-stage__item--active">
                   <strong>Praxis am Park</strong>
-                  <p>High trust with a softer booking next step.</p>
+                  <p>Strong local fit, clear trust cues, booking step could be sharper.</p>
                 </article>
                 <article className="marketing-product-stage__item">
                   <strong>Mitte Dental</strong>
-                  <p>Useful lead, but the contact surface still needs closer review.</p>
+                  <p>Commercially interesting, but contact quality needs verification.</p>
                 </article>
                 <article className="marketing-product-stage__item">
                   <strong>Endo Studio Neustadt</strong>
-                  <p>Partial local match with explicit ambiguity preserved.</p>
+                  <p>Partial local match; ambiguity stays visible instead of being hidden.</p>
                 </article>
               </div>
             </div>
 
             <div className="marketing-product-stage__body" data-reveal-item="1">
               <div className="marketing-product-stage__bar">
-                <span className="marketing-card-label">Lead review</span>
+                <span className="marketing-card-label">Lead review workspace</span>
                 <span className="marketing-surface-chip marketing-surface-chip--accent">
-                  Draft worth reviewing
+                  Worth operator review
                 </span>
               </div>
 
               <h3>Praxis am Park</h3>
               <p className="marketing-product-stage__summary">
-                The site already signals trust. The opportunity is to make the next action feel
-                clearer and more direct.
+                The site looks credible enough to consider outreach, but the value is in
+                seeing why before the draft becomes a task.
               </p>
 
               <div className="marketing-product-stage__metrics">
                 <div className="marketing-product-stage__metric">
-                  <small>Signals</small>
-                  <strong>High local relevance</strong>
-                  <p>Local fit, trust cues, and contact quality still read clearly.</p>
+                  <small>Site signals</small>
+                  <strong>Local fit, trust, booking, contact</strong>
+                  <p>The operator can qualify the lead without switching to other tools.</p>
                 </div>
                 <div className="marketing-product-stage__metric">
                   <small>Audit</small>
-                  <strong>Visible strengths, clear next move</strong>
-                  <p>The reasoning stays visible instead of getting compressed into a score.</p>
+                  <strong>Grounded reasoning, not a vague score</strong>
+                  <p>The audit explains the opportunity instead of flattening it into a number.</p>
                 </div>
                 <div className="marketing-product-stage__metric">
-                  <small>Outreach</small>
-                  <strong>Grounded draft with operator control</strong>
-                  <p>The draft stays tied to the site while the final send decision stays human.</p>
+                  <small>Draft</small>
+                  <strong>Context attached before send</strong>
+                  <p>The outreach draft stays linked to the evidence that justified it.</p>
                 </div>
               </div>
 
               <div className="marketing-product-stage__note">
-                <span className="marketing-card-label">Audit note</span>
+                <span className="marketing-card-label">Decision note</span>
                 <p>
-                  Trust is already present. The recommendation is to turn that confidence into a
-                  clearer booking step and a more direct outreach angle.
+                  This lead deserves review because the site already does enough work to
+                  justify a focused outreach angle.
                 </p>
               </div>
             </div>
@@ -392,18 +447,18 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                 className="marketing-product-callout marketing-product-callout--confidence"
                 data-reveal-item="2"
               >
-                <span className="marketing-card-label">Confidence</span>
-                <strong>High</strong>
-                <p>Enough signal is present to support a real operator decision.</p>
+                <span className="marketing-card-label">Send control</span>
+                <strong>Every send is operator-approved</strong>
+                <p>The workflow supports sending, but the last decision is still human.</p>
               </div>
 
               <div
                 className="marketing-product-callout marketing-product-callout--evidence"
                 data-reveal-item="3"
               >
-                <span className="marketing-card-label">Evidence</span>
-                <strong>Booking path is visible</strong>
-                <p>Contact quality and trust cues remain visible inside the same surface.</p>
+                <span className="marketing-card-label">Workflow reality</span>
+                <strong>Best for selective outbound</strong>
+                <p>Useful when judgment matters more than maximizing sequence volume.</p>
               </div>
             </div>
           </div>
@@ -411,8 +466,8 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
 
         <section className="marketing-selective" id="fit" data-reveal>
           <div className="marketing-section-heading">
-            <p className="eyebrow">Selective fit</p>
-            <h2>Built for people who would rather review fewer leads and make better decisions.</h2>
+            <p className="eyebrow">Fit check</p>
+            <h2>Who it helps, and who should skip it.</h2>
           </div>
 
           <div className="marketing-selective__layout">
@@ -431,8 +486,8 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             </div>
 
             <div className="marketing-selective__column">
-              <p className="marketing-selective__label">Why it holds up</p>
-              {credibilityNotes.map((note, index) => (
+              <p className="marketing-selective__label">Not for</p>
+              {notForNotes.map((note, index) => (
                 <article
                   key={note.title}
                   className="marketing-selective__item"
@@ -446,36 +501,35 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <p className="marketing-note marketing-note--centered">
-            Strongest today for dental, clinic-style, and other trust-sensitive local-service
-            businesses.
+            Strongest today for dental, clinic-style, and other trust-sensitive
+            local-service businesses.
           </p>
         </section>
 
         <section className="marketing-close" id="cta" data-reveal>
           <div className="marketing-close__note">
-            <p className="eyebrow">Quiet capability note</p>
+            <p className="eyebrow">See the live workflow</p>
             <p className="marketing-copy">
-              Sending is supported. Reply visibility exists. Both stay secondary to the core
-              review workflow.
+              Open the review workspace first. Book a demo after the product has earned it.
             </p>
           </div>
 
           <div className="marketing-close__cta">
-            <h2>See how SignalScout sharpens the next outreach decision.</h2>
+            <h2>Start with a real lead review, then decide if SignalScout fits your outbound process.</h2>
             <p className="marketing-copy marketing-copy--lead">
-              Get a closer look at the workflow, the evidence framing, and how the product fits a
-              focused local-service outbound process.
+              Open the workspace to inspect the live flow. If the review model matches
+              your team, request a closer walkthrough.
             </p>
             <div className="marketing-actions">
-              <a className="marketing-button" href="#top">
-                Request demo
-              </a>
               <a
-                className="marketing-button marketing-button--secondary"
+                className="marketing-button"
                 href="/leads"
                 onClick={handleRouteNavigate('/leads')}
               >
-                Open the workspace
+                See a real lead review
+              </a>
+              <a className="marketing-button marketing-button--secondary" href="#top">
+                Request demo
               </a>
             </div>
           </div>
