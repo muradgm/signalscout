@@ -53,23 +53,20 @@ const notForNotes = [
   },
 ];
 
-const heroOrbitNodes = [
+const heroClayChips = [
   {
-    label: 'Signal read',
-    title: 'Trust and booking are visible',
-    body: 'The site already shows enough evidence to deserve operator attention.',
+    label: 'Inspect site',
+    title: 'Visible local-service surface',
     position: 'left',
   },
   {
-    label: 'Decision state',
-    title: 'Qualified to review',
-    body: 'The draft moves only when the lead still holds up under inspection.',
+    label: 'Read signals',
+    title: 'Trust, booking, and contact',
     position: 'right',
   },
   {
-    label: 'Send rule',
-    title: 'Approval never disappears',
-    body: 'The operator still decides whether this lead is worth sending to at all.',
+    label: 'Approve send',
+    title: 'Operator keeps the final call',
     position: 'bottom',
   },
 ];
@@ -291,43 +288,33 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             <div className="marketing-artifact">
               <div className="marketing-artifact__wash marketing-artifact__wash--blue" />
               <div className="marketing-artifact__wash marketing-artifact__wash--green" />
-              <div className="marketing-artifact__scan" />
-              <div className="marketing-artifact__grid" />
-              <div className="marketing-artifact__glow" />
+              <div className="marketing-artifact__light" />
 
-              <div className="marketing-artifact__scene">
-                <div className="marketing-artifact__orb marketing-artifact__orb--one" />
-                <div className="marketing-artifact__orb marketing-artifact__orb--two" />
+              <div className="marketing-artifact__mobile">
+                <div className="marketing-artifact__halo" />
+                <div className="marketing-artifact__bead marketing-artifact__bead--one" />
+                <div className="marketing-artifact__bead marketing-artifact__bead--two" />
+                <div className="marketing-artifact__bead marketing-artifact__bead--three" />
 
-                {heroOrbitNodes.map((node, index) => (
+                {heroClayChips.map((chip, index) => (
                   <article
-                    key={node.title}
-                    className={`marketing-artifact__token marketing-artifact__token--${node.position}`}
-                    data-reveal-item={index + 2}
+                    key={chip.title}
+                    className={`marketing-artifact__chip marketing-artifact__chip--${chip.position}`}
+                    data-reveal-item={index + 1}
                   >
-                    <small>{node.label}</small>
-                    <strong>{node.title}</strong>
-                    <p>{node.body}</p>
+                    <small>{chip.label}</small>
+                    <strong>{chip.title}</strong>
                   </article>
                 ))}
 
-                <div className="marketing-artifact__platform" data-reveal-item="0">
-                  <div className="marketing-artifact__platform-ring" />
-                  <div className="marketing-artifact__platform-track">
-                    <span>Inspect site</span>
-                    <span>Read signals</span>
-                    <span>Approve send</span>
-                  </div>
-                </div>
-
-                <div className="marketing-artifact__slab" data-reveal-item="1">
-                  <div className="marketing-artifact__slab-top">
+                <div className="marketing-artifact__totem" data-reveal-item="0">
+                  <div className="marketing-artifact__totem-head">
                     <span className="marketing-card-label">Selected lead</span>
                     <span className="marketing-surface-chip">Qualified to review</span>
                   </div>
 
-                  <div className="marketing-artifact__slab-body">
-                    <div className="marketing-artifact__slab-copy">
+                  <div className="marketing-artifact__totem-body">
+                    <div className="marketing-artifact__totem-copy">
                       <small>Lead review</small>
                       <strong>Praxis am Park</strong>
                       <p>
@@ -347,12 +334,21 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                     </div>
                   </div>
 
-                  <div className="marketing-artifact__slab-note">
+                  <div className="marketing-artifact__totem-note">
                     <span className="marketing-card-label">Next move</span>
                     <p>
                       Review now: the evidence is strong enough to shape a selective
                       outreach draft without hiding ambiguity.
                     </p>
+                  </div>
+                </div>
+
+                <div className="marketing-artifact__plinth" data-reveal-item="4">
+                  <div className="marketing-artifact__plinth-shadow" />
+                  <div className="marketing-artifact__plinth-track">
+                    <span>Inspect</span>
+                    <span>Qualify</span>
+                    <span>Approve</span>
                   </div>
                 </div>
               </div>

@@ -971,45 +971,26 @@ button:disabled {
 
 .marketing-artifact__scan {
   position: absolute;
-  inset: -20% auto -20% -28%;
-  width: 32%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.8),
-    rgba(255, 255, 255, 0.22),
-    transparent
-  );
-  transform: skewX(-18deg);
-  opacity: 0.8;
+  inset: 18% auto 14% -12%;
+  width: 44%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  transform: rotate(12deg);
+  opacity: 0.54;
   pointer-events: none;
-  animation: marketingScanSweep 8.4s cubic-bezier(0.32, 0, 0.2, 1) infinite;
+  filter: blur(10px);
 }
 
-.marketing-artifact__grid,
-.marketing-artifact__glow {
+.marketing-artifact__light {
   position: absolute;
   inset: 0;
   pointer-events: none;
-}
-
-.marketing-artifact__grid {
-  background-image:
-    linear-gradient(rgba(17, 24, 39, 0.032) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(17, 24, 39, 0.032) 1px, transparent 1px);
-  background-size: 100% 5.5rem, 5.5rem 100%;
-  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, 0.92), transparent 82%);
-  opacity: 0.42;
-}
-
-.marketing-artifact__glow {
   background:
-    radial-gradient(circle at var(--artifact-glow-x) var(--artifact-glow-y), rgba(255, 255, 255, 0.62), transparent 24%),
-    radial-gradient(circle at 50% 88%, rgba(51, 92, 255, 0.18), transparent 30%);
+    radial-gradient(circle at var(--artifact-glow-x) var(--artifact-glow-y), rgba(255, 255, 255, 0.5), transparent 22%),
+    radial-gradient(circle at 50% 86%, rgba(74, 103, 255, 0.1), transparent 28%);
   transition: background-position 180ms ease-out;
 }
 
-.marketing-artifact__scene {
+.marketing-artifact__mobile {
   position: relative;
   min-height: 38.2rem;
   transform-style: preserve-3d;
@@ -1020,74 +1001,101 @@ button:disabled {
   transition: transform 220ms ease-out;
 }
 
-.marketing-artifact__orb,
-.marketing-artifact__platform,
-.marketing-artifact__token,
-.marketing-artifact__slab {
+.marketing-artifact__halo,
+.marketing-artifact__bead,
+.marketing-artifact__chip,
+.marketing-artifact__totem,
+.marketing-artifact__plinth {
   position: absolute;
 }
 
-.marketing-artifact__orb {
+.marketing-artifact__halo {
+  top: 4.8rem;
+  left: 50%;
+  width: min(78%, 29rem);
+  height: 13rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 50%, rgba(120, 145, 255, 0.22), rgba(255, 255, 255, 0) 72%);
+  transform: translateX(-50%) translateZ(0);
+  filter: blur(26px);
+  opacity: 0.85;
+}
+
+.marketing-artifact__bead {
   border-radius: 999px;
   pointer-events: none;
-  filter: blur(1px);
-  opacity: 0.88;
-  animation: marketingOrbFloat 12s ease-in-out infinite;
+  opacity: 0.9;
+  animation: marketingBeadFloat 10s ease-in-out infinite;
+  box-shadow:
+    inset 0 2px 4px rgba(255, 255, 255, 0.74),
+    inset 0 -5px 10px rgba(88, 106, 136, 0.12),
+    0 16px 30px rgba(16, 24, 40, 0.08);
 }
 
-.marketing-artifact__orb--one {
-  top: 4.2rem;
-  right: 6.5rem;
-  width: 4.2rem;
-  height: 4.2rem;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.94), rgba(85, 121, 255, 0.72));
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.38);
+.marketing-artifact__bead--one {
+  top: 5.6rem;
+  right: 5.1rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  background: linear-gradient(180deg, #fdfdff, #b9cafc);
 }
 
-.marketing-artifact__orb--two {
-  bottom: 8.2rem;
-  right: 4.1rem;
-  width: 2.6rem;
-  height: 2.6rem;
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.92), rgba(37, 211, 198, 0.62));
-  animation-delay: -6s;
+.marketing-artifact__bead--two {
+  bottom: 10rem;
+  right: 3.8rem;
+  width: 2.15rem;
+  height: 2.15rem;
+  background: linear-gradient(180deg, #ffffff, #c0eee5);
+  animation-delay: -4s;
 }
 
-.marketing-artifact__token {
+.marketing-artifact__bead--three {
+  top: 12rem;
+  left: 5rem;
+  width: 1.55rem;
+  height: 1.55rem;
+  background: linear-gradient(180deg, #ffffff, #dbe2f4);
+  animation-delay: -7s;
+}
+
+.marketing-artifact__chip {
   z-index: 2;
   display: grid;
-  gap: 0.45rem;
-  width: 12.8rem;
-  padding: 1rem 1.05rem 1.1rem;
-  border-radius: 24px;
-  border: 1px solid rgba(121, 145, 182, 0.2);
-  background: rgba(255, 255, 255, 0.7);
+  gap: 0.35rem;
+  width: 12rem;
+  padding: 0.9rem 1rem 1rem;
+  border-radius: 28px;
+  border: 1px solid rgba(135, 152, 182, 0.18);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.86), rgba(233, 239, 247, 0.92));
   backdrop-filter: blur(14px);
-  box-shadow: 0 14px 34px rgba(19, 32, 56, 0.04);
-  animation: marketingTokenFloat 9s ease-in-out infinite;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -8px 12px rgba(149, 163, 188, 0.12),
+    0 18px 32px rgba(19, 32, 56, 0.06);
+  animation: marketingChipFloat 8.8s ease-in-out infinite;
 }
 
-.marketing-artifact__token--left {
-  top: 5.2rem;
-  left: 0.7rem;
+.marketing-artifact__chip--left {
+  top: 5.8rem;
+  left: 0.8rem;
   animation-delay: -1.2s;
 }
 
-.marketing-artifact__token--right {
-  top: 8.3rem;
-  right: 0.2rem;
+.marketing-artifact__chip--right {
+  top: 9rem;
+  right: 0.4rem;
   animation-delay: -3.5s;
 }
 
-.marketing-artifact__token--bottom {
-  bottom: 6rem;
-  left: 1.8rem;
-  width: 13.8rem;
+.marketing-artifact__chip--bottom {
+  bottom: 7rem;
+  left: 2.1rem;
+  width: 13.6rem;
   animation-delay: -5.2s;
 }
 
-.marketing-artifact__token small,
-.marketing-artifact__slab-copy small {
+.marketing-artifact__chip small,
+.marketing-artifact__totem-copy small {
   font-size: 0.7rem;
   font-weight: 800;
   letter-spacing: 0.11em;
@@ -1095,89 +1103,37 @@ button:disabled {
   color: var(--marketing-accent);
 }
 
-.marketing-artifact__token strong {
+.marketing-artifact__chip strong {
   font-family: var(--marketing-sans);
-  font-size: 1rem;
+  font-size: 0.96rem;
   font-weight: 700;
   letter-spacing: -0.015em;
   line-height: 1.24;
 }
 
-.marketing-artifact__token p {
-  margin: 0;
-  color: var(--marketing-muted);
-  font-size: 0.88rem;
-  line-height: 1.5;
-}
-
-.marketing-artifact__platform {
-  z-index: 1;
-  left: 50%;
-  bottom: 1.9rem;
-  width: min(82%, 31rem);
-  height: 8.5rem;
-  transform: translateX(-50%) translateZ(10px);
-}
-
-.marketing-artifact__platform-ring {
-  position: absolute;
-  inset: auto 3% 0;
-  height: 5.2rem;
-  border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(221, 229, 242, 0.74)),
-    radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.56), transparent 65%);
-  border: 1px solid rgba(133, 154, 186, 0.18);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.66),
-    0 14px 32px rgba(16, 24, 40, 0.07);
-}
-
-.marketing-artifact__platform-track {
-  position: absolute;
-  inset: auto 0 1.8rem;
-  display: flex;
-  gap: 0.6rem;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.marketing-artifact__platform-track span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2rem;
-  padding: 0.4rem 0.7rem;
-  border-radius: 999px;
-  background: rgba(248, 250, 255, 0.76);
-  border: 1px solid rgba(133, 154, 186, 0.16);
-  color: rgba(17, 24, 39, 0.72);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.marketing-artifact__slab {
+.marketing-artifact__totem {
   z-index: 3;
   left: 50%;
-  top: 4.1rem;
-  width: min(82%, 30rem);
+  top: 3.8rem;
+  width: min(78%, 27rem);
   display: grid;
   gap: 1.2rem;
-  padding: 1.45rem 1.45rem 1.3rem;
-  border-radius: 32px;
-  border: 1px solid rgba(121, 145, 182, 0.2);
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(245, 249, 255, 0.8));
-  backdrop-filter: blur(16px);
+  padding: 1.35rem 1.35rem 1.25rem;
+  border-radius: 36px;
+  border: 1px solid rgba(135, 152, 182, 0.18);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(238, 244, 251, 0.95)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0));
+  backdrop-filter: blur(18px);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.72),
-    0 30px 60px rgba(18, 28, 45, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -10px 16px rgba(149, 163, 188, 0.12),
+    0 34px 54px rgba(18, 28, 45, 0.09);
   transform: translateX(-50%) translateZ(120px);
-  animation: marketingSlabFloat 10.5s ease-in-out infinite;
+  animation: marketingTotemFloat 10.5s ease-in-out infinite;
 }
 
-.marketing-artifact__slab-top {
+.marketing-artifact__totem-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1185,34 +1141,87 @@ button:disabled {
   flex-wrap: wrap;
 }
 
-.marketing-artifact__slab-body {
+.marketing-artifact__totem-body {
   display: grid;
   gap: 1.2rem;
 }
 
-.marketing-artifact__slab-copy {
+.marketing-artifact__totem-copy {
   display: grid;
   gap: 0.65rem;
 }
 
-.marketing-artifact__slab-copy strong {
+.marketing-artifact__totem-copy strong {
   font-size: 2.25rem;
   letter-spacing: -0.04em;
   line-height: 0.95;
 }
 
-.marketing-artifact__slab-copy p,
-.marketing-artifact__slab-note p {
+.marketing-artifact__totem-copy p,
+.marketing-artifact__totem-note p {
   margin: 0;
   color: var(--marketing-muted);
   line-height: 1.58;
 }
 
-.marketing-artifact__slab-note {
+.marketing-artifact__totem-note {
   display: grid;
   gap: 0.45rem;
   padding-top: 1rem;
   border-top: 1px solid rgba(133, 154, 186, 0.16);
+}
+
+.marketing-artifact__plinth {
+  z-index: 1;
+  left: 50%;
+  bottom: 1.6rem;
+  width: min(84%, 31rem);
+  height: 6.7rem;
+  border-radius: 999px;
+  border: 1px solid rgba(135, 152, 182, 0.14);
+  background: linear-gradient(180deg, rgba(240, 245, 252, 0.92), rgba(221, 229, 242, 0.94));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.92),
+    inset 0 -10px 14px rgba(149, 163, 188, 0.14),
+    0 18px 32px rgba(16, 24, 40, 0.08);
+  transform: translateX(-50%) translateZ(12px);
+}
+
+.marketing-artifact__plinth-shadow {
+  position: absolute;
+  inset: auto 12% -1.1rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  background: radial-gradient(circle, rgba(24, 35, 54, 0.16), transparent 72%);
+  filter: blur(18px);
+}
+
+.marketing-artifact__plinth-track {
+  position: absolute;
+  inset: 1.25rem 1.3rem auto;
+  display: flex;
+  gap: 0.65rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.marketing-artifact__plinth-track span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  padding: 0.48rem 0.8rem;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(252, 253, 255, 0.94), rgba(232, 238, 247, 0.92));
+  border: 1px solid rgba(135, 152, 182, 0.16);
+  color: rgba(17, 24, 39, 0.72);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    inset 0 -6px 10px rgba(149, 163, 188, 0.1);
 }
 
 .marketing-artifact__top,
@@ -1715,36 +1724,36 @@ button:disabled {
   }
 }
 
-@keyframes marketingSlabFloat {
+@keyframes marketingTotemFloat {
   0%,
   100% {
     transform: translateX(-50%) translateY(0) translateZ(120px) rotateZ(0deg);
   }
 
   50% {
-    transform: translateX(-50%) translateY(-12px) translateZ(136px) rotateZ(-0.9deg);
+    transform: translateX(-50%) translateY(-10px) translateZ(136px) rotateZ(-0.8deg);
   }
 }
 
-@keyframes marketingTokenFloat {
+@keyframes marketingChipFloat {
   0%,
   100% {
     transform: translate3d(0, 0, 70px);
   }
 
   50% {
-    transform: translate3d(0, -9px, 92px);
+    transform: translate3d(0, -8px, 88px);
   }
 }
 
-@keyframes marketingOrbFloat {
+@keyframes marketingBeadFloat {
   0%,
   100% {
     transform: translate3d(0, 0, 50px);
   }
 
   50% {
-    transform: translate3d(0, -14px, 64px);
+    transform: translate3d(0, -12px, 64px);
   }
 }
 
@@ -1855,13 +1864,13 @@ html {
   .marketing-artifact__wash,
   .marketing-artifact__scan,
   .marketing-artifact__signal-line::after,
-  .marketing-artifact__slab,
-  .marketing-artifact__token,
-  .marketing-artifact__orb {
+  .marketing-artifact__totem,
+  .marketing-artifact__chip,
+  .marketing-artifact__bead {
     animation: none;
   }
 
-  .marketing-artifact__scene {
+  .marketing-artifact__mobile {
     transform: none;
     transition: none;
   }
@@ -1896,32 +1905,28 @@ html {
     justify-self: stretch;
   }
 
-  .marketing-artifact__stage {
-    grid-template-columns: 1fr;
-  }
-
   .marketing-artifact {
     min-height: 35rem;
   }
 
-  .marketing-artifact__scene {
+  .marketing-artifact__mobile {
     min-height: 34rem;
   }
 
-  .marketing-artifact__slab {
-    width: min(78%, 29rem);
+  .marketing-artifact__totem {
+    width: min(76%, 28rem);
   }
 
-  .marketing-artifact__token--left {
+  .marketing-artifact__chip--left {
     top: 4rem;
   }
 
-  .marketing-artifact__token--right {
-    top: 7rem;
+  .marketing-artifact__chip--right {
+    top: 7.4rem;
     right: 0.8rem;
   }
 
-  .marketing-artifact__token--bottom {
+  .marketing-artifact__chip--bottom {
     bottom: 5.2rem;
   }
 
@@ -1995,54 +2000,57 @@ html {
     padding: 0.35rem;
   }
 
-  .marketing-artifact__scene {
+  .marketing-artifact__mobile {
     min-height: 31.5rem;
   }
 
-  .marketing-artifact__slab {
+  .marketing-artifact__totem {
     top: 4.2rem;
     width: calc(100% - 2rem);
     padding: 1.2rem;
   }
 
-  .marketing-artifact__slab-copy strong {
+  .marketing-artifact__totem-copy strong {
     font-size: 1.9rem;
   }
 
-  .marketing-artifact__token {
-    width: 10.5rem;
-    padding: 0.85rem 0.9rem 0.95rem;
+  .marketing-artifact__chip {
+    width: 10rem;
+    padding: 0.8rem 0.9rem 0.9rem;
   }
 
-  .marketing-artifact__token--left {
+  .marketing-artifact__chip--left {
     top: 1.2rem;
     left: 0.8rem;
   }
 
-  .marketing-artifact__token--right {
+  .marketing-artifact__chip--right {
     top: 1.2rem;
     right: 0.8rem;
   }
 
-  .marketing-artifact__token--bottom {
+  .marketing-artifact__chip--bottom {
     bottom: 7rem;
     left: 1.1rem;
     width: 12rem;
   }
 
-  .marketing-artifact__platform {
+  .marketing-artifact__plinth {
     bottom: 0.9rem;
     width: calc(100% - 1.2rem);
     height: 7rem;
   }
 
-  .marketing-artifact__platform-ring {
-    inset: auto 0 0;
-    height: 4.8rem;
+  .marketing-artifact__plinth-track {
+    inset: 1.2rem 0.5rem auto;
   }
 
-  .marketing-artifact__platform-track {
-    inset: auto 0.5rem 1.3rem;
+  .marketing-artifact__bead--one {
+    right: 2.6rem;
+  }
+
+  .marketing-artifact__bead--three {
+    left: 2.8rem;
   }
 
   .marketing-product-stage__sidebar,
