@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { MouseEvent } from 'react';
+import type { CSSProperties, MouseEvent } from 'react';
 
 type MarketingHomePageProps = {
   onNavigate: (path: string) => void;
@@ -39,24 +39,6 @@ const productProofs = [
   {
     title: 'Send visibility',
     body: 'Sending exists, but it stays subordinate to the qualification decision instead of becoming the entire promise.',
-  },
-];
-
-const heroMarkers = [
-  {
-    label: 'Inspect site',
-    title: 'Trust and booking cues stay visible',
-    position: 'north',
-  },
-  {
-    label: 'Read signals',
-    title: 'Local relevance stays attached',
-    position: 'west',
-  },
-  {
-    label: 'Draft gate',
-    title: 'Operator keeps the final send',
-    position: 'south',
   },
 ];
 
@@ -138,37 +120,11 @@ const footerLinks = [
     href: '#fit',
   },
   {
-    label: 'Live review',
+    label: 'Review',
     href: '/leads',
     route: '/leads',
   },
 ];
-
-function SignalScoutMark() {
-  return (
-    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path
-        d="M5 9.5C8.8 6.3 13.2 6.1 17.9 8.2C21.2 9.7 24.4 9.9 27.8 8.7"
-        stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4.7 16.3C8.5 13.5 12.9 13.2 17.1 15C20.4 16.4 23.7 16.5 27.2 15.4"
-        stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-      />
-      <path
-        d="M4.9 22.7C8 20.8 11.6 20.1 15.1 20.5C18.4 20.9 21.2 22.2 23.8 24.7"
-        stroke="currentColor"
-        strokeWidth="2.6"
-        strokeLinecap="round"
-      />
-      <circle cx="26.2" cy="25.8" r="2.2" fill="currentColor" />
-    </svg>
-  );
-}
 
 function HeroWaveVisual() {
   return (
@@ -178,6 +134,20 @@ function HeroWaveVisual() {
       <div className="marketing-artifact__mesh" />
 
       <div className="marketing-artifact__scene">
+        <div className="marketing-artifact__site-stack">
+          <small>Inspect site</small>
+          <div className="marketing-artifact__site-stack-lines" aria-hidden="true">
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+
+        <article className="marketing-artifact__signal-card">
+          <small>Read signals</small>
+          <strong>Trust, booking, and contact cues stay attached</strong>
+        </article>
+
         <svg
           className="marketing-artifact__wave"
           viewBox="0 0 720 520"
@@ -185,77 +155,77 @@ function HeroWaveVisual() {
           aria-hidden="true"
         >
           <defs>
-            <linearGradient id="signalscoutRibbonBack" x1="44" y1="332" x2="670" y2="188" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#CAD6FF" />
-              <stop offset="0.55" stopColor="#90B1FF" />
-              <stop offset="1" stopColor="#D4E4FF" />
+            <linearGradient id="signalscoutWaveCore" x1="98" y1="360" x2="644" y2="206" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#C7D7FF" />
+              <stop offset="0.52" stopColor="#7398FF" />
+              <stop offset="1" stopColor="#E0EBFF" />
             </linearGradient>
-            <linearGradient id="signalscoutRibbonFront" x1="52" y1="360" x2="676" y2="186" gradientUnits="userSpaceOnUse">
+            <linearGradient id="signalscoutWaveHalo" x1="88" y1="374" x2="648" y2="198" gradientUnits="userSpaceOnUse">
               <stop offset="0" stopColor="#FFFFFF" />
-              <stop offset="0.3" stopColor="#97B6FF" />
-              <stop offset="0.7" stopColor="#4B73FF" />
-              <stop offset="1" stopColor="#C9D8FF" />
+              <stop offset="0.45" stopColor="#BAD0FF" />
+              <stop offset="1" stopColor="#F0F5FF" />
             </linearGradient>
-            <linearGradient id="signalscoutRibbonCore" x1="64" y1="342" x2="660" y2="206" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#FFFFFF" />
-              <stop offset="0.45" stopColor="#ECF2FF" />
-              <stop offset="1" stopColor="#A9C2FF" />
-            </linearGradient>
-            <radialGradient id="signalscoutGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(514 202) rotate(82.3) scale(184 326)">
+            <radialGradient id="signalscoutWaveGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(468 230) rotate(82.3) scale(214 332)">
               <stop stopColor="rgba(255,255,255,0.95)" />
               <stop offset="1" stopColor="rgba(255,255,255,0)" />
             </radialGradient>
           </defs>
 
-          <ellipse cx="366" cy="410" rx="222" ry="54" className="marketing-artifact__wave-floor" />
-          <ellipse cx="360" cy="414" rx="182" ry="34" className="marketing-artifact__wave-floor-soft" />
+          <ellipse cx="372" cy="404" rx="228" ry="42" className="marketing-artifact__wave-floor" />
+          <ellipse cx="372" cy="404" rx="172" ry="24" className="marketing-artifact__wave-floor-soft" />
 
           <path
-            d="M60 346C140 285 205 278 282 304C363 331 432 300 509 239C577 185 625 174 666 196"
+            d="M104 332C181 276 252 263 320 288C389 314 458 303 524 252C584 206 632 194 668 214"
             className="marketing-artifact__wave-path marketing-artifact__wave-path--back"
           />
           <path
-            d="M72 362C158 302 226 295 302 320C380 346 448 315 522 256C588 204 632 193 672 212"
-            className="marketing-artifact__wave-path marketing-artifact__wave-path--mid"
-          />
-          <path
-            d="M82 376C171 318 236 312 311 338C387 364 453 332 527 276C594 225 637 214 676 230"
+            d="M108 344C188 289 258 275 326 300C395 326 462 315 530 262C590 216 636 203 670 222"
             className="marketing-artifact__wave-path marketing-artifact__wave-path--front"
           />
           <path
-            d="M82 376C171 318 236 312 311 338C387 364 453 332 527 276C594 225 637 214 676 230"
+            d="M108 344C188 289 258 275 326 300C395 326 462 315 530 262C590 216 636 203 670 222"
             className="marketing-artifact__wave-line"
           />
 
-          <circle cx="170" cy="315" r="16" className="marketing-artifact__wave-node marketing-artifact__wave-node--one" />
-          <circle cx="332" cy="335" r="12" className="marketing-artifact__wave-node marketing-artifact__wave-node--two" />
-          <circle cx="532" cy="268" r="14" className="marketing-artifact__wave-node marketing-artifact__wave-node--three" />
-          <circle cx="642" cy="222" r="28" fill="url(#signalscoutGlow)" opacity="0.75" />
+          <circle cx="214" cy="290" r="14" className="marketing-artifact__wave-node marketing-artifact__wave-node--one" />
+          <circle cx="372" cy="309" r="12" className="marketing-artifact__wave-node marketing-artifact__wave-node--two" />
+          <circle cx="566" cy="238" r="15" className="marketing-artifact__wave-node marketing-artifact__wave-node--three" />
+          <circle cx="650" cy="214" r="24" fill="url(#signalscoutWaveGlow)" opacity="0.74" />
         </svg>
 
-        {heroMarkers.map((marker, index) => (
-          <article
-            key={marker.label}
-            className={`marketing-artifact__marker marketing-artifact__marker--${marker.position}`}
-            data-reveal-item={index + 1}
-          >
-            <small>{marker.label}</small>
-            <strong>{marker.title}</strong>
-          </article>
-        ))}
-
-        <div className="marketing-artifact__decision" data-reveal-item="4">
-          <span className="marketing-artifact__decision-mark">
-            <SignalScoutMark />
-          </span>
+        <div className="marketing-artifact__decision" data-reveal-item="3">
           <div className="marketing-artifact__decision-copy">
             <small>Operator decision</small>
             <strong>Qualified to review</strong>
-            <p>The signal flow becomes a real decision only when the operator agrees.</p>
+            <p>Only worth a draft once the site has actually earned attention.</p>
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+type SplitHeadlineProps = {
+  as: 'h1' | 'h2';
+  text: string;
+};
+
+function SplitHeadline({ as: Tag, text }: SplitHeadlineProps) {
+  const words = text.split(' ');
+
+  return (
+    <Tag className="marketing-split-text">
+      {words.map((word, index) => (
+        <span
+          key={`${word}-${index}`}
+          className="marketing-split-word"
+          style={{ '--word-index': index } as CSSProperties}
+        >
+          {word}
+          {index < words.length - 1 ? '\u00a0' : ''}
+        </span>
+      ))}
+    </Tag>
   );
 }
 
@@ -365,9 +335,6 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
       <header className="marketing-nav">
         <div className="marketing-nav__inner">
           <a className="marketing-brand" href="#top" aria-label="SignalScout">
-            <span className="marketing-brand__mark">
-              <SignalScoutMark />
-            </span>
             <span className="marketing-brand__lockup">
               <strong className="marketing-brand__wordmark">SignalScout</strong>
             </span>
@@ -392,11 +359,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <section className="marketing-hero" id="product" data-reveal>
           <div className="marketing-hero__copy">
             <p className="eyebrow">Website review and outreach qualification for local-service outbound</p>
-            <h1>Qualify local-service leads before outreach becomes work.</h1>
+            <SplitHeadline as="h1" text="Review local-service leads before you commit to outreach." />
             <p className="marketing-copy marketing-copy--lead">
-              SignalScout reads the site, keeps trust, booking, and contact evidence
-              attached, builds a grounded audit, and leaves the final send decision with
-              the operator.
+              SignalScout keeps trust, booking, and contact evidence attached to the
+              lead, builds a grounded audit, and lets the operator make the final send
+              call.
             </p>
 
             <div className="marketing-actions">
@@ -449,11 +416,9 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         </section>
 
         <section className="marketing-system" id="workflow" data-reveal>
-          <div className="marketing-section-heading marketing-section-heading--split">
-            <div>
-              <p className="eyebrow">How it works</p>
-              <h2>Three steps from site review to an outreach decision.</h2>
-            </div>
+          <div className="marketing-section-heading">
+            <p className="eyebrow">How it works</p>
+            <h2>Three steps from site review to an outreach decision.</h2>
             <p className="marketing-copy">
               The product is strongest when it answers the questions a skeptical operator
               actually has before the draft becomes another task.
@@ -476,11 +441,9 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         </section>
 
         <section className="marketing-product" data-reveal>
-          <div className="marketing-section-heading marketing-section-heading--split">
-            <div>
-              <p className="eyebrow">Inside the workspace</p>
-              <h2>See the whole lead before you touch the draft.</h2>
-            </div>
+          <div className="marketing-section-heading">
+            <p className="eyebrow">Inside the workspace</p>
+            <h2>See the whole lead before you touch the draft.</h2>
             <p className="marketing-copy">
               The workspace is built to answer four questions fast: Is the lead local?
               Is it credible? Is the booking path clear? Is the contact surface good
@@ -613,7 +576,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <div className="marketing-close__cta">
-            <h2>Start with a real lead review, then decide if SignalScout fits your outbound process.</h2>
+            <SplitHeadline as="h2" text="Open a real lead review first. Decide on the demo after." />
             <p className="marketing-copy marketing-copy--lead">
               Open the workspace to inspect the live flow. If the review model matches
               your team, request a closer walkthrough.
@@ -638,9 +601,6 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <div className="marketing-footer__inner">
           <div className="marketing-footer__brand">
             <a className="marketing-brand marketing-brand--footer" href="#top" aria-label="SignalScout">
-              <span className="marketing-brand__mark">
-                <SignalScoutMark />
-              </span>
               <span className="marketing-brand__lockup">
                 <strong className="marketing-brand__wordmark">SignalScout</strong>
               </span>
@@ -669,18 +629,10 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             )}
           </nav>
 
-          <div className="marketing-footer__actions">
-            <a
-              className="marketing-button"
-              href="/leads"
-              onClick={handleRouteNavigate('/leads')}
-            >
-              See a real lead review
-            </a>
-            <a className="marketing-button marketing-button--secondary" href="#cta">
-              Request demo
-            </a>
-          </div>
+          <p className="marketing-footer__meta">
+            Local-service qualification before outbound, with the operator keeping the
+            last decision.
+          </p>
         </div>
       </footer>
     </div>
