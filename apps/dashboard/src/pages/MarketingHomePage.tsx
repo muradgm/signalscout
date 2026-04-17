@@ -13,13 +13,84 @@ const workflowMoments = [
   },
   {
     step: '02',
-    title: 'Review the evidence',
-    body: 'Read trust, booking, and contact signals, then inspect the audit and draft without losing the source context.',
+    title: 'Read the evidence',
+    body: 'Keep trust, booking, and contact signals attached to the lead instead of flattening them into a vague score.',
   },
   {
     step: '03',
     title: 'Approve or skip',
-    body: 'Edit, hold, send, or skip with the operator still in control of the final action.',
+    body: 'Hold, edit, send, or skip with the operator still making the last decision.',
+  },
+];
+
+const productProofs = [
+  {
+    title: 'Review queue',
+    body: 'Open a lead, inspect the site, and decide whether it deserves time before the draft becomes work.',
+  },
+  {
+    title: 'Signals stay attached',
+    body: 'Local fit, trust cues, booking strength, and contact quality stay tied to visible site evidence.',
+  },
+  {
+    title: 'Audit and draft',
+    body: 'The product generates an audit and outreach draft from the same lead context instead of forcing manual copy-paste.',
+  },
+  {
+    title: 'Send visibility',
+    body: 'Sending exists, but it stays subordinate to the qualification decision instead of becoming the entire promise.',
+  },
+];
+
+const heroMarkers = [
+  {
+    label: 'Inspect site',
+    title: 'Trust and booking cues stay visible',
+    position: 'north',
+  },
+  {
+    label: 'Read signals',
+    title: 'Local relevance stays attached',
+    position: 'west',
+  },
+  {
+    label: 'Draft gate',
+    title: 'Operator keeps the final send',
+    position: 'south',
+  },
+];
+
+const workspaceQueue = [
+  {
+    title: 'Praxis am Park',
+    body: 'Strong local fit, clear trust cues, worth review.',
+    active: true,
+  },
+  {
+    title: 'Mitte Dental',
+    body: 'Commercially interesting, but contact quality needs verification.',
+  },
+  {
+    title: 'Endo Studio Neustadt',
+    body: 'Partial local match; ambiguity stays visible instead of being hidden.',
+  },
+];
+
+const workspaceHighlights = [
+  {
+    label: 'Signals',
+    title: 'Local fit, trust, booking, contact',
+    body: 'The operator can qualify the lead without switching to other tools.',
+  },
+  {
+    label: 'Audit',
+    title: 'Grounded reasoning, not a vague score',
+    body: 'The audit explains the opportunity instead of flattening it into a number.',
+  },
+  {
+    label: 'Send control',
+    title: 'Every send is operator-approved',
+    body: 'Sending is supported, but the last action is still human.',
   },
 ];
 
@@ -53,72 +124,140 @@ const notForNotes = [
   },
 ];
 
-const heroClayChips = [
+const footerLinks = [
   {
-    label: 'Inspect site',
-    title: 'Visible local-service surface',
-    position: 'left',
+    label: 'Workflow',
+    href: '#workflow',
   },
   {
-    label: 'Read signals',
-    title: 'Trust, booking, and contact',
-    position: 'right',
+    label: 'Proof',
+    href: '#proof',
   },
   {
-    label: 'Approve send',
-    title: 'Operator keeps the final call',
-    position: 'bottom',
-  },
-];
-
-const heroMetrics = [
-  {
-    label: 'Local fit',
-    value: 'Qualified',
+    label: 'Fit',
+    href: '#fit',
   },
   {
-    label: 'Trust',
-    value: 'Visible',
-  },
-  {
-    label: 'Send control',
-    value: 'Operator',
+    label: 'Live review',
+    href: '/leads',
+    route: '/leads',
   },
 ];
 
-const heroProofs = [
-  {
-    title: 'Lead queue + detail review',
-    body: 'Move from the queue into a full lead review without switching tools.',
-  },
-  {
-    title: 'Operator approves every send',
-    body: 'The system can draft and send, but the send decision stays human.',
-  },
-  {
-    title: 'Reply visibility already exists',
-    body: 'Send and reply activity support the review loop instead of replacing it.',
-  },
-];
+function SignalScoutMark() {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path
+        d="M5 9.5C8.8 6.3 13.2 6.1 17.9 8.2C21.2 9.7 24.4 9.9 27.8 8.7"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4.7 16.3C8.5 13.5 12.9 13.2 17.1 15C20.4 16.4 23.7 16.5 27.2 15.4"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <path
+        d="M4.9 22.7C8 20.8 11.6 20.1 15.1 20.5C18.4 20.9 21.2 22.2 23.8 24.7"
+        stroke="currentColor"
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <circle cx="26.2" cy="25.8" r="2.2" fill="currentColor" />
+    </svg>
+  );
+}
 
-const productProofs = [
-  {
-    title: 'Review queue',
-    body: 'Open a lead, inspect the site, and decide whether it deserves time before the draft becomes work.',
-  },
-  {
-    title: 'Signals stay attached',
-    body: 'Local fit, trust cues, booking strength, and contact quality stay tied to visible site evidence.',
-  },
-  {
-    title: 'Audit and draft',
-    body: 'The product generates an audit and outreach draft from the same lead context instead of forcing manual copy-paste.',
-  },
-  {
-    title: 'Send and reply visibility',
-    body: 'Sending and reply tracking exist, but they stay subordinate to the core qualification decision.',
-  },
-];
+function HeroWaveVisual() {
+  return (
+    <div className="marketing-artifact">
+      <div className="marketing-artifact__aura marketing-artifact__aura--left" />
+      <div className="marketing-artifact__aura marketing-artifact__aura--right" />
+      <div className="marketing-artifact__mesh" />
+
+      <div className="marketing-artifact__scene">
+        <svg
+          className="marketing-artifact__wave"
+          viewBox="0 0 720 520"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="signalscoutRibbonBack" x1="44" y1="332" x2="670" y2="188" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#CAD6FF" />
+              <stop offset="0.55" stopColor="#90B1FF" />
+              <stop offset="1" stopColor="#D4E4FF" />
+            </linearGradient>
+            <linearGradient id="signalscoutRibbonFront" x1="52" y1="360" x2="676" y2="186" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#FFFFFF" />
+              <stop offset="0.3" stopColor="#97B6FF" />
+              <stop offset="0.7" stopColor="#4B73FF" />
+              <stop offset="1" stopColor="#C9D8FF" />
+            </linearGradient>
+            <linearGradient id="signalscoutRibbonCore" x1="64" y1="342" x2="660" y2="206" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#FFFFFF" />
+              <stop offset="0.45" stopColor="#ECF2FF" />
+              <stop offset="1" stopColor="#A9C2FF" />
+            </linearGradient>
+            <radialGradient id="signalscoutGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(514 202) rotate(82.3) scale(184 326)">
+              <stop stopColor="rgba(255,255,255,0.95)" />
+              <stop offset="1" stopColor="rgba(255,255,255,0)" />
+            </radialGradient>
+          </defs>
+
+          <ellipse cx="366" cy="410" rx="222" ry="54" className="marketing-artifact__wave-floor" />
+          <ellipse cx="360" cy="414" rx="182" ry="34" className="marketing-artifact__wave-floor-soft" />
+
+          <path
+            d="M60 346C140 285 205 278 282 304C363 331 432 300 509 239C577 185 625 174 666 196"
+            className="marketing-artifact__wave-path marketing-artifact__wave-path--back"
+          />
+          <path
+            d="M72 362C158 302 226 295 302 320C380 346 448 315 522 256C588 204 632 193 672 212"
+            className="marketing-artifact__wave-path marketing-artifact__wave-path--mid"
+          />
+          <path
+            d="M82 376C171 318 236 312 311 338C387 364 453 332 527 276C594 225 637 214 676 230"
+            className="marketing-artifact__wave-path marketing-artifact__wave-path--front"
+          />
+          <path
+            d="M82 376C171 318 236 312 311 338C387 364 453 332 527 276C594 225 637 214 676 230"
+            className="marketing-artifact__wave-line"
+          />
+
+          <circle cx="170" cy="315" r="16" className="marketing-artifact__wave-node marketing-artifact__wave-node--one" />
+          <circle cx="332" cy="335" r="12" className="marketing-artifact__wave-node marketing-artifact__wave-node--two" />
+          <circle cx="532" cy="268" r="14" className="marketing-artifact__wave-node marketing-artifact__wave-node--three" />
+          <circle cx="642" cy="222" r="28" fill="url(#signalscoutGlow)" opacity="0.75" />
+        </svg>
+
+        {heroMarkers.map((marker, index) => (
+          <article
+            key={marker.label}
+            className={`marketing-artifact__marker marketing-artifact__marker--${marker.position}`}
+            data-reveal-item={index + 1}
+          >
+            <small>{marker.label}</small>
+            <strong>{marker.title}</strong>
+          </article>
+        ))}
+
+        <div className="marketing-artifact__decision" data-reveal-item="4">
+          <span className="marketing-artifact__decision-mark">
+            <SignalScoutMark />
+          </span>
+          <div className="marketing-artifact__decision-copy">
+            <small>Operator decision</small>
+            <strong>Qualified to review</strong>
+            <p>The signal flow becomes a real decision only when the operator agrees.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
   useEffect(() => {
@@ -182,7 +321,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
       artifact.style.setProperty('--artifact-shift-x', '0px');
       artifact.style.setProperty('--artifact-shift-y', '0px');
       artifact.style.setProperty('--artifact-glow-x', '50%');
-      artifact.style.setProperty('--artifact-glow-y', '36%');
+      artifact.style.setProperty('--artifact-glow-y', '40%');
     };
 
     resetArtifactMotion();
@@ -197,11 +336,11 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
       const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
 
       artifact.style.setProperty('--artifact-rotate-x', `${relativeY * -10}deg`);
-      artifact.style.setProperty('--artifact-rotate-y', `${relativeX * 13}deg`);
-      artifact.style.setProperty('--artifact-shift-x', `${relativeX * 18}px`);
-      artifact.style.setProperty('--artifact-shift-y', `${relativeY * 18}px`);
+      artifact.style.setProperty('--artifact-rotate-y', `${relativeX * 10}deg`);
+      artifact.style.setProperty('--artifact-shift-x', `${relativeX * 14}px`);
+      artifact.style.setProperty('--artifact-shift-y', `${relativeY * 14}px`);
       artifact.style.setProperty('--artifact-glow-x', `${50 + relativeX * 18}%`);
-      artifact.style.setProperty('--artifact-glow-y', `${36 + relativeY * 18}%`);
+      artifact.style.setProperty('--artifact-glow-y', `${40 + relativeY * 16}%`);
     };
 
     artifact.addEventListener('pointermove', handlePointerMove);
@@ -225,9 +364,13 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
     <div className="marketing-home">
       <header className="marketing-nav">
         <div className="marketing-nav__inner">
-          <a className="marketing-brand" href="#top">
-            <strong className="marketing-brand__wordmark">SignalScout</strong>
-            <span className="marketing-brand__descriptor">Lead review workspace</span>
+          <a className="marketing-brand" href="#top" aria-label="SignalScout">
+            <span className="marketing-brand__mark">
+              <SignalScoutMark />
+            </span>
+            <span className="marketing-brand__lockup">
+              <strong className="marketing-brand__wordmark">SignalScout</strong>
+            </span>
           </a>
 
           <nav className="marketing-nav__links" aria-label="Marketing">
@@ -249,10 +392,10 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <section className="marketing-hero" id="product" data-reveal>
           <div className="marketing-hero__copy">
             <p className="eyebrow">Website review and outreach qualification for local-service outbound</p>
-            <h1>Qualify local-service leads before you write the first outreach email.</h1>
+            <h1>Qualify local-service leads before outreach becomes work.</h1>
             <p className="marketing-copy marketing-copy--lead">
-              SignalScout reviews the site, surfaces trust, booking, and contact
-              signals, builds a grounded audit, and keeps the final send decision with
+              SignalScout reads the site, keeps trust, booking, and contact evidence
+              attached, builds a grounded audit, and leaves the final send decision with
               the operator.
             </p>
 
@@ -273,108 +416,21 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               Best for teams that would rather review 20 qualified opportunities than
               blast 200 weak ones.
             </p>
-
-            <div className="marketing-proofgrid" aria-label="Highlights">
-              {heroProofs.map((proof) => (
-                <article key={proof.title} className="marketing-proofgrid__item">
-                  <strong>{proof.title}</strong>
-                  <p>{proof.body}</p>
-                </article>
-              ))}
-            </div>
           </div>
 
           <div className="marketing-hero__visual" aria-hidden="true">
-            <div className="marketing-artifact">
-              <div className="marketing-artifact__wash marketing-artifact__wash--blue" />
-              <div className="marketing-artifact__wash marketing-artifact__wash--green" />
-              <div className="marketing-artifact__light" />
-
-              <div className="marketing-artifact__mobile">
-                <div className="marketing-artifact__halo" />
-                <div className="marketing-artifact__bead marketing-artifact__bead--one" />
-                <div className="marketing-artifact__bead marketing-artifact__bead--two" />
-                <div className="marketing-artifact__bead marketing-artifact__bead--three" />
-
-                {heroClayChips.map((chip, index) => (
-                  <article
-                    key={chip.title}
-                    className={`marketing-artifact__chip marketing-artifact__chip--${chip.position}`}
-                    data-reveal-item={index + 1}
-                  >
-                    <small>{chip.label}</small>
-                    <strong>{chip.title}</strong>
-                  </article>
-                ))}
-
-                <div className="marketing-artifact__totem" data-reveal-item="0">
-                  <div className="marketing-artifact__totem-head">
-                    <span className="marketing-card-label">Selected lead</span>
-                    <span className="marketing-surface-chip">Qualified to review</span>
-                  </div>
-
-                  <div className="marketing-artifact__totem-body">
-                    <div className="marketing-artifact__totem-copy">
-                      <small>Lead review</small>
-                      <strong>Praxis am Park</strong>
-                      <p>
-                        Trust is visible, the booking path can be improved, and the
-                        contact surface is strong enough to justify a real operator
-                        decision.
-                      </p>
-                    </div>
-
-                    <div className="marketing-artifact__metric-grid">
-                      {heroMetrics.map((metric) => (
-                        <div key={metric.label} className="marketing-artifact__metric">
-                          <span>{metric.label}</span>
-                          <strong>{metric.value}</strong>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="marketing-artifact__totem-note">
-                    <span className="marketing-card-label">Next move</span>
-                    <p>
-                      Review now: the evidence is strong enough to shape a selective
-                      outreach draft without hiding ambiguity.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="marketing-artifact__plinth" data-reveal-item="4">
-                  <div className="marketing-artifact__plinth-shadow" />
-                  <div className="marketing-artifact__plinth-track">
-                    <span>Inspect</span>
-                    <span>Qualify</span>
-                    <span>Approve</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <HeroWaveVisual />
           </div>
         </section>
 
         <section className="marketing-proof" id="proof" data-reveal>
-          <div className="marketing-proof__intro">
-            <div className="marketing-section-heading">
-              <p className="eyebrow">Concrete proof</p>
-              <h2>What the product already does today.</h2>
-              <p className="marketing-copy">
-                This is not a promise stack. The current product already supports the
-                core review loop from website inspection to operator-approved outreach.
-              </p>
-            </div>
-
-            <aside className="marketing-proof-callout" data-reveal-item="0">
-              <span className="marketing-card-label">What it is</span>
-              <strong>Qualification layer before outreach</strong>
-              <p>
-                SignalScout is strongest when a single operator or small team needs to
-                decide whether a local-service lead deserves attention at all.
-              </p>
-            </aside>
+          <div className="marketing-section-heading marketing-section-heading--centered">
+            <p className="eyebrow">Concrete proof</p>
+            <h2>What the product already does today.</h2>
+            <p className="marketing-copy marketing-copy--centered">
+              This is not a promise stack. The product already supports the review loop
+              from website inspection to operator-approved outreach.
+            </p>
           </div>
 
           <div className="marketing-proof__grid">
@@ -382,9 +438,9 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               <article
                 key={proof.title}
                 className="marketing-proof-card"
-                data-reveal-item={index + 1}
+                data-reveal-item={index}
               >
-                <span className="marketing-card-label">Live capability</span>
+                <span className="marketing-card-label">Live capability 0{index + 1}</span>
                 <strong>{proof.title}</strong>
                 <p>{proof.body}</p>
               </article>
@@ -433,57 +489,45 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <div className="marketing-product-stage">
-            <div className="marketing-product-stage__sidebar" data-reveal-item="0">
-              <span className="marketing-card-label">Current review</span>
-              <div className="marketing-product-stage__list">
-                <article className="marketing-product-stage__item marketing-product-stage__item--active">
-                  <strong>Praxis am Park</strong>
-                  <p>Strong local fit, clear trust cues, booking step could be sharper.</p>
+            <div className="marketing-product-stage__queue" data-reveal-item="0">
+              {workspaceQueue.map((lead) => (
+                <article
+                  key={lead.title}
+                  className={`marketing-product-stage__queue-item${lead.active ? ' marketing-product-stage__queue-item--active' : ''}`}
+                >
+                  <strong>{lead.title}</strong>
+                  <p>{lead.body}</p>
                 </article>
-                <article className="marketing-product-stage__item">
-                  <strong>Mitte Dental</strong>
-                  <p>Commercially interesting, but contact quality needs verification.</p>
-                </article>
-                <article className="marketing-product-stage__item">
-                  <strong>Endo Studio Neustadt</strong>
-                  <p>Partial local match; ambiguity stays visible instead of being hidden.</p>
-                </article>
-              </div>
+              ))}
             </div>
 
-            <div className="marketing-product-stage__body" data-reveal-item="1">
-              <div className="marketing-product-stage__bar">
+            <div className="marketing-product-stage__surface" data-reveal-item="1">
+              <div className="marketing-product-stage__surface-top">
                 <span className="marketing-card-label">Lead review workspace</span>
                 <span className="marketing-surface-chip marketing-surface-chip--accent">
                   Worth operator review
                 </span>
               </div>
 
-              <h3>Praxis am Park</h3>
-              <p className="marketing-product-stage__summary">
-                The site looks credible enough to consider outreach, but the value is in
-                seeing why before the draft becomes a task.
-              </p>
+              <div className="marketing-product-stage__surface-main">
+                <h3>Praxis am Park</h3>
+                <p className="marketing-product-stage__summary">
+                  The site looks credible enough to consider outreach, but the value is
+                  in seeing why before the draft becomes a task.
+                </p>
 
-              <div className="marketing-product-stage__metrics">
-                <div className="marketing-product-stage__metric">
-                  <small>Site signals</small>
-                  <strong>Local fit, trust, booking, contact</strong>
-                  <p>The operator can qualify the lead without switching to other tools.</p>
-                </div>
-                <div className="marketing-product-stage__metric">
-                  <small>Audit</small>
-                  <strong>Grounded reasoning, not a vague score</strong>
-                  <p>The audit explains the opportunity instead of flattening it into a number.</p>
-                </div>
-                <div className="marketing-product-stage__metric">
-                  <small>Draft</small>
-                  <strong>Context attached before send</strong>
-                  <p>The outreach draft stays linked to the evidence that justified it.</p>
+                <div className="marketing-product-stage__metrics">
+                  {workspaceHighlights.map((highlight) => (
+                    <div key={highlight.label} className="marketing-product-stage__metric">
+                      <small>{highlight.label}</small>
+                      <strong>{highlight.title}</strong>
+                      <p>{highlight.body}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
 
-              <div className="marketing-product-stage__note">
+              <div className="marketing-product-stage__decision-band">
                 <span className="marketing-card-label">Decision note</span>
                 <p>
                   This lead deserves review because the site already does enough work to
@@ -492,24 +536,28 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               </div>
             </div>
 
-            <div className="marketing-product-stage__aside">
-              <div
-                className="marketing-product-callout marketing-product-callout--confidence"
-                data-reveal-item="2"
-              >
-                <span className="marketing-card-label">Send control</span>
-                <strong>Every send is operator-approved</strong>
-                <p>The workflow supports sending, but the last decision is still human.</p>
-              </div>
-
-              <div
-                className="marketing-product-callout marketing-product-callout--evidence"
-                data-reveal-item="3"
-              >
+            <div className="marketing-product-stage__rail">
+              <article className="marketing-product-callout" data-reveal-item="2">
+                <span className="marketing-card-label">Current state</span>
+                <strong>Qualification layer before outreach</strong>
+                <p>
+                  The product is strongest when it helps a real operator decide whether a
+                  local-service lead deserves attention at all.
+                </p>
+              </article>
+              <article className="marketing-product-callout" data-reveal-item="3">
                 <span className="marketing-card-label">Workflow reality</span>
                 <strong>Best for selective outbound</strong>
                 <p>Useful when judgment matters more than maximizing sequence volume.</p>
-              </div>
+              </article>
+              <article className="marketing-product-callout" data-reveal-item="4">
+                <span className="marketing-card-label">Control</span>
+                <strong>Sending stays secondary to review</strong>
+                <p>
+                  The draft stays attached to the evidence, but the last send decision is
+                  still human.
+                </p>
+              </article>
             </div>
           </div>
         </section>
@@ -541,7 +589,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
                 <article
                   key={note.title}
                   className="marketing-selective__item"
-                  data-reveal-item={index + 2}
+                  data-reveal-item={index + 3}
                 >
                   <strong>{note.title}</strong>
                   <p>{note.body}</p>
@@ -585,6 +633,56 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
         </section>
       </main>
+
+      <footer className="marketing-footer">
+        <div className="marketing-footer__inner">
+          <div className="marketing-footer__brand">
+            <a className="marketing-brand marketing-brand--footer" href="#top" aria-label="SignalScout">
+              <span className="marketing-brand__mark">
+                <SignalScoutMark />
+              </span>
+              <span className="marketing-brand__lockup">
+                <strong className="marketing-brand__wordmark">SignalScout</strong>
+              </span>
+            </a>
+            <p className="marketing-copy">
+              Decision workspace for local-service outbound. Review the site first, then
+              decide whether the lead deserves attention at all.
+            </p>
+          </div>
+
+          <nav className="marketing-footer__links" aria-label="Footer">
+            {footerLinks.map((link) =>
+              link.route ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  onClick={handleRouteNavigate(link.route)}
+                >
+                  {link.label}
+                </a>
+              ) : (
+                <a key={link.label} href={link.href}>
+                  {link.label}
+                </a>
+              ),
+            )}
+          </nav>
+
+          <div className="marketing-footer__actions">
+            <a
+              className="marketing-button"
+              href="/leads"
+              onClick={handleRouteNavigate('/leads')}
+            >
+              See a real lead review
+            </a>
+            <a className="marketing-button marketing-button--secondary" href="#cta">
+              Request demo
+            </a>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
