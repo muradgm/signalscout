@@ -134,71 +134,85 @@ function HeroWaveVisual() {
       <div className="marketing-artifact__mesh" />
 
       <div className="marketing-artifact__scene">
-        <div className="marketing-artifact__site-stack">
-          <small>Inspect site</small>
-          <div className="marketing-artifact__site-stack-lines" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </div>
+        <div className="marketing-artifact__rail-labels" aria-hidden="true">
+          <span>Site evidence</span>
+          <span>Grounded review</span>
+          <span>Operator decision</span>
         </div>
 
-        <article className="marketing-artifact__signal-card">
-          <small>Read signals</small>
-          <strong>Trust, booking, and contact cues stay attached</strong>
-        </article>
-
         <svg
-          className="marketing-artifact__wave"
+          className="marketing-artifact__signal-sculpture"
           viewBox="0 0 720 520"
           xmlns="http://www.w3.org/2000/svg"
           aria-hidden="true"
         >
           <defs>
-            <linearGradient id="signalscoutWaveCore" x1="98" y1="360" x2="644" y2="206" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#C7D7FF" />
-              <stop offset="0.52" stopColor="#7398FF" />
-              <stop offset="1" stopColor="#E0EBFF" />
+            <linearGradient id="signalscoutRawLine" x1="116" y1="372" x2="326" y2="312" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#d9e1f3" />
+              <stop offset="1" stopColor="#eef3ff" />
             </linearGradient>
-            <linearGradient id="signalscoutWaveHalo" x1="88" y1="374" x2="648" y2="198" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#FFFFFF" />
-              <stop offset="0.45" stopColor="#BAD0FF" />
-              <stop offset="1" stopColor="#F0F5FF" />
+            <linearGradient id="signalscoutMergeGlow" x1="282" y1="350" x2="634" y2="218" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#ffffff" />
+              <stop offset="0.38" stopColor="#d7e2ff" />
+              <stop offset="0.72" stopColor="#93afff" />
+              <stop offset="1" stopColor="#eef3ff" />
             </linearGradient>
-            <radialGradient id="signalscoutWaveGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(468 230) rotate(82.3) scale(214 332)">
-              <stop stopColor="rgba(255,255,255,0.95)" />
-              <stop offset="1" stopColor="rgba(255,255,255,0)" />
+            <linearGradient id="signalscoutMergeCore" x1="288" y1="348" x2="626" y2="222" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#c5d6ff" />
+              <stop offset="0.45" stopColor="#7a9dff" />
+              <stop offset="0.85" stopColor="#4970ff" />
+              <stop offset="1" stopColor="#f1f5ff" />
+            </linearGradient>
+            <radialGradient id="signalscoutDecisionGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(582 238) rotate(90) scale(82)">
+              <stop stopColor="#ffffff" />
+              <stop offset="0.54" stopColor="#c7d6ff" />
+              <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
             </radialGradient>
           </defs>
 
-          <ellipse cx="372" cy="404" rx="228" ry="42" className="marketing-artifact__wave-floor" />
-          <ellipse cx="372" cy="404" rx="172" ry="24" className="marketing-artifact__wave-floor-soft" />
+          <ellipse cx="402" cy="402" rx="196" ry="34" className="marketing-artifact__signal-shadow" />
 
           <path
-            d="M104 332C181 276 252 263 320 288C389 314 458 303 524 252C584 206 632 194 668 214"
-            className="marketing-artifact__wave-path marketing-artifact__wave-path--back"
+            d="M106 360C176 322 220 306 278 306"
+            className="marketing-artifact__raw-line marketing-artifact__raw-line--one"
           />
           <path
-            d="M108 344C188 289 258 275 326 300C395 326 462 315 530 262C590 216 636 203 670 222"
-            className="marketing-artifact__wave-path marketing-artifact__wave-path--front"
+            d="M114 398C188 370 228 364 286 354"
+            className="marketing-artifact__raw-line marketing-artifact__raw-line--two"
           />
           <path
-            d="M108 344C188 289 258 275 326 300C395 326 462 315 530 262C590 216 636 203 670 222"
-            className="marketing-artifact__wave-line"
+            d="M126 438C198 426 236 424 294 404"
+            className="marketing-artifact__raw-line marketing-artifact__raw-line--three"
           />
 
-          <circle cx="214" cy="290" r="14" className="marketing-artifact__wave-node marketing-artifact__wave-node--one" />
-          <circle cx="372" cy="309" r="12" className="marketing-artifact__wave-node marketing-artifact__wave-node--two" />
-          <circle cx="566" cy="238" r="15" className="marketing-artifact__wave-node marketing-artifact__wave-node--three" />
-          <circle cx="650" cy="214" r="24" fill="url(#signalscoutWaveGlow)" opacity="0.74" />
+          <path
+            d="M284 356C346 318 396 318 454 340C506 360 548 336 620 234"
+            className="marketing-artifact__merge-line marketing-artifact__merge-line--halo"
+          />
+          <path
+            d="M284 356C346 318 396 318 454 340C506 360 548 336 620 234"
+            className="marketing-artifact__merge-line marketing-artifact__merge-line--core"
+          />
+          <path
+            d="M284 356C346 318 396 318 454 340C506 360 548 336 620 234"
+            className="marketing-artifact__merge-line marketing-artifact__merge-line--dash"
+          />
+
+          <circle cx="332" cy="336" r="13" className="marketing-artifact__merge-node marketing-artifact__merge-node--one" />
+          <circle cx="438" cy="336" r="12" className="marketing-artifact__merge-node marketing-artifact__merge-node--two" />
+          <circle cx="550" cy="294" r="12" className="marketing-artifact__merge-node marketing-artifact__merge-node--three" />
+          <circle cx="586" cy="238" r="84" fill="url(#signalscoutDecisionGlow)" opacity="0.92" />
+          <circle cx="586" cy="238" r="40" className="marketing-artifact__decision-ring" />
+          <circle cx="586" cy="238" r="15" className="marketing-artifact__decision-core" />
         </svg>
 
-        <div className="marketing-artifact__decision" data-reveal-item="3">
-          <div className="marketing-artifact__decision-copy">
-            <small>Operator decision</small>
-            <strong>Qualified to review</strong>
-            <p>Only worth a draft once the site has actually earned attention.</p>
-          </div>
+        <div className="marketing-artifact__merge-pill" data-reveal-item="3">
+          <small>Qualified to review</small>
+          <strong>Evidence resolves before action</strong>
+        </div>
+
+        <div className="marketing-artifact__decision-caption" aria-hidden="true">
+          <span>Operator decision</span>
         </div>
       </div>
     </div>
@@ -418,7 +432,10 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <section className="marketing-system" id="workflow" data-reveal>
           <div className="marketing-section-heading">
             <p className="eyebrow">How it works</p>
-            <h2>Three steps from site review to an outreach decision.</h2>
+            <h2>
+              <span>Three steps from site review</span>
+              <span>to an outreach decision.</span>
+            </h2>
             <p className="marketing-copy">
               The product is strongest when it answers the questions a skeptical operator
               actually has before the draft becomes another task.
@@ -443,7 +460,10 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <section className="marketing-product" data-reveal>
           <div className="marketing-section-heading">
             <p className="eyebrow">Inside the workspace</p>
-            <h2>See the whole lead before you touch the draft.</h2>
+            <h2>
+              <span>See the whole lead</span>
+              <span>before you touch the draft.</span>
+            </h2>
             <p className="marketing-copy">
               The workspace is built to answer four questions fast: Is the lead local?
               Is it credible? Is the booking path clear? Is the contact surface good
@@ -528,7 +548,10 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         <section className="marketing-selective" id="fit" data-reveal>
           <div className="marketing-section-heading">
             <p className="eyebrow">Fit check</p>
-            <h2>Who it helps, and who should skip it.</h2>
+            <h2>
+              <span>Who it helps,</span>
+              <span>and who should skip it.</span>
+            </h2>
           </div>
 
           <div className="marketing-selective__layout">
@@ -576,7 +599,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <div className="marketing-close__cta">
-            <SplitHeadline as="h2" text="Open a real lead review first. Decide on the demo after." />
+            <SplitHeadline as="h2" text="See the live review first. Book a walkthrough after." />
             <p className="marketing-copy marketing-copy--lead">
               Open the workspace to inspect the live flow. If the review model matches
               your team, request a closer walkthrough.
