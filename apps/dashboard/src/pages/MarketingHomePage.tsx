@@ -5,6 +5,8 @@ type MarketingHomePageProps = {
   onNavigate: (path: string) => void;
 };
 
+type HeroConcept = 'threads' | 'prism' | 'lens';
+
 const workflowMoments = [
   {
     step: '01',
@@ -126,9 +128,9 @@ const footerLinks = [
   },
 ];
 
-function HeroWaveVisual() {
+function SignalThreadsVisual() {
   return (
-    <div className="marketing-artifact">
+    <div className="marketing-artifact marketing-artifact--threads">
       <div className="marketing-artifact__aura marketing-artifact__aura--left" />
       <div className="marketing-artifact__aura marketing-artifact__aura--right" />
       <div className="marketing-artifact__mesh" />
@@ -219,6 +221,150 @@ function HeroWaveVisual() {
   );
 }
 
+function DecisionPrismVisual() {
+  return (
+    <div className="marketing-artifact marketing-artifact--prism">
+      <div className="marketing-artifact__aura marketing-artifact__aura--left" />
+      <div className="marketing-artifact__aura marketing-artifact__aura--right" />
+      <div className="marketing-artifact__mesh" />
+
+      <div className="marketing-artifact__scene">
+        <div className="marketing-artifact__prism-rail" aria-hidden="true">
+          <span>Raw site cues</span>
+          <span>Weighted judgment</span>
+          <span>Decision surface</span>
+        </div>
+
+        <div className="marketing-artifact__prism-stage" aria-hidden="true">
+          <div className="marketing-artifact__prism-shadow" />
+          <span className="marketing-artifact__prism-input marketing-artifact__prism-input--one" />
+          <span className="marketing-artifact__prism-input marketing-artifact__prism-input--two" />
+          <span className="marketing-artifact__prism-input marketing-artifact__prism-input--three" />
+          <span className="marketing-artifact__prism-beam marketing-artifact__prism-beam--one" />
+          <span className="marketing-artifact__prism-beam marketing-artifact__prism-beam--two" />
+
+          <div className="marketing-artifact__prism">
+            <span className="marketing-artifact__prism-face marketing-artifact__prism-face--rear" />
+            <span className="marketing-artifact__prism-face marketing-artifact__prism-face--front" />
+            <span className="marketing-artifact__prism-core" />
+          </div>
+
+          <div className="marketing-artifact__prism-decision">
+            <span className="marketing-artifact__prism-decision-ring" />
+            <span className="marketing-artifact__prism-decision-core" />
+          </div>
+        </div>
+
+        <div className="marketing-artifact__prism-card marketing-artifact__prism-card--left" data-reveal-item="3">
+          <small>Site review</small>
+          <strong>Trust and booking are visible</strong>
+        </div>
+
+        <div className="marketing-artifact__prism-card marketing-artifact__prism-card--right" data-reveal-item="4">
+          <small>Operator call</small>
+          <strong>Only worth drafting once the evidence aligns</strong>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReviewLensVisual() {
+  return (
+    <div className="marketing-artifact marketing-artifact--lens">
+      <div className="marketing-artifact__aura marketing-artifact__aura--left" />
+      <div className="marketing-artifact__aura marketing-artifact__aura--right" />
+      <div className="marketing-artifact__mesh" />
+
+      <div className="marketing-artifact__scene">
+        <div className="marketing-artifact__lens-grid" aria-hidden="true">
+          <div className="marketing-artifact__lens-card marketing-artifact__lens-card--one">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="marketing-artifact__lens-card marketing-artifact__lens-card--two">
+            <span />
+            <span />
+            <span />
+          </div>
+          <div className="marketing-artifact__lens-card marketing-artifact__lens-card--three">
+            <span />
+            <span />
+            <span />
+          </div>
+        </div>
+
+        <div className="marketing-artifact__review-lens" aria-hidden="true">
+          <div className="marketing-artifact__review-lens-ring" />
+          <div className="marketing-artifact__review-lens-glow" />
+          <div className="marketing-artifact__review-lens-focus" />
+        </div>
+
+        <svg
+          className="marketing-artifact__lens-scan"
+          viewBox="0 0 720 520"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <defs>
+            <linearGradient id="signalscoutLensTrack" x1="170" y1="338" x2="602" y2="238" gradientUnits="userSpaceOnUse">
+              <stop offset="0" stopColor="#e7edfb" />
+              <stop offset="0.45" stopColor="#c1d2ff" />
+              <stop offset="1" stopColor="#8ba8ff" />
+            </linearGradient>
+          </defs>
+
+          <ellipse cx="416" cy="392" rx="164" ry="28" className="marketing-artifact__signal-shadow" />
+          <path
+            d="M160 336C246 306 300 302 368 314C430 326 502 310 604 240"
+            className="marketing-artifact__lens-track"
+          />
+          <circle cx="284" cy="316" r="10" className="marketing-artifact__lens-node marketing-artifact__lens-node--one" />
+          <circle cx="406" cy="321" r="10" className="marketing-artifact__lens-node marketing-artifact__lens-node--two" />
+          <circle cx="552" cy="276" r="11" className="marketing-artifact__lens-node marketing-artifact__lens-node--three" />
+        </svg>
+
+        <div className="marketing-artifact__lens-pill marketing-artifact__lens-pill--left" data-reveal-item="3">
+          <small>Read signals</small>
+          <strong>Evidence stays attached while you inspect</strong>
+        </div>
+
+        <div className="marketing-artifact__lens-pill marketing-artifact__lens-pill--right" data-reveal-item="4">
+          <small>Decision gate</small>
+          <strong>The operator still owns the final send</strong>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function getHeroConcept(): HeroConcept {
+  if (typeof window === 'undefined') {
+    return 'prism';
+  }
+
+  const hero = new URLSearchParams(window.location.search).get('hero');
+
+  if (hero === 'threads' || hero === 'prism' || hero === 'lens') {
+    return hero;
+  }
+
+  return 'prism';
+}
+
+function HeroVisual({ concept }: { concept: HeroConcept }) {
+  if (concept === 'threads') {
+    return <SignalThreadsVisual />;
+  }
+
+  if (concept === 'lens') {
+    return <ReviewLensVisual />;
+  }
+
+  return <DecisionPrismVisual />;
+}
+
 type SplitHeadlineProps = {
   as: 'h1' | 'h2';
   text: string;
@@ -244,6 +390,8 @@ function SplitHeadline({ as: Tag, text }: SplitHeadlineProps) {
 }
 
 export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
+  const heroConcept = getHeroConcept();
+
   useEffect(() => {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('[data-reveal]'),
@@ -400,7 +548,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <div className="marketing-hero__visual" aria-hidden="true">
-            <HeroWaveVisual />
+            <HeroVisual concept={heroConcept} />
           </div>
         </section>
 
