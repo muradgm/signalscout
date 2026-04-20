@@ -1,0 +1,115 @@
+<svg width="1200" height="980" viewBox="0 0 1200 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="blur-xl" x="-160" y="-160" width="1520" height="1300" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="36"/>
+    </filter>
+    <filter id="blur-lg" x="-80" y="-80" width="1360" height="1140" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="20"/>
+    </filter>
+    <filter id="shadow-soft" x="76" y="180" width="1048" height="620" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="24"/>
+      <feGaussianBlur stdDeviation="22"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0705882 0 0 0 0 0.121569 0 0 0 0 0.247059 0 0 0 0.10 0"/>
+      <feBlend mode="normal" in2="SourceGraphic" result="shape"/>
+    </filter>
+    <linearGradient id="panelStroke" x1="120" y1="110" x2="1080" y2="870" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.94"/>
+      <stop offset="1" stop-color="#CAD9FF" stop-opacity="0.38"/>
+    </linearGradient>
+    <linearGradient id="panelFill" x1="164" y1="118" x2="1012" y2="852" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.84"/>
+      <stop offset="1" stop-color="#EEF4FF" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="cardFill" x1="172" y1="308" x2="530" y2="622" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="1" stop-color="#EFF4FF" stop-opacity="0.82"/>
+    </linearGradient>
+    <linearGradient id="threadOne" x1="118" y1="356" x2="652" y2="434" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F5F8FF"/>
+      <stop offset="1" stop-color="#DCE7FF"/>
+    </linearGradient>
+    <linearGradient id="threadTwo" x1="126" y1="470" x2="668" y2="498" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#EEF4FF"/>
+      <stop offset="1" stop-color="#D1DEFF"/>
+    </linearGradient>
+    <linearGradient id="threadThree" x1="138" y1="588" x2="682" y2="552" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#E8F0FF"/>
+      <stop offset="1" stop-color="#C6D7FF"/>
+    </linearGradient>
+    <linearGradient id="mergeGlow" x1="520" y1="500" x2="1114" y2="292" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="0.38" stop-color="#DDE7FF" stop-opacity="0.86"/>
+      <stop offset="0.78" stop-color="#8CACFF"/>
+      <stop offset="1" stop-color="#EAF1FF"/>
+    </linearGradient>
+    <linearGradient id="mergeCore" x1="532" y1="502" x2="1100" y2="300" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#D7E3FF"/>
+      <stop offset="0.44" stop-color="#7F9FFF"/>
+      <stop offset="0.85" stop-color="#4C71FF"/>
+      <stop offset="1" stop-color="#C8D8FF"/>
+    </linearGradient>
+    <radialGradient id="lensGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(760 504) rotate(90) scale(240)">
+      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
+      <stop offset="0.38" stop-color="#E5EDFF" stop-opacity="0.76"/>
+      <stop offset="0.72" stop-color="#A7C0FF" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#A7C0FF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="decisionGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(996 302) rotate(90) scale(118)">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="0.54" stop-color="#D3E0FF"/>
+      <stop offset="1" stop-color="#D3E0FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <g opacity="0.78" filter="url(#blur-xl)">
+    <ellipse cx="248" cy="206" rx="138" ry="132" fill="#D8E5FF"/>
+    <ellipse cx="968" cy="182" rx="164" ry="148" fill="#EEF4FF"/>
+    <ellipse cx="912" cy="822" rx="222" ry="118" fill="#D6E4FF"/>
+  </g>
+
+  <g filter="url(#shadow-soft)">
+    <rect x="118" y="118" width="964" height="744" rx="72" fill="url(#panelFill)"/>
+    <rect x="118.75" y="118.75" width="962.5" height="742.5" rx="71.25" stroke="url(#panelStroke)" stroke-width="1.5"/>
+  </g>
+
+  <g filter="url(#blur-lg)" opacity="0.72">
+    <ellipse cx="728" cy="698" rx="246" ry="44" fill="#223B71" fill-opacity="0.12"/>
+  </g>
+
+  <g opacity="0.92">
+    <rect x="170" y="290" width="286" height="128" rx="34" transform="rotate(-9 170 290)" fill="url(#cardFill)"/>
+    <rect x="196" y="388" width="316" height="136" rx="36" transform="rotate(4 196 388)" fill="url(#cardFill)" fill-opacity="0.92"/>
+    <rect x="220" y="506" width="334" height="148" rx="38" transform="rotate(-4 220 506)" fill="url(#cardFill)" fill-opacity="0.9"/>
+  </g>
+
+  <g opacity="0.92">
+    <path d="M130 358C238 314 312 302 418 314C486 322 546 350 620 382" stroke="url(#threadOne)" stroke-width="52" stroke-linecap="round"/>
+    <path d="M138 474C252 438 332 438 436 454C506 466 564 486 636 492" stroke="url(#threadTwo)" stroke-width="60" stroke-linecap="round"/>
+    <path d="M148 592C278 578 356 568 460 552C528 542 582 526 648 506" stroke="url(#threadThree)" stroke-width="68" stroke-linecap="round"/>
+  </g>
+
+  <g opacity="0.96">
+    <ellipse cx="760" cy="504" rx="190" ry="190" fill="url(#lensGlow)"/>
+    <circle cx="760" cy="504" r="152" stroke="white" stroke-opacity="0.84" stroke-width="2"/>
+    <circle cx="760" cy="504" r="104" stroke="#B7CAFF" stroke-opacity="0.42" stroke-width="18"/>
+    <circle cx="760" cy="504" r="64" fill="white" fill-opacity="0.28"/>
+  </g>
+
+  <g>
+    <path d="M520 500C614 454 692 444 760 472C838 502 906 502 986 430C1026 394 1060 350 1102 290" stroke="url(#mergeGlow)" stroke-width="94" stroke-linecap="round" stroke-linejoin="round" opacity="0.44"/>
+    <path d="M520 500C614 454 692 444 760 472C838 502 906 502 986 430C1026 394 1060 350 1102 290" stroke="url(#mergeCore)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M520 500C614 454 692 444 760 472C838 502 906 502 986 430C1026 394 1060 350 1102 290" stroke="white" stroke-opacity="0.84" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18 16"/>
+  </g>
+
+  <g fill="white" stroke="#8AA9FF" stroke-opacity="0.34" stroke-width="8">
+    <circle cx="632" cy="468" r="14"/>
+    <circle cx="760" cy="472" r="14"/>
+    <circle cx="894" cy="456" r="14"/>
+  </g>
+
+  <g>
+    <circle cx="996" cy="302" r="118" fill="url(#decisionGlow)"/>
+    <circle cx="996" cy="302" r="58" fill="white" fill-opacity="0.34" stroke="white" stroke-opacity="0.82" stroke-width="2"/>
+    <circle cx="996" cy="302" r="24" fill="#9BB5FF"/>
+  </g>
+</svg>

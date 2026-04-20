@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import type { CSSProperties, MouseEvent } from 'react';
+import heroIllustration from '../assets/signalscout-hero-illustration.svg';
 
 type MarketingHomePageProps = {
   onNavigate: (path: string) => void;
@@ -339,6 +340,20 @@ function ReviewLensVisual() {
   );
 }
 
+function HeroImageVisual() {
+  return (
+    <div className="marketing-artifact marketing-artifact--image">
+      <img
+        className="marketing-artifact__hero-image"
+        src={heroIllustration}
+        alt="Abstract SignalScout illustration showing multiple site signals resolving into one operator decision."
+        decoding="async"
+        loading="eager"
+      />
+    </div>
+  );
+}
+
 function getHeroConcept(): HeroConcept {
   if (typeof window === 'undefined') {
     return 'prism';
@@ -353,16 +368,8 @@ function getHeroConcept(): HeroConcept {
   return 'prism';
 }
 
-function HeroVisual({ concept }: { concept: HeroConcept }) {
-  if (concept === 'threads') {
-    return <SignalThreadsVisual />;
-  }
-
-  if (concept === 'lens') {
-    return <ReviewLensVisual />;
-  }
-
-  return <DecisionPrismVisual />;
+function HeroVisual() {
+  return <HeroImageVisual />;
 }
 
 type SplitHeadlineProps = {
@@ -390,8 +397,6 @@ function SplitHeadline({ as: Tag, text }: SplitHeadlineProps) {
 }
 
 export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
-  const heroConcept = getHeroConcept();
-
   useEffect(() => {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('[data-reveal]'),
@@ -548,7 +553,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
           </div>
 
           <div className="marketing-hero__visual" aria-hidden="true">
-            <HeroVisual concept={heroConcept} />
+            <HeroVisual />
           </div>
         </section>
 
