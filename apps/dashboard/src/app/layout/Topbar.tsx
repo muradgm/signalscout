@@ -8,7 +8,7 @@ export function Topbar({ title, description, meta }: TopbarProps) {
   return (
     <header className="topbar">
       <div>
-        <p className="eyebrow">SignalScout</p>
+        <p className="eyebrow">Decision workspace</p>
         <h1>{title}</h1>
         <p className="topbar-copy">{description}</p>
       </div>

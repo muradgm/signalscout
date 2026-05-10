@@ -79,18 +79,28 @@ export function OutreachComposer({
       {sendHelpText ? <p className="status-note">{sendHelpText}</p> : null}
 
       <div className="action-row">
-        <button type="button" onClick={onRegenerate} disabled={isWorking}>
+        <button
+          type="button"
+          className="button-secondary"
+          onClick={onRegenerate}
+          disabled={isWorking}
+        >
           Regenerate
         </button>
         <button type="button" className="button-secondary" onClick={onCopy} disabled={isWorking}>
           Copy
         </button>
-        <button type="button" className="button-secondary" onClick={onAccept} disabled={isWorking}>
+        <button
+          type="button"
+          className="button-secondary"
+          onClick={onAccept}
+          disabled={isWorking}
+        >
           Accept draft
         </button>
         <button
           type="button"
-          className="button-secondary"
+          className="button-primary"
           onClick={onSaveEdits}
           disabled={isDisabled || isWorking || !isDirty}
         >
@@ -101,6 +111,7 @@ export function OutreachComposer({
         </button>
         <button
           type="button"
+          className="button-primary"
           onClick={onSend}
           disabled={isDisabled || isWorking || !canSend}
         >

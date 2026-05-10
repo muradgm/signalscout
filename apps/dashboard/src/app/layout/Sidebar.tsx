@@ -15,10 +15,10 @@ export function Sidebar({ currentPath, onNavigate }: SidebarProps) {
   return (
     <aside className="dashboard-sidebar">
       <div className="sidebar-brand">
-        <p className="eyebrow">SignalScout</p>
-        <h2>Decision Workspace</h2>
+        <p className="eyebrow">Operator workspace</p>
+        <h2>SignalScout</h2>
         <p className="sidebar-copy">
-          Work through the queue with a clear recommendation, supporting evidence, and the next action in one place.
+          Review the queue, hold the evidence in view, and move only the leads that earn attention.
         </p>
       </div>
 

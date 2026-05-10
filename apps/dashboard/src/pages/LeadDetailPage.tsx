@@ -605,7 +605,11 @@ export function LeadDetailPage({ leadId, onNavigate }: LeadDetailPageProps) {
         <div className="empty-card is-error">
           <h3>Lead unavailable</h3>
           <p>{leadError ?? 'Lead not found.'}</p>
-          <button type="button" onClick={() => onNavigate('/leads')}>
+          <button
+            type="button"
+            className="button-secondary"
+            onClick={() => onNavigate('/leads')}
+          >
             Back to lead queue
           </button>
         </div>
@@ -677,13 +681,25 @@ export function LeadDetailPage({ leadId, onNavigate }: LeadDetailPageProps) {
             </div>
 
             <div className="action-row">
-              <button type="button" onClick={() => void handleRefreshSnapshot()}>
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={() => void handleRefreshSnapshot()}
+              >
                 Refresh snapshot
               </button>
-              <button type="button" onClick={() => void handleGenerateAudit()}>
+              <button
+                type="button"
+                className="button-secondary"
+                onClick={() => void handleGenerateAudit()}
+              >
                 Generate audit
               </button>
-              <button type="button" onClick={() => void handleGenerateOutreach()}>
+              <button
+                type="button"
+                className="button-primary"
+                onClick={() => void handleGenerateOutreach()}
+              >
                 Generate outreach
               </button>
             </div>
