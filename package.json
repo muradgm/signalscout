@@ -11,6 +11,11 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "clean": "turbo run clean && rimraf node_modules",
+    "ops:doctor": "node scripts/ops/doctor.mjs",
+    "ops:gate": "node scripts/ops/gate.mjs",
+    "ops:guard": "node scripts/ops/guard.mjs",
+    "ops:preflight": "node scripts/ops/preflight.mjs",
+    "ops:task:init": "node scripts/ops/task-init.mjs",
     "test:p1": "node --test tests/mvp/usecases.test.mjs",
     "build:p1": "pnpm --filter @signalscout/core build && pnpm --filter @signalscout/ai build && pnpm --filter @signalscout/scraper build && pnpm --filter @signalscout/api build"
   },
