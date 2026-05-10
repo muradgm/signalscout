@@ -1,115 +1,130 @@
 <svg width="1200" height="980" viewBox="0 0 1200 980" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <filter id="blur-xl" x="-160" y="-160" width="1520" height="1300" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="36"/>
-    </filter>
-    <filter id="blur-lg" x="-80" y="-80" width="1360" height="1140" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="20"/>
-    </filter>
-    <filter id="shadow-soft" x="76" y="180" width="1048" height="620" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feOffset dy="24"/>
+    <filter id="shadow-soft" x="74" y="94" width="1052" height="788" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="18"/>
       <feGaussianBlur stdDeviation="22"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.0705882 0 0 0 0 0.121569 0 0 0 0 0.247059 0 0 0 0.10 0"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.0196078 0 0 0 0 0.0431373 0 0 0 0.56 0"/>
       <feBlend mode="normal" in2="SourceGraphic" result="shape"/>
     </filter>
-    <linearGradient id="panelStroke" x1="120" y1="110" x2="1080" y2="870" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFFFFF" stop-opacity="0.94"/>
-      <stop offset="1" stop-color="#CAD9FF" stop-opacity="0.38"/>
+    <filter id="blur-xl" x="-120" y="-60" width="1440" height="1160" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="48"/>
+    </filter>
+    <linearGradient id="panelFill" x1="148" y1="118" x2="1044" y2="848" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11151F"/>
+      <stop offset="1" stop-color="#080B12"/>
     </linearGradient>
-    <linearGradient id="panelFill" x1="164" y1="118" x2="1012" y2="852" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFFFFF" stop-opacity="0.84"/>
-      <stop offset="1" stop-color="#EEF4FF" stop-opacity="0.96"/>
+    <linearGradient id="panelStroke" x1="118" y1="118" x2="1082" y2="862" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2C3344"/>
+      <stop offset="0.58" stop-color="#1A2130"/>
+      <stop offset="1" stop-color="#2B3A5A"/>
     </linearGradient>
-    <linearGradient id="cardFill" x1="172" y1="308" x2="530" y2="622" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
-      <stop offset="1" stop-color="#EFF4FF" stop-opacity="0.82"/>
+    <linearGradient id="cardFill" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#171D2A"/>
+      <stop offset="1" stop-color="#0F1420"/>
     </linearGradient>
-    <linearGradient id="threadOne" x1="118" y1="356" x2="652" y2="434" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#F5F8FF"/>
-      <stop offset="1" stop-color="#DCE7FF"/>
+    <linearGradient id="signalThread" x1="324" y1="548" x2="1048" y2="426" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#9CB9FF"/>
+      <stop offset="0.42" stop-color="#6A8CFF"/>
+      <stop offset="0.78" stop-color="#88A6FF"/>
+      <stop offset="1" stop-color="#D2E0FF"/>
     </linearGradient>
-    <linearGradient id="threadTwo" x1="126" y1="470" x2="668" y2="498" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#EEF4FF"/>
-      <stop offset="1" stop-color="#D1DEFF"/>
+    <linearGradient id="signalThreadSoft" x1="298" y1="596" x2="1012" y2="448" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#314368"/>
+      <stop offset="0.52" stop-color="#4968BE"/>
+      <stop offset="1" stop-color="#1A2744"/>
     </linearGradient>
-    <linearGradient id="threadThree" x1="138" y1="588" x2="682" y2="552" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#E8F0FF"/>
-      <stop offset="1" stop-color="#C6D7FF"/>
-    </linearGradient>
-    <linearGradient id="mergeGlow" x1="520" y1="500" x2="1114" y2="292" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#FFFFFF" stop-opacity="0.32"/>
-      <stop offset="0.38" stop-color="#DDE7FF" stop-opacity="0.86"/>
-      <stop offset="0.78" stop-color="#8CACFF"/>
-      <stop offset="1" stop-color="#EAF1FF"/>
-    </linearGradient>
-    <linearGradient id="mergeCore" x1="532" y1="502" x2="1100" y2="300" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#D7E3FF"/>
-      <stop offset="0.44" stop-color="#7F9FFF"/>
-      <stop offset="0.85" stop-color="#4C71FF"/>
-      <stop offset="1" stop-color="#C8D8FF"/>
-    </linearGradient>
-    <radialGradient id="lensGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(760 504) rotate(90) scale(240)">
-      <stop stop-color="#FFFFFF" stop-opacity="0.96"/>
-      <stop offset="0.38" stop-color="#E5EDFF" stop-opacity="0.76"/>
-      <stop offset="0.72" stop-color="#A7C0FF" stop-opacity="0.18"/>
-      <stop offset="1" stop-color="#A7C0FF" stop-opacity="0"/>
+    <radialGradient id="auraLeft" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(248 190) rotate(90) scale(228 282)">
+      <stop stop-color="#4F8DFF" stop-opacity="0.34"/>
+      <stop offset="1" stop-color="#4F8DFF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="decisionGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(996 302) rotate(90) scale(118)">
-      <stop stop-color="#FFFFFF"/>
-      <stop offset="0.54" stop-color="#D3E0FF"/>
-      <stop offset="1" stop-color="#D3E0FF" stop-opacity="0"/>
+    <radialGradient id="auraRight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(922 710) rotate(90) scale(202 286)">
+      <stop stop-color="#7A52FF" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#7A52FF" stop-opacity="0"/>
     </radialGradient>
+    <radialGradient id="decisionGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 356) rotate(90) scale(156)">
+      <stop stop-color="#AFC8FF" stop-opacity="0.94"/>
+      <stop offset="0.4" stop-color="#6F96FF" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#6F96FF" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="decisionCard" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1D2433"/>
+      <stop offset="1" stop-color="#121826"/>
+    </linearGradient>
+    <linearGradient id="evidenceCard" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#151A26"/>
+      <stop offset="1" stop-color="#0E131E"/>
+    </linearGradient>
   </defs>
 
-  <g opacity="0.78" filter="url(#blur-xl)">
-    <ellipse cx="248" cy="206" rx="138" ry="132" fill="#D8E5FF"/>
-    <ellipse cx="968" cy="182" rx="164" ry="148" fill="#EEF4FF"/>
-    <ellipse cx="912" cy="822" rx="222" ry="118" fill="#D6E4FF"/>
+  <g opacity="0.9" filter="url(#blur-xl)">
+    <ellipse cx="234" cy="184" rx="170" ry="154" fill="url(#auraLeft)"/>
+    <ellipse cx="944" cy="720" rx="248" ry="146" fill="url(#auraRight)"/>
   </g>
 
   <g filter="url(#shadow-soft)">
-    <rect x="118" y="118" width="964" height="744" rx="72" fill="url(#panelFill)"/>
-    <rect x="118.75" y="118.75" width="962.5" height="742.5" rx="71.25" stroke="url(#panelStroke)" stroke-width="1.5"/>
+    <rect x="118" y="118" width="964" height="744" rx="74" fill="url(#panelFill)"/>
+    <rect x="118.75" y="118.75" width="962.5" height="742.5" rx="73.25" stroke="url(#panelStroke)" stroke-width="1.5"/>
   </g>
 
-  <g filter="url(#blur-lg)" opacity="0.72">
-    <ellipse cx="728" cy="698" rx="246" ry="44" fill="#223B71" fill-opacity="0.12"/>
-  </g>
-
-  <g opacity="0.92">
-    <rect x="170" y="290" width="286" height="128" rx="34" transform="rotate(-9 170 290)" fill="url(#cardFill)"/>
-    <rect x="196" y="388" width="316" height="136" rx="36" transform="rotate(4 196 388)" fill="url(#cardFill)" fill-opacity="0.92"/>
-    <rect x="220" y="506" width="334" height="148" rx="38" transform="rotate(-4 220 506)" fill="url(#cardFill)" fill-opacity="0.9"/>
+  <g opacity="0.56">
+    <path d="M212 322H352" stroke="#2B3244" stroke-width="2"/>
+    <path d="M390 322H520" stroke="#2B3244" stroke-width="2"/>
+    <path d="M558 322H690" stroke="#2B3244" stroke-width="2"/>
+    <path d="M728 322H860" stroke="#2B3244" stroke-width="2"/>
   </g>
 
   <g opacity="0.92">
-    <path d="M130 358C238 314 312 302 418 314C486 322 546 350 620 382" stroke="url(#threadOne)" stroke-width="52" stroke-linecap="round"/>
-    <path d="M138 474C252 438 332 438 436 454C506 466 564 486 636 492" stroke="url(#threadTwo)" stroke-width="60" stroke-linecap="round"/>
-    <path d="M148 592C278 578 356 568 460 552C528 542 582 526 648 506" stroke="url(#threadThree)" stroke-width="68" stroke-linecap="round"/>
+    <rect x="182" y="516" width="276" height="106" rx="30" fill="url(#evidenceCard)" stroke="#232C40"/>
+    <rect x="210" y="598" width="304" height="116" rx="32" fill="url(#evidenceCard)" stroke="#232C40"/>
+    <rect x="236" y="684" width="332" height="124" rx="34" fill="url(#evidenceCard)" stroke="#232C40"/>
+    <rect x="210" y="584" width="166" height="14" rx="7" fill="#232C3C"/>
+    <rect x="210" y="614" width="196" height="14" rx="7" fill="#1D2432"/>
+    <rect x="238" y="680" width="198" height="14" rx="7" fill="#232C3C"/>
+    <rect x="238" y="710" width="176" height="14" rx="7" fill="#1D2432"/>
+    <rect x="266" y="764" width="214" height="14" rx="7" fill="#232C3C"/>
+    <rect x="266" y="794" width="192" height="14" rx="7" fill="#1D2432"/>
+  </g>
+
+  <g opacity="0.88">
+    <path d="M332 566C456 534 562 532 648 548C724 562 806 564 878 536C934 514 986 470 1030 400" stroke="url(#signalThreadSoft)" stroke-width="84" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M332 566C456 534 562 532 648 548C724 562 806 564 878 536C934 514 986 470 1030 400" stroke="url(#signalThread)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M332 566C456 534 562 532 648 548C724 562 806 564 878 536C934 514 986 470 1030 400" stroke="#F4F7FF" stroke-opacity="0.82" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18 16"/>
+  </g>
+
+  <g opacity="0.9">
+    <circle cx="494" cy="542" r="17" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
+    <circle cx="648" cy="548" r="15" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
+    <circle cx="806" cy="550" r="16" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
+    <circle cx="944" cy="476" r="18" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
+  </g>
+
+  <g opacity="0.84">
+    <ellipse cx="718" cy="720" rx="236" ry="44" fill="#05070C"/>
+    <ellipse cx="718" cy="720" rx="180" ry="24" fill="#111A2C"/>
+  </g>
+
+  <g>
+    <circle cx="980" cy="356" r="126" fill="url(#decisionGlow)"/>
+    <circle cx="980" cy="356" r="56" fill="#AFC8FF" fill-opacity="0.2" stroke="#E8F0FF" stroke-opacity="0.54" stroke-width="2"/>
+    <circle cx="980" cy="356" r="22" fill="#8EB5FF"/>
+  </g>
+
+  <g opacity="0.95">
+    <rect x="718" y="252" width="214" height="136" rx="34" fill="url(#evidenceCard)" stroke="#253146"/>
+    <rect x="882" y="220" width="224" height="190" rx="38" fill="url(#decisionCard)" stroke="#2B3B5E"/>
+    <circle cx="916" cy="252" r="14" fill="#8EB5FF" stroke="#D8E6FF" stroke-opacity="0.46" stroke-width="6"/>
+    <text x="758" y="286" fill="#8EB5FF" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" letter-spacing="4">INSPECT SITE</text>
+    <text x="922" y="262" fill="#8EB5FF" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="4">OPERATOR DECISION</text>
+    <text x="922" y="318" fill="#FCFDFF" font-family="Manrope, Inter, Arial, sans-serif" font-size="46" font-weight="700">Qualified to review</text>
+    <text x="922" y="392" fill="#96A0B5" font-family="Inter, Arial, sans-serif" font-size="22">Only once the evidence</text>
+    <text x="922" y="424" fill="#96A0B5" font-family="Inter, Arial, sans-serif" font-size="22">holds together.</text>
+    <rect x="758" y="326" width="124" height="24" rx="12" fill="#1F2736"/>
+    <rect x="758" y="366" width="150" height="24" rx="12" fill="#1A2130"/>
+    <rect x="758" y="406" width="112" height="24" rx="12" fill="#1A2130"/>
   </g>
 
   <g opacity="0.96">
-    <ellipse cx="760" cy="504" rx="190" ry="190" fill="url(#lensGlow)"/>
-    <circle cx="760" cy="504" r="152" stroke="white" stroke-opacity="0.84" stroke-width="2"/>
-    <circle cx="760" cy="504" r="104" stroke="#B7CAFF" stroke-opacity="0.42" stroke-width="18"/>
-    <circle cx="760" cy="504" r="64" fill="white" fill-opacity="0.28"/>
-  </g>
-
-  <g>
-    <path d="M520 500C614 454 692 444 760 472C838 502 906 502 986 430C1026 394 1060 350 1102 290" stroke="url(#mergeGlow)" stroke-width="94" stroke-linecap="round" stroke-linejoin="round" opacity="0.44"/>
-    <path d="M520 500C614 454 692 444 760 472C838 502 906 502 986 430C1026 394 1060 350 1102 290" stroke="url(#mergeCore)" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M520 500C614 454 692 444 760 472C838 502 906 502 986 430C1026 394 1060 350 1102 290" stroke="white" stroke-opacity="0.84" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18 16"/>
-  </g>
-
-  <g fill="white" stroke="#8AA9FF" stroke-opacity="0.34" stroke-width="8">
-    <circle cx="632" cy="468" r="14"/>
-    <circle cx="760" cy="472" r="14"/>
-    <circle cx="894" cy="456" r="14"/>
-  </g>
-
-  <g>
-    <circle cx="996" cy="302" r="118" fill="url(#decisionGlow)"/>
-    <circle cx="996" cy="302" r="58" fill="white" fill-opacity="0.34" stroke="white" stroke-opacity="0.82" stroke-width="2"/>
-    <circle cx="996" cy="302" r="24" fill="#9BB5FF"/>
+    <rect x="202" y="166" width="378" height="92" rx="26" fill="url(#evidenceCard)" stroke="#243049"/>
+    <text x="240" y="214" fill="#AFC8FF" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">VISIBLE SIGNALS STAY ATTACHED</text>
   </g>
 </svg>

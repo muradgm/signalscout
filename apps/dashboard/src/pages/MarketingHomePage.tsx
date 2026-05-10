@@ -1,12 +1,10 @@
 import { useEffect } from 'react';
-import type { CSSProperties, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import heroIllustration from '../assets/signalscout-hero-illustration.svg';
 
 type MarketingHomePageProps = {
   onNavigate: (path: string) => void;
 };
-
-type HeroConcept = 'threads' | 'prism' | 'lens';
 
 const workflowMoments = [
   {
@@ -129,217 +127,6 @@ const footerLinks = [
   },
 ];
 
-function SignalThreadsVisual() {
-  return (
-    <div className="marketing-artifact marketing-artifact--threads">
-      <div className="marketing-artifact__aura marketing-artifact__aura--left" />
-      <div className="marketing-artifact__aura marketing-artifact__aura--right" />
-      <div className="marketing-artifact__mesh" />
-
-      <div className="marketing-artifact__scene">
-        <div className="marketing-artifact__rail-labels" aria-hidden="true">
-          <span>Site evidence</span>
-          <span>Grounded review</span>
-          <span>Operator decision</span>
-        </div>
-
-        <svg
-          className="marketing-artifact__signal-sculpture"
-          viewBox="0 0 720 520"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="signalscoutRawLine" x1="116" y1="372" x2="326" y2="312" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#d9e1f3" />
-              <stop offset="1" stopColor="#eef3ff" />
-            </linearGradient>
-            <linearGradient id="signalscoutMergeGlow" x1="282" y1="350" x2="634" y2="218" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#ffffff" />
-              <stop offset="0.38" stopColor="#d7e2ff" />
-              <stop offset="0.72" stopColor="#93afff" />
-              <stop offset="1" stopColor="#eef3ff" />
-            </linearGradient>
-            <linearGradient id="signalscoutMergeCore" x1="288" y1="348" x2="626" y2="222" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#c5d6ff" />
-              <stop offset="0.45" stopColor="#7a9dff" />
-              <stop offset="0.85" stopColor="#4970ff" />
-              <stop offset="1" stopColor="#f1f5ff" />
-            </linearGradient>
-            <radialGradient id="signalscoutDecisionGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(582 238) rotate(90) scale(82)">
-              <stop stopColor="#ffffff" />
-              <stop offset="0.54" stopColor="#c7d6ff" />
-              <stop offset="1" stopColor="#ffffff" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-
-          <ellipse cx="402" cy="402" rx="196" ry="34" className="marketing-artifact__signal-shadow" />
-
-          <path
-            d="M106 360C176 322 220 306 278 306"
-            className="marketing-artifact__raw-line marketing-artifact__raw-line--one"
-          />
-          <path
-            d="M114 398C188 370 228 364 286 354"
-            className="marketing-artifact__raw-line marketing-artifact__raw-line--two"
-          />
-          <path
-            d="M126 438C198 426 236 424 294 404"
-            className="marketing-artifact__raw-line marketing-artifact__raw-line--three"
-          />
-
-          <path
-            d="M284 356C346 318 396 318 454 340C506 360 548 336 620 234"
-            className="marketing-artifact__merge-line marketing-artifact__merge-line--halo"
-          />
-          <path
-            d="M284 356C346 318 396 318 454 340C506 360 548 336 620 234"
-            className="marketing-artifact__merge-line marketing-artifact__merge-line--core"
-          />
-          <path
-            d="M284 356C346 318 396 318 454 340C506 360 548 336 620 234"
-            className="marketing-artifact__merge-line marketing-artifact__merge-line--dash"
-          />
-
-          <circle cx="332" cy="336" r="13" className="marketing-artifact__merge-node marketing-artifact__merge-node--one" />
-          <circle cx="438" cy="336" r="12" className="marketing-artifact__merge-node marketing-artifact__merge-node--two" />
-          <circle cx="550" cy="294" r="12" className="marketing-artifact__merge-node marketing-artifact__merge-node--three" />
-          <circle cx="586" cy="238" r="84" fill="url(#signalscoutDecisionGlow)" opacity="0.92" />
-          <circle cx="586" cy="238" r="40" className="marketing-artifact__decision-ring" />
-          <circle cx="586" cy="238" r="15" className="marketing-artifact__decision-core" />
-        </svg>
-
-        <div className="marketing-artifact__merge-pill" data-reveal-item="3">
-          <small>Qualified to review</small>
-          <strong>Evidence resolves before action</strong>
-        </div>
-
-        <div className="marketing-artifact__decision-caption" aria-hidden="true">
-          <span>Operator decision</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function DecisionPrismVisual() {
-  return (
-    <div className="marketing-artifact marketing-artifact--prism">
-      <div className="marketing-artifact__aura marketing-artifact__aura--left" />
-      <div className="marketing-artifact__aura marketing-artifact__aura--right" />
-      <div className="marketing-artifact__mesh" />
-
-      <div className="marketing-artifact__scene">
-        <div className="marketing-artifact__prism-rail" aria-hidden="true">
-          <span>Raw site cues</span>
-          <span>Weighted judgment</span>
-          <span>Decision surface</span>
-        </div>
-
-        <div className="marketing-artifact__prism-stage" aria-hidden="true">
-          <div className="marketing-artifact__prism-shadow" />
-          <span className="marketing-artifact__prism-input marketing-artifact__prism-input--one" />
-          <span className="marketing-artifact__prism-input marketing-artifact__prism-input--two" />
-          <span className="marketing-artifact__prism-input marketing-artifact__prism-input--three" />
-          <span className="marketing-artifact__prism-beam marketing-artifact__prism-beam--one" />
-          <span className="marketing-artifact__prism-beam marketing-artifact__prism-beam--two" />
-
-          <div className="marketing-artifact__prism">
-            <span className="marketing-artifact__prism-face marketing-artifact__prism-face--rear" />
-            <span className="marketing-artifact__prism-face marketing-artifact__prism-face--front" />
-            <span className="marketing-artifact__prism-core" />
-          </div>
-
-          <div className="marketing-artifact__prism-decision">
-            <span className="marketing-artifact__prism-decision-ring" />
-            <span className="marketing-artifact__prism-decision-core" />
-          </div>
-        </div>
-
-        <div className="marketing-artifact__prism-card marketing-artifact__prism-card--left" data-reveal-item="3">
-          <small>Site review</small>
-          <strong>Trust and booking are visible</strong>
-        </div>
-
-        <div className="marketing-artifact__prism-card marketing-artifact__prism-card--right" data-reveal-item="4">
-          <small>Operator call</small>
-          <strong>Only worth drafting once the evidence aligns</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ReviewLensVisual() {
-  return (
-    <div className="marketing-artifact marketing-artifact--lens">
-      <div className="marketing-artifact__aura marketing-artifact__aura--left" />
-      <div className="marketing-artifact__aura marketing-artifact__aura--right" />
-      <div className="marketing-artifact__mesh" />
-
-      <div className="marketing-artifact__scene">
-        <div className="marketing-artifact__lens-grid" aria-hidden="true">
-          <div className="marketing-artifact__lens-card marketing-artifact__lens-card--one">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className="marketing-artifact__lens-card marketing-artifact__lens-card--two">
-            <span />
-            <span />
-            <span />
-          </div>
-          <div className="marketing-artifact__lens-card marketing-artifact__lens-card--three">
-            <span />
-            <span />
-            <span />
-          </div>
-        </div>
-
-        <div className="marketing-artifact__review-lens" aria-hidden="true">
-          <div className="marketing-artifact__review-lens-ring" />
-          <div className="marketing-artifact__review-lens-glow" />
-          <div className="marketing-artifact__review-lens-focus" />
-        </div>
-
-        <svg
-          className="marketing-artifact__lens-scan"
-          viewBox="0 0 720 520"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="signalscoutLensTrack" x1="170" y1="338" x2="602" y2="238" gradientUnits="userSpaceOnUse">
-              <stop offset="0" stopColor="#e7edfb" />
-              <stop offset="0.45" stopColor="#c1d2ff" />
-              <stop offset="1" stopColor="#8ba8ff" />
-            </linearGradient>
-          </defs>
-
-          <ellipse cx="416" cy="392" rx="164" ry="28" className="marketing-artifact__signal-shadow" />
-          <path
-            d="M160 336C246 306 300 302 368 314C430 326 502 310 604 240"
-            className="marketing-artifact__lens-track"
-          />
-          <circle cx="284" cy="316" r="10" className="marketing-artifact__lens-node marketing-artifact__lens-node--one" />
-          <circle cx="406" cy="321" r="10" className="marketing-artifact__lens-node marketing-artifact__lens-node--two" />
-          <circle cx="552" cy="276" r="11" className="marketing-artifact__lens-node marketing-artifact__lens-node--three" />
-        </svg>
-
-        <div className="marketing-artifact__lens-pill marketing-artifact__lens-pill--left" data-reveal-item="3">
-          <small>Read signals</small>
-          <strong>Evidence stays attached while you inspect</strong>
-        </div>
-
-        <div className="marketing-artifact__lens-pill marketing-artifact__lens-pill--right" data-reveal-item="4">
-          <small>Decision gate</small>
-          <strong>The operator still owns the final send</strong>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function HeroImageVisual() {
   return (
     <div className="marketing-artifact marketing-artifact--image">
@@ -354,20 +141,6 @@ function HeroImageVisual() {
   );
 }
 
-function getHeroConcept(): HeroConcept {
-  if (typeof window === 'undefined') {
-    return 'prism';
-  }
-
-  const hero = new URLSearchParams(window.location.search).get('hero');
-
-  if (hero === 'threads' || hero === 'prism' || hero === 'lens') {
-    return hero;
-  }
-
-  return 'prism';
-}
-
 function HeroVisual() {
   return <HeroImageVisual />;
 }
@@ -378,21 +151,8 @@ type SplitHeadlineProps = {
 };
 
 function SplitHeadline({ as: Tag, text }: SplitHeadlineProps) {
-  const words = text.split(' ');
-
   return (
-    <Tag className="marketing-split-text">
-      {words.map((word, index) => (
-        <span
-          key={`${word}-${index}`}
-          className="marketing-split-word"
-          style={{ '--word-index': index } as CSSProperties}
-        >
-          {word}
-          {index < words.length - 1 ? '\u00a0' : ''}
-        </span>
-      ))}
-    </Tag>
+    <Tag className="marketing-split-text">{text}</Tag>
   );
 }
 
@@ -441,52 +201,6 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
     sections.forEach((section) => observer.observe(section));
 
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const artifact = document.querySelector<HTMLElement>('.marketing-artifact');
-
-    if (!artifact) {
-      return;
-    }
-
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    const resetArtifactMotion = () => {
-      artifact.style.setProperty('--artifact-rotate-x', '0deg');
-      artifact.style.setProperty('--artifact-rotate-y', '0deg');
-      artifact.style.setProperty('--artifact-shift-x', '0px');
-      artifact.style.setProperty('--artifact-shift-y', '0px');
-      artifact.style.setProperty('--artifact-glow-x', '50%');
-      artifact.style.setProperty('--artifact-glow-y', '40%');
-    };
-
-    resetArtifactMotion();
-
-    if (reduceMotion) {
-      return;
-    }
-
-    const handlePointerMove = (event: PointerEvent) => {
-      const rect = artifact.getBoundingClientRect();
-      const relativeX = (event.clientX - rect.left) / rect.width - 0.5;
-      const relativeY = (event.clientY - rect.top) / rect.height - 0.5;
-
-      artifact.style.setProperty('--artifact-rotate-x', `${relativeY * -10}deg`);
-      artifact.style.setProperty('--artifact-rotate-y', `${relativeX * 10}deg`);
-      artifact.style.setProperty('--artifact-shift-x', `${relativeX * 14}px`);
-      artifact.style.setProperty('--artifact-shift-y', `${relativeY * 14}px`);
-      artifact.style.setProperty('--artifact-glow-x', `${50 + relativeX * 18}%`);
-      artifact.style.setProperty('--artifact-glow-y', `${40 + relativeY * 16}%`);
-    };
-
-    artifact.addEventListener('pointermove', handlePointerMove);
-    artifact.addEventListener('pointerleave', resetArtifactMotion);
-
-    return () => {
-      artifact.removeEventListener('pointermove', handlePointerMove);
-      artifact.removeEventListener('pointerleave', resetArtifactMotion);
-    };
   }, []);
 
   const handleRouteNavigate =
@@ -571,7 +285,13 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             {productProofs.map((proof, index) => (
               <article
                 key={proof.title}
-                className="marketing-proof-card"
+                className={`marketing-proof-card${
+                  index === 0
+                    ? ' marketing-proof-card--spotlight marketing-proof-card--spotlight-violet'
+                    : index === 3
+                      ? ' marketing-proof-card--spotlight marketing-proof-card--spotlight-coral'
+                      : ''
+                }`}
                 data-reveal-item={index}
               >
                 <span className="marketing-card-label">Live capability 0{index + 1}</span>
