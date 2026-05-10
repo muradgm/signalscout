@@ -143,8 +143,6 @@ const normalizeAddress = (value: string): string =>
     .replace(/\(\s+/g, '(')
     .trim();
 
-const digitCount = (value: string): number => (value.match(/\d/g) ?? []).length;
-
 const hasFormattingHints = (value: string): boolean => /[\s\-()/+]/.test(value);
 
 const isLikelyDecimalBlob = (value: string): boolean =>

@@ -230,7 +230,7 @@ const LOCATION_REGISTRY: LocationProfile[] = [
   },
 ];
 
-const LOCATION_DELIMITER_PATTERN = /[,/|()\-]+/g;
+const LOCATION_DELIMITER_PATTERN = /[,/|()-]+/g;
 const POSTAL_CITY_PATTERN = /\b\d{5}\s+([a-z][a-z\s-]{1,60})\b/gi;
 const ADMIN_LOCATION_SUFFIXES = [
   ' am main',
