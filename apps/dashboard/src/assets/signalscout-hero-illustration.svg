@@ -1,130 +1,109 @@
 <svg width="1200" height="980" viewBox="0 0 1200 980" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <filter id="shadow-soft" x="74" y="94" width="1052" height="788" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feOffset dy="18"/>
-      <feGaussianBlur stdDeviation="22"/>
-      <feColorMatrix type="matrix" values="0 0 0 0 0.0117647 0 0 0 0 0.0196078 0 0 0 0 0.0431373 0 0 0 0.56 0"/>
-      <feBlend mode="normal" in2="SourceGraphic" result="shape"/>
-    </filter>
-    <filter id="blur-xl" x="-120" y="-60" width="1440" height="1160" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-      <feGaussianBlur stdDeviation="48"/>
-    </filter>
-    <linearGradient id="panelFill" x1="148" y1="118" x2="1044" y2="848" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#11151F"/>
-      <stop offset="1" stop-color="#080B12"/>
+    <linearGradient id="boardFill" x1="120" y1="120" x2="1080" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#111723"/>
+      <stop offset="1" stop-color="#090D15"/>
     </linearGradient>
-    <linearGradient id="panelStroke" x1="118" y1="118" x2="1082" y2="862" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#2C3344"/>
-      <stop offset="0.58" stop-color="#1A2130"/>
-      <stop offset="1" stop-color="#2B3A5A"/>
+    <linearGradient id="boardStroke" x1="120" y1="120" x2="1080" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#263248"/>
+      <stop offset="1" stop-color="#1A2336"/>
     </linearGradient>
-    <linearGradient id="cardFill" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#171D2A"/>
-      <stop offset="1" stop-color="#0F1420"/>
+    <linearGradient id="panelFill" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#192131"/>
+      <stop offset="1" stop-color="#0F1520"/>
     </linearGradient>
-    <linearGradient id="signalThread" x1="324" y1="548" x2="1048" y2="426" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#9CB9FF"/>
-      <stop offset="0.42" stop-color="#6A8CFF"/>
-      <stop offset="0.78" stop-color="#88A6FF"/>
-      <stop offset="1" stop-color="#D2E0FF"/>
+    <linearGradient id="surfaceFill" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#1C2537"/>
+      <stop offset="1" stop-color="#121927"/>
     </linearGradient>
-    <linearGradient id="signalThreadSoft" x1="298" y1="596" x2="1012" y2="448" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#314368"/>
-      <stop offset="0.52" stop-color="#4968BE"/>
-      <stop offset="1" stop-color="#1A2744"/>
+    <linearGradient id="accentLine" x1="320" y1="0" x2="890" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#6A8CFF"/>
+      <stop offset="1" stop-color="#B5C7FF"/>
     </linearGradient>
-    <radialGradient id="auraLeft" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(248 190) rotate(90) scale(228 282)">
-      <stop stop-color="#4F8DFF" stop-opacity="0.34"/>
+    <radialGradient id="accentGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(915 300) rotate(90) scale(220 260)">
+      <stop stop-color="#4F8DFF" stop-opacity="0.2"/>
       <stop offset="1" stop-color="#4F8DFF" stop-opacity="0"/>
     </radialGradient>
-    <radialGradient id="auraRight" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(922 710) rotate(90) scale(202 286)">
-      <stop stop-color="#7A52FF" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#7A52FF" stop-opacity="0"/>
-    </radialGradient>
-    <radialGradient id="decisionGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(980 356) rotate(90) scale(156)">
-      <stop stop-color="#AFC8FF" stop-opacity="0.94"/>
-      <stop offset="0.4" stop-color="#6F96FF" stop-opacity="0.32"/>
-      <stop offset="1" stop-color="#6F96FF" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="decisionCard" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#1D2433"/>
-      <stop offset="1" stop-color="#121826"/>
-    </linearGradient>
-    <linearGradient id="evidenceCard" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#151A26"/>
-      <stop offset="1" stop-color="#0E131E"/>
-    </linearGradient>
+    <filter id="shadow" x="70" y="84" width="1060" height="812" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feOffset dy="24"/>
+      <feGaussianBlur stdDeviation="24"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0156863 0 0 0 0 0.0235294 0 0 0 0 0.0470588 0 0 0 0.55 0"/>
+      <feBlend mode="normal" in2="SourceGraphic" result="shape"/>
+    </filter>
   </defs>
 
-  <g opacity="0.9" filter="url(#blur-xl)">
-    <ellipse cx="234" cy="184" rx="170" ry="154" fill="url(#auraLeft)"/>
-    <ellipse cx="944" cy="720" rx="248" ry="146" fill="url(#auraRight)"/>
+  <ellipse cx="904" cy="308" rx="248" ry="180" fill="url(#accentGlow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="120" y="120" width="960" height="728" rx="72" fill="url(#boardFill)"/>
+    <rect x="121" y="121" width="958" height="726" rx="71" stroke="url(#boardStroke)" stroke-width="2"/>
   </g>
 
-  <g filter="url(#shadow-soft)">
-    <rect x="118" y="118" width="964" height="744" rx="74" fill="url(#panelFill)"/>
-    <rect x="118.75" y="118.75" width="962.5" height="742.5" rx="73.25" stroke="url(#panelStroke)" stroke-width="1.5"/>
+  <rect x="182" y="184" width="836" height="58" rx="29" fill="#121928" stroke="#273349"/>
+  <text x="220" y="221" fill="#9DB6FF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="4">VISIBLE SIGNALS</text>
+  <path d="M426 214H520" stroke="#2B3750" stroke-width="2"/>
+  <text x="552" y="221" fill="#9DB6FF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="4">REVIEW BOARD</text>
+  <path d="M758 214H852" stroke="#2B3750" stroke-width="2"/>
+  <text x="884" y="221" fill="#9DB6FF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="4">DECISION</text>
+
+  <g opacity="0.98">
+    <rect x="184" y="286" width="212" height="108" rx="28" fill="url(#panelFill)" stroke="#253146"/>
+    <text x="214" y="326" fill="#7EA3FF" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">LOCAL FIT</text>
+    <text x="214" y="362" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">Dental clinic</text>
+    <rect x="214" y="378" width="112" height="12" rx="6" fill="#24324A"/>
   </g>
 
-  <g opacity="0.56">
-    <path d="M212 322H352" stroke="#2B3244" stroke-width="2"/>
-    <path d="M390 322H520" stroke="#2B3244" stroke-width="2"/>
-    <path d="M558 322H690" stroke="#2B3244" stroke-width="2"/>
-    <path d="M728 322H860" stroke="#2B3244" stroke-width="2"/>
+  <g opacity="0.98">
+    <rect x="184" y="418" width="212" height="108" rx="28" fill="url(#panelFill)" stroke="#253146"/>
+    <text x="214" y="458" fill="#7EA3FF" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">TRUST CUES</text>
+    <text x="214" y="494" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">Visible pricing</text>
+    <rect x="214" y="510" width="134" height="12" rx="6" fill="#24324A"/>
   </g>
 
-  <g opacity="0.92">
-    <rect x="182" y="516" width="276" height="106" rx="30" fill="url(#evidenceCard)" stroke="#232C40"/>
-    <rect x="210" y="598" width="304" height="116" rx="32" fill="url(#evidenceCard)" stroke="#232C40"/>
-    <rect x="236" y="684" width="332" height="124" rx="34" fill="url(#evidenceCard)" stroke="#232C40"/>
-    <rect x="210" y="584" width="166" height="14" rx="7" fill="#232C3C"/>
-    <rect x="210" y="614" width="196" height="14" rx="7" fill="#1D2432"/>
-    <rect x="238" y="680" width="198" height="14" rx="7" fill="#232C3C"/>
-    <rect x="238" y="710" width="176" height="14" rx="7" fill="#1D2432"/>
-    <rect x="266" y="764" width="214" height="14" rx="7" fill="#232C3C"/>
-    <rect x="266" y="794" width="192" height="14" rx="7" fill="#1D2432"/>
-  </g>
-
-  <g opacity="0.88">
-    <path d="M332 566C456 534 562 532 648 548C724 562 806 564 878 536C934 514 986 470 1030 400" stroke="url(#signalThreadSoft)" stroke-width="84" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M332 566C456 534 562 532 648 548C724 562 806 564 878 536C934 514 986 470 1030 400" stroke="url(#signalThread)" stroke-width="28" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M332 566C456 534 562 532 648 548C724 562 806 564 878 536C934 514 986 470 1030 400" stroke="#F4F7FF" stroke-opacity="0.82" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="18 16"/>
-  </g>
-
-  <g opacity="0.9">
-    <circle cx="494" cy="542" r="17" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
-    <circle cx="648" cy="548" r="15" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
-    <circle cx="806" cy="550" r="16" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
-    <circle cx="944" cy="476" r="18" fill="#F4F7FF" stroke="#7397FF" stroke-opacity="0.48" stroke-width="7"/>
-  </g>
-
-  <g opacity="0.84">
-    <ellipse cx="718" cy="720" rx="236" ry="44" fill="#05070C"/>
-    <ellipse cx="718" cy="720" rx="180" ry="24" fill="#111A2C"/>
-  </g>
-
-  <g>
-    <circle cx="980" cy="356" r="126" fill="url(#decisionGlow)"/>
-    <circle cx="980" cy="356" r="56" fill="#AFC8FF" fill-opacity="0.2" stroke="#E8F0FF" stroke-opacity="0.54" stroke-width="2"/>
-    <circle cx="980" cy="356" r="22" fill="#8EB5FF"/>
+  <g opacity="0.98">
+    <rect x="184" y="550" width="212" height="108" rx="28" fill="url(#panelFill)" stroke="#253146"/>
+    <text x="214" y="590" fill="#7EA3FF" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3">CONTACT</text>
+    <text x="214" y="626" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700">Actionable form</text>
+    <rect x="214" y="642" width="126" height="12" rx="6" fill="#24324A"/>
   </g>
 
   <g opacity="0.95">
-    <rect x="718" y="252" width="214" height="136" rx="34" fill="url(#evidenceCard)" stroke="#253146"/>
-    <rect x="882" y="220" width="224" height="190" rx="38" fill="url(#decisionCard)" stroke="#2B3B5E"/>
-    <circle cx="916" cy="252" r="14" fill="#8EB5FF" stroke="#D8E6FF" stroke-opacity="0.46" stroke-width="6"/>
-    <text x="758" y="286" fill="#8EB5FF" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="700" letter-spacing="4">INSPECT SITE</text>
-    <text x="922" y="262" fill="#8EB5FF" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="4">OPERATOR DECISION</text>
-    <text x="922" y="318" fill="#FCFDFF" font-family="Manrope, Inter, Arial, sans-serif" font-size="46" font-weight="700">Qualified to review</text>
-    <text x="922" y="392" fill="#96A0B5" font-family="Inter, Arial, sans-serif" font-size="22">Only once the evidence</text>
-    <text x="922" y="424" fill="#96A0B5" font-family="Inter, Arial, sans-serif" font-size="22">holds together.</text>
-    <rect x="758" y="326" width="124" height="24" rx="12" fill="#1F2736"/>
-    <rect x="758" y="366" width="150" height="24" rx="12" fill="#1A2130"/>
-    <rect x="758" y="406" width="112" height="24" rx="12" fill="#1A2130"/>
+    <rect x="440" y="286" width="388" height="372" rx="34" fill="url(#surfaceFill)" stroke="#2A3550"/>
+    <text x="478" y="330" fill="#9DB6FF" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="4">LEAD REVIEW</text>
+    <text x="478" y="396" fill="#FCFDFF" font-family="Manrope, Inter, Arial, sans-serif" font-size="54" font-weight="700">Praxis am Park</text>
+    <text x="478" y="438" fill="#98A3B9" font-family="Inter, Arial, sans-serif" font-size="24">Worth review because the site already earns attention</text>
+    <text x="478" y="470" fill="#98A3B9" font-family="Inter, Arial, sans-serif" font-size="24">before the draft exists.</text>
+
+    <path d="M478 514H790" stroke="#273245" stroke-width="2"/>
+    <path d="M478 598H790" stroke="#273245" stroke-width="2"/>
+
+    <text x="478" y="550" fill="#7EA3FF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3">SIGNALS</text>
+    <text x="612" y="550" fill="#7EA3FF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3">AUDIT</text>
+    <text x="718" y="550" fill="#7EA3FF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3">SEND</text>
+
+    <text x="478" y="584" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Trust, booking, contact</text>
+    <text x="612" y="584" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Grounded reasoning</text>
+    <text x="718" y="584" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="26" font-weight="700">Operator approved</text>
   </g>
 
-  <g opacity="0.96">
-    <rect x="202" y="166" width="378" height="92" rx="26" fill="url(#evidenceCard)" stroke="#243049"/>
-    <text x="240" y="214" fill="#AFC8FF" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="4">VISIBLE SIGNALS STAY ATTACHED</text>
+  <path d="M396 340H438" stroke="url(#accentLine)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M396 472H438" stroke="url(#accentLine)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M396 604H438" stroke="url(#accentLine)" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="438" cy="340" r="10" fill="#DCE7FF" stroke="#6F96FF" stroke-width="5"/>
+  <circle cx="438" cy="472" r="10" fill="#DCE7FF" stroke="#6F96FF" stroke-width="5"/>
+  <circle cx="438" cy="604" r="10" fill="#DCE7FF" stroke="#6F96FF" stroke-width="5"/>
+
+  <path d="M828 472H900" stroke="url(#accentLine)" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="900" cy="472" r="14" fill="#F7FAFF" stroke="#7397FF" stroke-width="6"/>
+
+  <g opacity="0.98">
+    <rect x="920" y="316" width="132" height="220" rx="32" fill="url(#panelFill)" stroke="#2B3A5A"/>
+    <text x="952" y="360" fill="#8EB5FF" font-family="Inter, Arial, sans-serif" font-size="16" font-weight="700" letter-spacing="3">DECISION</text>
+    <text x="952" y="404" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">Qualified</text>
+    <text x="952" y="442" fill="#FCFDFF" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">to review</text>
+    <path d="M952 470H1016" stroke="#314768" stroke-width="2"/>
+    <text x="952" y="510" fill="#98A3B9" font-family="Inter, Arial, sans-serif" font-size="22">Only once the</text>
+    <text x="952" y="540" fill="#98A3B9" font-family="Inter, Arial, sans-serif" font-size="22">evidence holds</text>
+    <text x="952" y="570" fill="#98A3B9" font-family="Inter, Arial, sans-serif" font-size="22">together.</text>
   </g>
 </svg>

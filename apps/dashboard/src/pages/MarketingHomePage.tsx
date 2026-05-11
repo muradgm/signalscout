@@ -133,7 +133,7 @@ function HeroImageVisual() {
       <img
         className="marketing-artifact__hero-image"
         src={heroIllustration}
-        alt="Abstract SignalScout illustration showing multiple site signals resolving into one operator decision."
+        alt="Structured SignalScout illustration showing a lead review board, attached evidence, and one operator decision."
         decoding="async"
         loading="eager"
       />
@@ -357,63 +357,65 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               ))}
             </div>
 
-            <div className="marketing-product-stage__surface" data-reveal-item="1">
-              <div className="marketing-product-stage__surface-top">
-                <span className="marketing-card-label">Lead review workspace</span>
-                <span className="marketing-surface-chip marketing-surface-chip--accent">
-                  Worth operator review
-                </span>
-              </div>
+            <div className="marketing-product-stage__canvas">
+              <div className="marketing-product-stage__surface" data-reveal-item="1">
+                <div className="marketing-product-stage__surface-top">
+                  <span className="marketing-card-label">Lead review workspace</span>
+                  <span className="marketing-surface-chip marketing-surface-chip--accent">
+                    Worth operator review
+                  </span>
+                </div>
 
-              <div className="marketing-product-stage__surface-main">
-                <h3>Praxis am Park</h3>
-                <p className="marketing-product-stage__summary">
-                  The site looks credible enough to consider outreach, but the value is
-                  in seeing why before the draft becomes a task.
-                </p>
+                <div className="marketing-product-stage__surface-main">
+                  <h3>Praxis am Park</h3>
+                  <p className="marketing-product-stage__summary">
+                    The site looks credible enough to consider outreach, but the value is
+                    in seeing why before the draft becomes a task.
+                  </p>
 
-                <div className="marketing-product-stage__metrics">
-                  {workspaceHighlights.map((highlight) => (
-                    <div key={highlight.label} className="marketing-product-stage__metric">
-                      <small>{highlight.label}</small>
-                      <strong>{highlight.title}</strong>
-                      <p>{highlight.body}</p>
-                    </div>
-                  ))}
+                  <div className="marketing-product-stage__metrics">
+                    {workspaceHighlights.map((highlight) => (
+                      <div key={highlight.label} className="marketing-product-stage__metric">
+                        <small>{highlight.label}</small>
+                        <strong>{highlight.title}</strong>
+                        <p>{highlight.body}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="marketing-product-stage__decision-band">
+                  <span className="marketing-card-label">Decision note</span>
+                  <p>
+                    This lead deserves review because the site already does enough work to
+                    justify a focused outreach angle.
+                  </p>
                 </div>
               </div>
 
-              <div className="marketing-product-stage__decision-band">
-                <span className="marketing-card-label">Decision note</span>
-                <p>
-                  This lead deserves review because the site already does enough work to
-                  justify a focused outreach angle.
-                </p>
+              <div className="marketing-product-stage__rail">
+                <article className="marketing-product-callout" data-reveal-item="2">
+                  <span className="marketing-card-label">Current state</span>
+                  <strong>Qualification layer before outreach</strong>
+                  <p>
+                    The product is strongest when it helps a real operator decide whether a
+                    local-service lead deserves attention at all.
+                  </p>
+                </article>
+                <article className="marketing-product-callout" data-reveal-item="3">
+                  <span className="marketing-card-label">Workflow reality</span>
+                  <strong>Best for selective outbound</strong>
+                  <p>Useful when judgment matters more than maximizing sequence volume.</p>
+                </article>
+                <article className="marketing-product-callout" data-reveal-item="4">
+                  <span className="marketing-card-label">Control</span>
+                  <strong>Sending stays secondary to review</strong>
+                  <p>
+                    The draft stays attached to the evidence, but the last send decision is
+                    still human.
+                  </p>
+                </article>
               </div>
-            </div>
-
-            <div className="marketing-product-stage__rail">
-              <article className="marketing-product-callout" data-reveal-item="2">
-                <span className="marketing-card-label">Current state</span>
-                <strong>Qualification layer before outreach</strong>
-                <p>
-                  The product is strongest when it helps a real operator decide whether a
-                  local-service lead deserves attention at all.
-                </p>
-              </article>
-              <article className="marketing-product-callout" data-reveal-item="3">
-                <span className="marketing-card-label">Workflow reality</span>
-                <strong>Best for selective outbound</strong>
-                <p>Useful when judgment matters more than maximizing sequence volume.</p>
-              </article>
-              <article className="marketing-product-callout" data-reveal-item="4">
-                <span className="marketing-card-label">Control</span>
-                <strong>Sending stays secondary to review</strong>
-                <p>
-                  The draft stays attached to the evidence, but the last send decision is
-                  still human.
-                </p>
-              </article>
             </div>
           </div>
         </section>
