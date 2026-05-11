@@ -1,10 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import type { CSSProperties, MouseEvent, ReactNode } from 'react';
 import heroIllustration from '../assets/signalscout-hero-illustration.svg';
 
 type MarketingHomePageProps = {
   onNavigate: (path: string) => void;
 };
+
+type MarketingTheme = 'dark' | 'light';
+
+const marketingThemeStorageKey = 'signalscout-marketing-theme';
 
 const workflowMoments = [
   {
@@ -192,6 +196,20 @@ function SplitHeadline({ as: Tag, lines }: SplitHeadlineProps) {
 }
 
 export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
+  const [theme, setTheme] = useState<MarketingTheme>(() => {
+    if (typeof window === 'undefined') {
+      return 'dark';
+    }
+
+    const storedTheme = window.localStorage.getItem(marketingThemeStorageKey);
+
+    if (storedTheme === 'dark' || storedTheme === 'light') {
+      return storedTheme;
+    }
+
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  });
+
   useEffect(() => {
     const sections = Array.from(
       document.querySelectorAll<HTMLElement>('[data-reveal]'),
@@ -238,6 +256,10 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    window.localStorage.setItem(marketingThemeStorageKey, theme);
+  }, [theme]);
+
   const handleRouteNavigate =
     (path: string) =>
     (event: MouseEvent<HTMLAnchorElement>): void => {
@@ -247,7 +269,7 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
     };
 
   return (
-    <div className="marketing-home">
+    <div className="marketing-home" data-theme={theme}>
       <header className="marketing-nav">
         <div className="marketing-nav__inner">
           <a className="marketing-brand" href="#top" aria-label="SignalScout">
@@ -260,6 +282,14 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
             <a href="#workflow">Workflow</a>
             <a href="#proof">Proof</a>
             <a href="#fit">Fit</a>
+            <button
+              type="button"
+              className="marketing-theme-toggle"
+              aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            >
+              {theme === 'dark' ? 'Light mode' : 'Dark mode'}
+            </button>
             <a
               className="marketing-nav__cta"
               href="/leads"
