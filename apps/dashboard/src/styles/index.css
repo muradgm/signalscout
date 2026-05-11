@@ -1950,28 +1950,36 @@ button:disabled {
 
 [data-reveal].motion-ready {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translate3d(0, 42px, 0) scale(0.992);
+  filter: blur(8px);
+  will-change: opacity, transform, filter;
   transition:
-    opacity 700ms ease,
-    transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 820ms ease,
+    transform 1100ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 1100ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 [data-reveal].motion-ready.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
 }
 
 [data-reveal].motion-ready [data-reveal-item] {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translate3d(0, 24px, 0);
+  filter: blur(6px);
+  will-change: opacity, transform, filter;
   transition:
-    opacity 560ms ease,
-    transform 720ms cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 620ms ease,
+    transform 880ms cubic-bezier(0.2, 0.7, 0.2, 1),
+    filter 880ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 [data-reveal].motion-ready.is-visible [data-reveal-item] {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
+  filter: blur(0);
 }
 
 [data-reveal].motion-ready.is-visible [data-reveal-item="0"] {
@@ -2023,6 +2031,7 @@ html {
   [data-reveal].motion-ready.is-visible {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
   }
 
@@ -2030,6 +2039,7 @@ html {
   [data-reveal].motion-ready.is-visible [data-reveal-item] {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
   }
 }
@@ -2330,21 +2340,26 @@ html {
   display: block;
 }
 
+.marketing-split-line {
+  display: block;
+  overflow: clip;
+}
+
 .marketing-split-word {
   display: inline-block;
   opacity: 0;
-  transform: translate3d(0, 0.9rem, 0);
-  filter: blur(8px);
+  transform: translate3d(0, 1rem, 0) scale(0.985);
+  filter: blur(10px);
   transition:
-    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 620ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 620ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--word-index) * 42ms + 120ms);
+    opacity 760ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 760ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 760ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--word-index) * 34ms + 80ms);
 }
 
 .motion-ready.is-visible .marketing-split-word {
   opacity: 1;
-  transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0) scale(1);
   filter: blur(0);
 }
 

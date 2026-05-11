@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import type { MouseEvent } from 'react';
+import type { CSSProperties, MouseEvent, ReactNode } from 'react';
 import heroIllustration from '../assets/signalscout-hero-illustration.svg';
 
 type MarketingHomePageProps = {
@@ -147,12 +147,47 @@ function HeroVisual() {
 
 type SplitHeadlineProps = {
   as: 'h1' | 'h2';
-  text: string;
+  lines: string[];
 };
 
-function SplitHeadline({ as: Tag, text }: SplitHeadlineProps) {
+function SplitHeadline({ as: Tag, lines }: SplitHeadlineProps) {
+  let wordIndex = 0;
+
   return (
-    <Tag className="marketing-split-text">{text}</Tag>
+    <Tag className="marketing-split-text">
+      {lines.map((line, lineIndex) => {
+        const words = line.trim().split(/\s+/);
+        const content: ReactNode[] = [];
+
+        words.forEach((word, index) => {
+          const style = {
+            '--word-index': wordIndex,
+          } as CSSProperties;
+
+          content.push(
+            <span
+              key={`${lineIndex}-${wordIndex}`}
+              className="marketing-split-word"
+              style={style}
+            >
+              {word}
+            </span>,
+          );
+
+          wordIndex += 1;
+
+          if (index < words.length - 1) {
+            content.push(' ');
+          }
+        });
+
+        return (
+          <span key={`line-${lineIndex}`} className="marketing-split-line">
+            {content}
+          </span>
+        );
+      })}
+    </Tag>
   );
 }
 
@@ -238,16 +273,23 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
 
       <main className="marketing-shell" id="top">
         <section className="marketing-hero" id="product" data-reveal>
-          <div className="marketing-hero__copy">
-            <p className="eyebrow">Website review and outreach qualification for local-service outbound</p>
-            <SplitHeadline as="h1" text="Review local-service leads before you commit to outreach." />
-            <p className="marketing-copy marketing-copy--lead">
+          <div className="marketing-hero__copy" data-reveal-item="0">
+            <p className="eyebrow" data-reveal-item="0">Website review and outreach qualification for local-service outbound</p>
+            <SplitHeadline
+              as="h1"
+              lines={[
+                'Review local-service',
+                'leads before you',
+                'commit to outreach.',
+              ]}
+            />
+            <p className="marketing-copy marketing-copy--lead" data-reveal-item="2">
               SignalScout keeps trust, booking, and contact evidence attached to the
               lead, builds a grounded audit, and lets the operator make the final send
               call.
             </p>
 
-            <div className="marketing-actions">
+            <div className="marketing-actions" data-reveal-item="3">
               <a
                 className="marketing-button"
                 href="/leads"
@@ -260,22 +302,22 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
               </a>
             </div>
 
-            <p className="marketing-action-note">
+            <p className="marketing-action-note" data-reveal-item="4">
               Best for teams that would rather review 20 qualified opportunities than
               blast 200 weak ones.
             </p>
           </div>
 
-          <div className="marketing-hero__visual" aria-hidden="true">
+          <div className="marketing-hero__visual" aria-hidden="true" data-reveal-item="1">
             <HeroVisual />
           </div>
         </section>
 
         <section className="marketing-proof" id="proof" data-reveal>
-          <div className="marketing-section-heading marketing-section-heading--centered">
+          <div className="marketing-section-heading marketing-section-heading--centered" data-reveal-item="0">
             <p className="eyebrow">Concrete proof</p>
-            <h2>What the product already does today.</h2>
-            <p className="marketing-copy marketing-copy--centered">
+            <SplitHeadline as="h2" lines={['What the product already does today.']} />
+            <p className="marketing-copy marketing-copy--centered" data-reveal-item="1">
               This is not a promise stack. The product already supports the review loop
               from website inspection to operator-approved outreach.
             </p>
@@ -303,13 +345,16 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         </section>
 
         <section className="marketing-system" id="workflow" data-reveal>
-          <div className="marketing-section-heading">
+          <div className="marketing-section-heading" data-reveal-item="0">
             <p className="eyebrow">How it works</p>
-            <h2>
-              <span>Three steps from site review</span>
-              <span>to an outreach decision.</span>
-            </h2>
-            <p className="marketing-copy">
+            <SplitHeadline
+              as="h2"
+              lines={[
+                'Three steps from site review',
+                'to an outreach decision.',
+              ]}
+            />
+            <p className="marketing-copy" data-reveal-item="1">
               The product is strongest when it answers the questions a skeptical operator
               actually has before the draft becomes another task.
             </p>
@@ -331,13 +376,16 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         </section>
 
         <section className="marketing-product" data-reveal>
-          <div className="marketing-section-heading">
+          <div className="marketing-section-heading" data-reveal-item="0">
             <p className="eyebrow">Inside the workspace</p>
-            <h2>
-              <span>See the whole lead</span>
-              <span>before you touch the draft.</span>
-            </h2>
-            <p className="marketing-copy">
+            <SplitHeadline
+              as="h2"
+              lines={[
+                'See the whole lead',
+                'before you touch the draft.',
+              ]}
+            />
+            <p className="marketing-copy" data-reveal-item="1">
               The workspace is built to answer four questions fast: Is the lead local?
               Is it credible? Is the booking path clear? Is the contact surface good
               enough to act on?
@@ -421,12 +469,15 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         </section>
 
         <section className="marketing-selective" id="fit" data-reveal>
-          <div className="marketing-section-heading">
+          <div className="marketing-section-heading" data-reveal-item="0">
             <p className="eyebrow">Fit check</p>
-            <h2>
-              <span>Who it helps,</span>
-              <span>and who should skip it.</span>
-            </h2>
+            <SplitHeadline
+              as="h2"
+              lines={[
+                'Who it helps,',
+                'and who should skip it.',
+              ]}
+            />
           </div>
 
           <div className="marketing-selective__layout">
@@ -466,20 +517,26 @@ export function MarketingHomePage({ onNavigate }: MarketingHomePageProps) {
         </section>
 
         <section className="marketing-close" id="cta" data-reveal>
-          <div className="marketing-close__note">
+          <div className="marketing-close__note" data-reveal-item="0">
             <p className="eyebrow">See the live workflow</p>
             <p className="marketing-copy">
               Open the review workspace first. Book a demo after the product has earned it.
             </p>
           </div>
 
-          <div className="marketing-close__cta">
-            <SplitHeadline as="h2" text="See the live review first. Book a walkthrough after." />
-            <p className="marketing-copy marketing-copy--lead">
+          <div className="marketing-close__cta" data-reveal-item="1">
+            <SplitHeadline
+              as="h2"
+              lines={[
+                'See the live review first.',
+                'Book a walkthrough after.',
+              ]}
+            />
+            <p className="marketing-copy marketing-copy--lead" data-reveal-item="2">
               Open the workspace to inspect the live flow. If the review model matches
               your team, request a closer walkthrough.
             </p>
-            <div className="marketing-actions">
+            <div className="marketing-actions" data-reveal-item="3">
               <a
                 className="marketing-button"
                 href="/leads"
