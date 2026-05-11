@@ -2,6 +2,28 @@ import type { CreateLeadInput, Lead, LeadRepository } from '@signalscout/core';
 import { mapLeadDocumentToEntity } from '../mappers/lead.mapper.js';
 import { LeadModel } from '../models/LeadModel.js';
 
+class RepositoryConflictError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = 'ConflictError';
+  }
+}
+
+const isMongoDuplicateKeyError = (
+  error: unknown,
+): error is Error & { code: number } => {
+  const code =
+    error instanceof Error
+      ? (error as Error & { code?: unknown }).code
+      : undefined;
+
+  return (
+    error instanceof Error &&
+    typeof code === 'number' &&
+    code === 11000
+  );
+};
+
 export class MongoLeadRepository implements LeadRepository {
   async create(input: CreateLeadInput): Promise<Lead> {
     try {
@@ -17,13 +39,10 @@ export class MongoLeadRepository implements LeadRepository {
 
       return mapLeadDocumentToEntity(document);
     } catch (error: unknown) {
-      if (
-        error instanceof Error &&
-        (error as { code?: number }).code === 11000
-      ) {
-        const conflictError = new Error('Lead with this website already exists');
-        conflictError.name = 'ConflictError';
-        throw conflictError;
+      if (isMongoDuplicateKeyError(error)) {
+        throw new RepositoryConflictError(
+          'Lead with this website already exists',
+        );
       }
       throw error;
     }

@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from 'express';
 import { ZodError, type AnyZodObject } from 'zod';
+import { logger } from '../../bootstrap/logger.js';
 import { AppError, ValidationError } from '../errors/index.js';
 
 export const validateRequest =
@@ -35,6 +36,9 @@ export const notFoundHandler = (
 ): void => {
   next(new AppError('Route not found', 404));
 };
+
+const isConflictLikeError = (error: Error): boolean =>
+  error.name === 'ConflictError';
 
 export const errorHandler = (
   error: Error,
@@ -82,8 +86,22 @@ export const errorHandler = (
     return;
   }
 
+  if (isConflictLikeError(error)) {
+    res.status(409).json({
+      success: false,
+      error: error.message || 'Conflict',
+    });
+    return;
+  }
+
+  logger.error('Unhandled API error', {
+    name: error.name,
+    message: error.message,
+    stack: error.stack,
+  });
+
   res.status(500).json({
     success: false,
-    error: error.message || 'Internal server error',
+    error: 'Internal server error',
   });
 };

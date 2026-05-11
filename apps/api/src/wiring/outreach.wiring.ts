@@ -1,4 +1,8 @@
-import { createDefaultOutreachGenerator } from '@signalscout/ai';
+import {
+  MockOutreachGenerator,
+  OpenAiOutreachGenerator,
+  OutreachPolishingLayer,
+} from '@signalscout/ai';
 import {
   DetectSignals,
   GenerateOutreach,
@@ -30,7 +34,13 @@ const outreachRepository = new MongoOutreachRepository();
 const deliveryEventRepository = new MongoDeliveryEventRepository();
 
 const signalDetector = new RuleBasedSignalDetector();
-const outreachGenerator = createDefaultOutreachGenerator();
+const outreachGenerator = new OutreachPolishingLayer(
+  env.useMockAi
+    ? new MockOutreachGenerator()
+    : new OpenAiOutreachGenerator({
+        apiKey: env.openAiApiKey,
+      }),
+);
 const outreachSender = new ResendOutreachSender(
   env.resendApiKey,
   env.resendFromEmail,

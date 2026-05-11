@@ -18,6 +18,23 @@ const required = (value: string | undefined, name: string): string => {
   return value;
 };
 
+const numberFromEnv = (
+  value: string | undefined,
+  fallback: number,
+  name: string,
+): number => {
+  if (!value) {
+    return fallback;
+  }
+
+  const parsed = Number(value);
+  if (!Number.isFinite(parsed) || parsed <= 0) {
+    throw new Error(`Invalid numeric environment variable: ${name}`);
+  }
+
+  return parsed;
+};
+
 const senderDomainFromEmail = (value: string): string | null => {
   const normalized = value.trim().toLowerCase();
 
@@ -33,7 +50,28 @@ export const env = {
   isProduction: (process.env.NODE_ENV ?? 'development') === 'production',
   port: Number(process.env.PORT ?? 4000),
   apiBasePath: process.env.API_BASE_PATH ?? '/api',
+  apiJsonLimit: process.env.API_JSON_LIMIT ?? '256kb',
+  apiRateLimitWindowMs: numberFromEnv(
+    process.env.API_RATE_LIMIT_WINDOW_MS,
+    60_000,
+    'API_RATE_LIMIT_WINDOW_MS',
+  ),
+  apiRateLimitMaxRequests: numberFromEnv(
+    process.env.API_RATE_LIMIT_MAX_REQUESTS,
+    120,
+    'API_RATE_LIMIT_MAX_REQUESTS',
+  ),
   mongoUri: required(process.env.MONGODB_URI, 'MONGODB_URI'),
+  mongoConnectMaxAttempts: numberFromEnv(
+    process.env.MONGO_CONNECT_MAX_ATTEMPTS,
+    5,
+    'MONGO_CONNECT_MAX_ATTEMPTS',
+  ),
+  mongoConnectBaseDelayMs: numberFromEnv(
+    process.env.MONGO_CONNECT_BASE_DELAY_MS,
+    500,
+    'MONGO_CONNECT_BASE_DELAY_MS',
+  ),
   dashboardOrigins: Array.from(
     new Set(
       [

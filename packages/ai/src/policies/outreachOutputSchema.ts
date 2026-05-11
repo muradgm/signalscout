@@ -1,12 +1,13 @@
 import { z } from 'zod';
 
 export const outreachOutputSchema = z.object({
-  channel: z.literal('email'),
-  subject: z.string().min(1),
-  body: z.string().min(1),
+  recommendation: z.enum(['send', 'review', 'do_not_send']),
+  fitReason: z.string().min(1),
+  bestAngle: z.string().min(1),
+  subject: z.string().trim().min(1).nullable(),
+  body: z.string().trim().min(1).nullable(),
   reasoning: z.string().min(1),
   evidence: z.array(z.string().min(1)).default([]),
-  status: z.enum(['drafted', 'approved', 'sent', 'replied', 'closed']),
 });
 
 export type OutreachOutputSchema = z.infer<typeof outreachOutputSchema>;
