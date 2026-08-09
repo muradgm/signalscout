@@ -20,13 +20,13 @@ export function LeadReviewQueuePanel({
   onOpenLead,
 }: LeadReviewQueuePanelProps) {
   return (
-    <section className="queue-review-panel" aria-labelledby="priority-review-lane-title">
+    <section className="queue-review-panel" aria-labelledby="needs-attention-lane-title">
       <div className="queue-report__header">
         <div>
-          <h3 id="priority-review-lane-title">Priority review lane</h3>
+          <h3 id="needs-attention-lane-title">Needs attention</h3>
           <p>
-            Start with non-Berlin, weaker-contact, and niche-valid leads that are still
-            waiting for an operator decision.
+            These leads rank by review risk and unresolved evidence, not by commercial
+            opportunity. Resolve uncertainty before deciding whether to act.
           </p>
         </div>
         <div className="queue-report__summary">
@@ -47,7 +47,7 @@ export function LeadReviewQueuePanel({
               type="button"
               className="queue-review-panel__item"
               onClick={() => onOpenLead(item.leadId)}
-              aria-label={`Open priority lead ${item.companyName}`}
+              aria-label={`Open lead needing attention ${item.companyName}`}
             >
               <div className="queue-review-panel__top">
                 <div>
