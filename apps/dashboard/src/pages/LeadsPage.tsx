@@ -95,32 +95,40 @@ export function LeadsPage({ onNavigate }: LeadsPageProps) {
         setLeads(data);
         setStatus('success');
 
-        const settled = await Promise.allSettled(
-          data.map(async (lead) => ({
-            leadId: lead.id,
-            signals: (await fetchLeadSignals(lead.id)).signals,
-          })),
-        );
+        const [signalResults, outreachResults, repliesResult, learningResult] =
+          await Promise.all([
+            Promise.allSettled(
+              data.map(async (lead) => ({
+                leadId: lead.id,
+                signals: (await fetchLeadSignals(lead.id)).signals,
+              })),
+            ),
+            Promise.allSettled(
+              data.map(async (lead) => ({
+                leadId: lead.id,
+                outreach: await fetchLatestOutreach(lead.id),
+              })),
+            ),
+            fetchRecentReplies().then(
+              (replies) => ({ status: 'fulfilled' as const, value: replies }),
+              () => ({ status: 'rejected' as const }),
+            ),
+            fetchOutreachLearningSummary().then(
+              (summary) => ({ status: 'fulfilled' as const, value: summary }),
+              () => ({ status: 'rejected' as const }),
+            ),
+          ]);
 
         const nextSignalsByLeadId: Record<string, SignalSet> = {};
         const nextOutreachByLeadId: Record<string, Outreach | null> = {};
 
-        for (const item of settled) {
+        for (const item of signalResults) {
           if (item.status === 'fulfilled') {
             nextSignalsByLeadId[item.value.leadId] = item.value.signals;
           }
         }
 
-        const outreachSettled = await Promise.allSettled(
-          data.map(async (lead) => ({
-            leadId: lead.id,
-            outreach: await fetchLatestOutreach(lead.id),
-          })),
-        );
-        const latestReplies = await fetchRecentReplies();
-        const latestLearningSummary = await fetchOutreachLearningSummary();
-
-        for (const item of outreachSettled) {
+        for (const item of outreachResults) {
           if (item.status === 'fulfilled') {
             nextOutreachByLeadId[item.value.leadId] = item.value.outreach;
           }
@@ -128,8 +136,14 @@ export function LeadsPage({ onNavigate }: LeadsPageProps) {
 
         setSignalsByLeadId(nextSignalsByLeadId);
         setOutreachByLeadId(nextOutreachByLeadId);
-        setRecentReplies(latestReplies);
-        setLearningSummary(latestLearningSummary);
+
+        if (repliesResult.status === 'fulfilled') {
+          setRecentReplies(repliesResult.value);
+        }
+
+        if (learningResult.status === 'fulfilled') {
+          setLearningSummary(learningResult.value);
+        }
       } catch (loadError) {
         setStatus('error');
         setError(loadError instanceof Error ? loadError.message : 'Failed to load leads');
@@ -332,7 +346,7 @@ export function LeadsPage({ onNavigate }: LeadsPageProps) {
   return (
     <PageShell
       title="Lead queue"
-      description="Work through the queue, spot the strongest opportunities quickly, and open the next lead worth acting on."
+      description="Work through leads that need operator attention, verify the evidence, and open the next review worth resolving."
       meta={`${filteredLeads.length} lead${filteredLeads.length === 1 ? '' : 's'} in view`}
     >
       <LeadFilters

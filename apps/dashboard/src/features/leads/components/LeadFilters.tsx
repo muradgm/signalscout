@@ -22,7 +22,7 @@ export function LeadFilters({
 }: LeadFiltersProps) {
   const scopeOptions: Array<{ value: LeadQueueScope; label: string }> = [
     { value: 'all', label: 'All visible' },
-    { value: 'priority_review', label: 'Priority review' },
+    { value: 'priority_review', label: 'Needs attention' },
     { value: 'non_berlin', label: 'Non-Berlin' },
     { value: 'weak_contact', label: 'Weak-contact' },
     { value: 'niche_valid', label: 'Niche-valid' },

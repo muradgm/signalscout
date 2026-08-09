@@ -199,7 +199,7 @@ describe('LeadsPage', () => {
     expect(onNavigate).toHaveBeenCalledWith('/leads/lead-good');
   });
 
-  it('shows a priority review lane for non-Berlin and weaker-contact leads', async () => {
+  it('shows a needs-attention lane for non-Berlin and weaker-contact leads', async () => {
     mockedFetchLeads.mockResolvedValue(leadFixtures);
     mockedFetchLeadSignals
       .mockResolvedValueOnce(signalResult(leadFixtures[0], {}))
@@ -224,7 +224,7 @@ describe('LeadsPage', () => {
 
     render(<LeadsPage onNavigate={vi.fn()} />);
 
-    expect(await screen.findByRole('heading', { name: 'Priority review lane' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Needs attention' })).toBeInTheDocument();
     expect(screen.getAllByText('Non-Berlin').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Weak-contact').length).toBeGreaterThan(0);
     expect(screen.getAllByText('Unreviewed').length).toBeGreaterThan(0);
@@ -446,5 +446,19 @@ describe('LeadsPage', () => {
       expect(screen.queryByText('Praxis am Park')).not.toBeInTheDocument();
       expect(screen.getAllByText('Mitte Dental').length).toBeGreaterThan(0);
     });
+  });
+
+  it('keeps the primary queue usable when auxiliary reporting fails', async () => {
+    mockedFetchLeads.mockResolvedValue(leadFixtures);
+    mockedFetchLeadSignals
+      .mockResolvedValueOnce(signalResult(leadFixtures[0], {}))
+      .mockResolvedValueOnce(signalResult(leadFixtures[1], { outreachFit: 'uncertain' }));
+    mockedFetchRecentReplies.mockRejectedValue(new Error('Replies unavailable'));
+    mockedFetchOutreachLearningSummary.mockRejectedValue(new Error('Learning unavailable'));
+
+    render(<LeadsPage onNavigate={vi.fn()} />);
+
+    expect((await screen.findAllByText('Praxis am Park')).length).toBeGreaterThan(0);
+    expect(screen.queryByText('Queue failed to load')).not.toBeInTheDocument();
   });
 });
