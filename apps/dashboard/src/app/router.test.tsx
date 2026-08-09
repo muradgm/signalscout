@@ -61,4 +61,14 @@ describe('AppRouter', () => {
     expect(screen.getByTestId('dashboard-layout')).toBeInTheDocument();
     expect(screen.getByText('Lead detail lead-123')).toBeInTheDocument();
   });
+
+  it('renders an explicit not-found state for unknown routes', () => {
+    window.history.replaceState({}, '', '/unknown-workspace-route');
+
+    render(<AppRouter />);
+
+    expect(screen.getByTestId('dashboard-layout')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Page not found' })).toBeInTheDocument();
+    expect(screen.queryByRole('heading', { name: 'Marketing home' })).not.toBeInTheDocument();
+  });
 });
