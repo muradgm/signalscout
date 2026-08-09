@@ -12,7 +12,7 @@ type Route =
 
 const parseRoute = (pathname: string): Route => {
   if (pathname === '/' || pathname === '') {
-    return { kind: 'not-found', path: pathname };
+    return { kind: 'marketing', path: '/' };
   }
 
   const detailMatch = pathname.match(/^\/leads\/([^/]+)$/);
@@ -29,7 +29,7 @@ const parseRoute = (pathname: string): Route => {
     return { kind: 'leads', path: '/leads' };
   }
 
-  return { kind: 'marketing', path: '/' };
+  return { kind: 'not-found', path: pathname };
 };
 
 export function AppRouter() {
